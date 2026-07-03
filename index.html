@@ -312,6 +312,26 @@
             <li>Mluvíte přímo s vedoucím inženýrem.</li>
             <li>Získáte jasný plán nasazení.</li>
           </ul>
+
+          <form class="cta-form reveal" id="contactForm" novalidate>
+            <div class="form-row">
+              <label>Jméno
+                <input type="text" name="name" id="fName" placeholder="Jan Novák" autocomplete="name" />
+              </label>
+              <label>E-mail
+                <input type="email" name="email" id="fEmail" placeholder="jan@firma.cz" autocomplete="email" />
+              </label>
+            </div>
+            <label>Termín konzultace
+              <input type="text" name="term" id="formTerm" placeholder="Vyberte si den a čas v kalendáři →" readonly />
+            </label>
+            <label>Zpráva
+              <textarea name="message" id="fMsg" rows="4" placeholder="Co byste rádi zautomatizovali?"></textarea>
+            </label>
+            <input type="text" name="_honey" id="fHoney" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none" />
+            <button type="submit" class="btn btn-black">Odeslat poptávku</button>
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+          </form>
         </div>
         <div class="calendar reveal" id="calendar" aria-label="Kalendář rezervací">
           <!-- generováno v script.js -->

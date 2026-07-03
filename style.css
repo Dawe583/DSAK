@@ -127,7 +127,21 @@ h4 { font-size: 16px; font-weight: 500; }
 .annot-dot { width: 7px; height: 7px; background: var(--ink); }
 .annot-line { width: 1px; height: 44px; background: var(--ink); margin-left: 3px; }
 .annot-vline { display: block; width: 1px; height: 44px; background: var(--ink); margin-left: 3px; }
-.annot-text { font-size: 12px; color: var(--gray-2); margin-top: 5px; }
+.annot-text {
+  font-size: 11.5px;
+  color: var(--gray-1);
+  margin-top: 6px;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  padding: 3px 9px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
+}
+.annot-dot { animation: dotPing 2.6s var(--ease) infinite; }
+@keyframes dotPing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.22); }
+  50% { box-shadow: 0 0 0 7px rgba(0, 0, 0, 0); }
+}
 .annot-hline { display: inline-block; height: 1px; width: 90px; background: var(--ink); }
 
 /* ===== NAV ===== */
@@ -265,7 +279,12 @@ h4 { font-size: 16px; font-weight: 500; }
 .pixel-icon canvas {
   width: 160px; height: 160px;
   image-rendering: pixelated;
+  animation: iconFloat 6s ease-in-out infinite;
 }
+@keyframes iconFloat { 50% { transform: translateY(-7px); } }
+.feature-cell:nth-child(2) .pixel-icon canvas { animation-delay: 1.5s; }
+.feature-cell:nth-child(3) .pixel-icon canvas { animation-delay: 3s; }
+.feature-cell:nth-child(4) .pixel-icon canvas { animation-delay: 4.5s; }
 .feature-cell h4 { margin-bottom: 8px; }
 .feature-cell p { color: var(--gray-2); font-size: 13px; }
 
@@ -310,6 +329,8 @@ h4 { font-size: 16px; font-weight: 500; }
 }
 .orbit-node {
   position: absolute;
+  top: 50%;
+  left: 50%;
   font-size: 12px;
   background: #fff;
   border: 1px solid var(--line-strong);
@@ -317,13 +338,20 @@ h4 { font-size: 16px; font-weight: 500; }
   padding: 5px 13px;
   color: var(--gray-1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  will-change: transform;
+  transform: translate(-50%, -50%);
 }
-.on1 { top: -4%; left: 50%; transform: translateX(-50%); }
-.on2 { top: 22%; right: -6%; }
-.on3 { bottom: 12%; right: 2%; }
-.on4 { bottom: -4%; left: 50%; transform: translateX(-50%); }
-.on5 { bottom: 12%; left: -4%; }
-.on6 { top: 22%; left: -6%; }
+.orbit-comet {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 10px 2px rgba(52, 85, 250, 0.35);
+  will-change: transform;
+}
 
 /* ===== PRICING ===== */
 .pricing { padding: clamp(56px, 8vw, 90px) 32px; }
@@ -469,8 +497,37 @@ h4 { font-size: 16px; font-weight: 500; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
-  align-items: center;
+  align-items: start;
 }
+
+/* ===== KONTAKTNÍ FORMULÁŘ ===== */
+.cta-form { margin-top: 30px; display: grid; gap: 14px; max-width: 460px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cta-form label { display: grid; gap: 6px; font-size: 12px; font-weight: 500; color: var(--gray-1); }
+.cta-form input,
+.cta-form textarea {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px dashed var(--line-strong);
+  padding: 10px 12px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.cta-form input:focus,
+.cta-form textarea:focus {
+  border: 1px solid var(--blue);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(52, 85, 250, 0.08);
+}
+.cta-form input[readonly] { cursor: default; color: var(--gray-2); }
+.cta-form .invalid { border: 1px solid #e23c3c; background: #fff7f7; }
+.cta-form button { justify-self: start; }
+.form-status { font-size: 12.5px; color: var(--gray-2); min-height: 18px; }
+.form-status.ok { color: #1a9a63; }
+.form-status.err { color: #e23c3c; }
 .cta-text h3 { text-align: left; }
 .cta-points { list-style: none; display: grid; gap: 8px; margin-top: 22px; }
 .cta-points li {
@@ -523,35 +580,45 @@ h4 { font-size: 16px; font-weight: 500; }
 }
 .cal-dow { font-size: 10px; color: #777; text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 0; }
 .cal-day {
+  font-family: var(--sans);
   font-size: 12.5px;
   padding: 8px 0;
   border-radius: 50%;
+  border: 0;
+  background: none;
   color: #ddd;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
 .cal-day:hover { background: #2a2a2a; }
 .cal-day.off { color: #555; cursor: default; }
 .cal-day.off:hover { background: none; }
 .cal-day.today { background: #fff; color: #111; font-weight: 500; }
+.cal-day.sel { background: var(--blue); color: #fff; font-weight: 500; }
+.cal-day.sel:hover { background: var(--blue-dark); }
 .cal-times {
   display: flex;
   gap: 8px;
   margin-top: 16px;
   flex-wrap: wrap;
 }
-.cal-times a {
+.cal-time {
   flex: 1;
+  font-family: var(--sans);
   text-align: center;
   font-size: 12px;
   border: 1px solid #333;
   border-radius: 18px;
   padding: 7px 10px;
+  background: none;
   color: #ccc;
-  transition: border-color 0.2s, color 0.2s;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
   white-space: nowrap;
 }
-.cal-times a:hover { border-color: #fff; color: #fff; }
+.cal-time:hover { border-color: #fff; color: #fff; }
+.cal-time.sel { background: var(--blue); border-color: var(--blue); color: #fff; }
+.cal-hint { font-size: 11.5px; color: #888; margin-top: 14px; text-align: center; }
 
 /* ===== FOOTER ===== */
 .footer {
@@ -693,16 +760,10 @@ h4 { font-size: 16px; font-weight: 500; }
 .socials a { transition: color 0.2s, border-color 0.2s, transform 0.2s var(--ease); }
 
 /* ===== ORBIT ANIMACE ===== */
+/* uzly obíhají po drahách přes JS (orbitRaf); dráhy se navíc otáčejí */
 .orbit-ring { animation: spin 70s linear infinite; }
 .orbit-ring.r2 { animation-duration: 45s; animation-direction: reverse; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.orbit-node { animation: bob 4.5s ease-in-out infinite; }
-.on2 { animation-delay: 0.6s; }
-.on3 { animation-delay: 1.2s; }
-.on4 { animation-delay: 1.8s; }
-.on5 { animation-delay: 2.4s; }
-.on6 { animation-delay: 3s; }
-@keyframes bob { 50% { translate: 0 -7px; } }
 .orbit-center { animation: pulse 3.5s ease-in-out infinite; }
 @keyframes pulse {
   50% { box-shadow: 0 4px 30px rgba(52, 85, 250, 0.18); }
@@ -745,6 +806,8 @@ html.lenis, html.lenis body { height: auto; }
   .annot-mail { margin-top: 28px; }
   .annot-mail .annot-vline { display: none; }
   .cta-grid { grid-template-columns: 1fr; gap: 36px; }
+  .form-row { grid-template-columns: 1fr; }
+  .cta-form { max-width: none; }
   .footer { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px; }
   .footer-visual { display: none; }
   .footer-cols { justify-content: flex-start; }

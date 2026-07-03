@@ -44,6 +44,10 @@ if (heroVis && finePointer && !reduceMotion) {
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 let prevTime = 0;
 
+/* průsečík: postup přibližování rukou (0 = daleko, 1 = dotek) */
+const meetVisual = document.querySelector(".intersection-visual");
+let meetP = 0;
+
 function mainRaf(time) {
   const dt = prevTime ? Math.min((time - prevTime) / 1000, 0.05) : 0.016;
   prevTime = time;
@@ -65,6 +69,14 @@ function mainRaf(time) {
     stackRaf();
     quoteRaf();
     marqueeRaf(dt);
+    orbitRaf(time / 1000);
+    if (meetVisual) {
+      const mr = meetVisual.getBoundingClientRect();
+      if (mr.bottom > -60 && mr.top < innerHeight + 60) {
+        const raw = clamp01((innerHeight * 0.92 - mr.top) / (innerHeight * 0.7));
+        meetP += (raw - meetP) * 0.07;
+      }
+    }
   }
   requestAnimationFrame(mainRaf);
 }
@@ -103,6 +115,41 @@ function marqueeRaf(dt) {
   mqX = (mqX + speed * dt) % mqHalf;
   track.style.transform = `translate3d(${(-mqX).toFixed(2)}px,0,0)`;
 }
+
+/* ---------- orbit: uzly skutečně obíhají po drahách ---------- */
+const orbitEl = document.querySelector(".orbit");
+let orbitBodies = [];
+if (orbitEl) {
+  // 3 uzly na vnější dráze (po směru), 3 na vnitřní (proti směru); popisky zůstávají vzpřímené
+  const defs = [
+    { sel: ".on1", ring: 1, a: -90, speed: 7 },
+    { sel: ".on3", ring: 1, a: 30, speed: 7 },
+    { sel: ".on5", ring: 1, a: 150, speed: 7 },
+    { sel: ".on2", ring: 2, a: -30, speed: -11 },
+    { sel: ".on4", ring: 2, a: 90, speed: -11 },
+    { sel: ".on6", ring: 2, a: 210, speed: -11 },
+  ];
+  orbitBodies = defs.map((d) => ({ el: orbitEl.querySelector(d.sel), ...d }));
+  // komety: světelné tečky putující po drahách
+  [{ ring: 1, a: 0, speed: 26 }, { ring: 1, a: 180, speed: 26 }, { ring: 2, a: 90, speed: -38 }].forEach((c) => {
+    const el = document.createElement("i");
+    el.className = "orbit-comet";
+    orbitEl.appendChild(el);
+    orbitBodies.push({ el, ...c });
+  });
+}
+function orbitRaf(t) {
+  if (!orbitEl) return;
+  const r = orbitEl.getBoundingClientRect();
+  if (r.bottom < -60 || r.top > innerHeight + 60) return;
+  const R1 = r.width / 2, R2 = r.width * 0.28;
+  for (const b of orbitBodies) {
+    const rad = ((b.a + t * b.speed) * Math.PI) / 180;
+    const R = b.ring === 1 ? R1 : R2;
+    b.el.style.transform = `translate(-50%,-50%) translate(${(Math.cos(rad) * R).toFixed(1)}px, ${(Math.sin(rad) * R).toFixed(1)}px)`;
+  }
+}
+orbitRaf(0); // výchozí rozmístění ještě před prvním snímkem
 
 /* ---------- word-split: maskované nadpisy (StackGrid styl) ---------- */
 function maskSplit(el) {
@@ -295,15 +342,22 @@ if (heroCanvas) asciiRender(heroCanvas, (x, y, t) => {
   return v * (0.55 + 0.45 * noise(x, y, t));
 }, true);
 
-/* průsečík: digitální lalok zleva, "lidský" zprava, dotýkají se uprostřed */
+/* průsečík: digitální lalok zleva, "lidský" zprava — ruce se k sobě
+   natahují podle scrollu (meetP) a v místě dotyku přeskočí jiskra */
 const meetCanvas = document.getElementById("asciiMeet");
 if (meetCanvas) asciiRender(meetCanvas, (x, y, t) => {
   const wob = 0.012 * Math.sin(t + y * 5);
+  const reach = 0.16 * meetP; // prsty se natahují ke středu
   let v = 0;
   v = Math.max(v, lobe(x, y, 0.16, 0.42 + wob, 0.26, 0.34));
-  v = Math.max(v, lobe(x, y, 0.42, 0.52 + wob, 0.10, 0.06));
+  v = Math.max(v, lobe(x, y, 0.26 + reach, 0.52 + wob, 0.10, 0.06));
   v = Math.max(v, lobe(x, y, 0.86, 0.55 - wob, 0.26, 0.36));
-  v = Math.max(v, lobe(x, y, 0.58, 0.50 - wob, 0.10, 0.06));
+  v = Math.max(v, lobe(x, y, 0.74 - reach, 0.50 - wob, 0.10, 0.06));
+  // jiskra při dotyku: rozsvítí se až těsně před spojením a tepe
+  const spark = clamp01((meetP - 0.8) / 0.2) * (0.55 + 0.45 * Math.sin(t * 7));
+  if (spark > 0.02) {
+    v = Math.max(v, spark * lobe(x, y, 0.5, 0.51, 0.06 + 0.05 * spark, 0.04 + 0.04 * spark));
+  }
   // pravá strana hladší (lidská), levá zrnitější (digitální)
   const grain = x < 0.5 ? noise(x, y, t) : 0.85;
   return v * (0.5 + 0.5 * grain);
@@ -392,22 +446,67 @@ const ICONS = {
     "................" ] }
 };
 
+/* ikony se poskládají pixel po pixelu, pak jemně světélkují;
+   hover na kartě vyvolá krátké zajiskření */
 document.querySelectorAll("canvas[data-icon]").forEach((cv) => {
   const icon = ICONS[cv.dataset.icon];
   if (!icon) return;
   const ctx = cv.getContext("2d");
   const px = cv.width / 16;
-  // glow vrstva (rozmazané pozadí)
-  ctx.filter = "blur(14px)";
-  ctx.fillStyle = icon.color;
+  // seznam pixelů + náhodné pořadí nástupu
+  const pixels = [];
   icon.map.forEach((row, r) => [...row].forEach((ch, c) => {
-    if (ch === "#") ctx.fillRect(c * px, r * px, px, px);
+    if (ch === "#") pixels.push({ r, c, ord: 0 });
   }));
-  ctx.filter = "none";
-  // ostrá pixel vrstva
-  icon.map.forEach((row, r) => [...row].forEach((ch, c) => {
-    if (ch === "#") ctx.fillRect(c * px + 1, r * px + 1, px - 2, px - 2);
-  }));
+  const order = pixels.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  order.forEach((pi, i) => { pixels[pi].ord = i / order.length; });
+
+  let buildStart = -1, hoverT = -1e9, raf = 0, running = false;
+
+  function frame(now) {
+    const t = now / 1000;
+    if (buildStart < 0) buildStart = t;
+    const bt = t - buildStart;
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    // glow vrstva (dýchá)
+    ctx.save();
+    ctx.filter = "blur(14px)";
+    ctx.fillStyle = icon.color;
+    for (const p of pixels) {
+      const a = clamp01((bt - p.ord * 0.7) / 0.35);
+      if (a <= 0) continue;
+      ctx.globalAlpha = a * (0.7 + 0.3 * Math.sin(t * 1.8 + (p.r + p.c) * 0.5));
+      ctx.fillRect(p.c * px, p.r * px, px, px);
+    }
+    ctx.restore();
+    // ostré pixely: nástup s dorůstáním, plynulé vlnění jasu, hover jiskra
+    ctx.fillStyle = icon.color;
+    const spark = clamp01(1 - (t - hoverT) / 0.6);
+    for (const p of pixels) {
+      const a = clamp01((bt - p.ord * 0.7) / 0.35);
+      if (a <= 0) continue;
+      const flick = spark > 0 ? spark * 0.5 * Math.sin(t * 40 + p.ord * 60) : 0;
+      const shimmer = 0.84 + 0.16 * Math.sin(t * 1.6 + (p.r + p.c) * 0.55);
+      ctx.globalAlpha = clamp01(a * shimmer + flick);
+      const s = (px - 2) * (0.4 + 0.6 * a);
+      const o = (px - s) / 2;
+      ctx.fillRect(p.c * px + o, p.r * px + o, s, s);
+    }
+    ctx.globalAlpha = 1;
+    raf = requestAnimationFrame(frame);
+  }
+
+  new IntersectionObserver(([en]) => {
+    if (en.isIntersecting && !running) { running = true; raf = requestAnimationFrame(frame); }
+    else if (!en.isIntersecting && running) { running = false; cancelAnimationFrame(raf); }
+  }, { threshold: 0.1 }).observe(cv);
+
+  const cell = cv.closest(".feature-cell");
+  if (cell) cell.addEventListener("mouseenter", () => { hoverT = performance.now() / 1000; });
 });
 
 /* ---------- dither avatary (halftone placeholder) ---------- */
@@ -433,10 +532,23 @@ document.querySelectorAll("canvas.avatar, canvas.quote-photo").forEach((cv) => {
   }
 });
 
-/* ---------- kalendář (aktuální měsíc, dny -> mailto) ---------- */
+/* ---------- kalendář: výběr termínu, propíše se do formuláře ---------- */
 const MONTHS = ["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"];
 const DOWS = ["Po","Út","St","Čt","Pá","So","Ne"];
+const TIMES = ["9:00", "11:00", "14:00", "16:00"];
 const calEl = document.getElementById("calendar");
+const termInput = document.getElementById("formTerm");
+let selDate = null, selTime = null;
+let calRerender = () => {};
+
+function updateTerm() {
+  if (!termInput) return;
+  const parts = [];
+  if (selDate) parts.push(`${selDate.getDate()}. ${selDate.getMonth() + 1}. ${selDate.getFullYear()}`);
+  if (selTime) parts.push(`v ${selTime}`);
+  termInput.value = parts.join(" ");
+}
+
 if (calEl) {
   let view = new Date();
   view.setDate(1);
@@ -460,21 +572,88 @@ if (calEl) {
       const past = date < today && !isToday;
       const dow = (date.getDay() + 6) % 7;
       const off = past || dow > 4;
+      const sel = selDate && date.toDateString() === selDate.toDateString();
       html += off
         ? `<span class="cal-day off">${d}</span>`
-        : `<a class="cal-day${isToday ? " today" : ""}" href="mailto:ahoj@branzly.cz?subject=Rezervace konzultace ${d}. ${m + 1}. ${y}">${d}</a>`;
+        : `<button type="button" class="cal-day${isToday ? " today" : ""}${sel ? " sel" : ""}" data-d="${d}">${d}</button>`;
     }
-    html += `</div><div class="cal-times">
-      <a href="mailto:ahoj@branzly.cz?subject=Rezervace konzultace 9:00">9:00</a>
-      <a href="mailto:ahoj@branzly.cz?subject=Rezervace konzultace 11:00">11:00</a>
-      <a href="mailto:ahoj@branzly.cz?subject=Rezervace konzultace 14:00">14:00</a>
-      <a href="mailto:ahoj@branzly.cz?subject=Rezervace konzultace 16:00">16:00</a>
-    </div>`;
+    html += `</div><div class="cal-times">`
+      + TIMES.map((tm) => `<button type="button" class="cal-time${selTime === tm ? " sel" : ""}" data-t="${tm}">${tm}</button>`).join("")
+      + `</div><p class="cal-hint">${selDate || selTime
+        ? "Termín se propsal do formuláře — stačí dokončit poptávku."
+        : "Vyberte den a čas, propíšou se do formuláře."}</p>`;
     calEl.innerHTML = html;
     document.getElementById("calPrev").onclick = () => { view.setMonth(view.getMonth() - 1); renderCal(); };
     document.getElementById("calNext").onclick = () => { view.setMonth(view.getMonth() + 1); renderCal(); };
+    calEl.querySelectorAll(".cal-day[data-d]").forEach((b) => {
+      b.onclick = () => { selDate = new Date(y, m, +b.dataset.d); updateTerm(); renderCal(); };
+    });
+    calEl.querySelectorAll(".cal-time").forEach((b) => {
+      b.onclick = () => { selTime = selTime === b.dataset.t ? null : b.dataset.t; updateTerm(); renderCal(); };
+    });
   }
+  calRerender = renderCal;
   renderCal();
+}
+
+/* ---------- kontaktní formulář ---------- */
+// odesílá přes FormSubmit (po první zprávě přijde na ahoj@branzly.cz aktivační
+// e-mail — stačí potvrdit); při výpadku otevře e-mailového klienta s předvyplněnou zprávou
+const FORM_ENDPOINT = "https://formsubmit.co/ajax/ahoj@branzly.cz";
+const contactForm = document.getElementById("contactForm");
+if (contactForm) {
+  const fName = document.getElementById("fName");
+  const fEmail = document.getElementById("fEmail");
+  const fMsg = document.getElementById("fMsg");
+  const fHoney = document.getElementById("fHoney");
+  const statusEl = document.getElementById("formStatus");
+  const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+  const mark = (el, ok) => { el.classList.toggle("invalid", !ok); return ok; };
+  [fName, fEmail, fMsg].forEach((el) => el.addEventListener("input", () => el.classList.remove("invalid")));
+
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (fHoney.value) return; // bot
+    const name = fName.value.trim(), email = fEmail.value.trim(), msg = fMsg.value.trim();
+    let ok = true;
+    ok = mark(fName, name.length >= 2) && ok;
+    ok = mark(fEmail, /^\S+@\S+\.\S+$/.test(email)) && ok;
+    ok = mark(fMsg, msg.length >= 5) && ok;
+    if (!ok) {
+      statusEl.textContent = "Vyplňte prosím jméno, platný e-mail a zprávu.";
+      statusEl.className = "form-status err";
+      return;
+    }
+    const term = termInput && termInput.value ? termInput.value : "neuveden";
+    submitBtn.disabled = true;
+    statusEl.textContent = "Odesílám…";
+    statusEl.className = "form-status";
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name, email, term, message: msg, _subject: `Poptávka z webu — ${name}` }),
+        signal: ctrl.signal,
+      });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error(String(res.status));
+      contactForm.reset();
+      selDate = null; selTime = null; updateTerm(); calRerender();
+      statusEl.textContent = "✓ Díky za poptávku! Ozveme se vám do 24 hodin.";
+      statusEl.className = "form-status ok";
+    } catch {
+      // záložní cesta: předvyplněný e-mail v klientovi návštěvníka
+      const body = `Jméno: ${name}\nE-mail: ${email}\nTermín: ${term}\n\n${msg}`;
+      location.href = `mailto:ahoj@branzly.cz?subject=${encodeURIComponent("Poptávka z webu — " + name)}&body=${encodeURIComponent(body)}`;
+      statusEl.textContent = "Přímé odeslání se nepodařilo — otevřeli jsme váš e-mail s předvyplněnou zprávou.";
+      statusEl.className = "form-status err";
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
 }
 
 /* ---------- rok v patičce ---------- */
