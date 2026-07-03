@@ -1,10 +1,14 @@
 // ===== Branzly landing — vizuály a efekty =====
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---------- Lenis smooth scroll ---------- */
+/* ---------- Lenis smooth scroll (ScrollEase easing) ---------- */
 let lenis = null;
 if (!reduceMotion && typeof Lenis !== "undefined") {
-  lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
+  lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // exponenciální ease-out jako ScrollEase
+    smoothWheel: true,
+  });
   // kotvy přes Lenis (plynulý dojezd)
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener("click", (e) => {
@@ -36,7 +40,12 @@ if (heroVis && finePointer && !reduceMotion) {
   heroVis.parentElement.style.perspective = "900px";
 }
 
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+let prevTime = 0;
+
 function mainRaf(time) {
+  const dt = prevTime ? Math.min((time - prevTime) / 1000, 0.05) : 0.016;
+  prevTime = time;
   if (lenis) lenis.raf(time);
   if (!reduceMotion) {
     const mid = innerHeight / 2;
@@ -52,6 +61,9 @@ function mainRaf(time) {
         el.style.transform = `translateY(${off.toFixed(1)}px)`;
       }
     }
+    stackRaf();
+    quoteRaf();
+    marqueeRaf(dt);
   }
   requestAnimationFrame(mainRaf);
 }
@@ -71,9 +83,115 @@ mobile.addEventListener("click", (e) => {
   }
 });
 
-/* ---------- marquee: zdvojení pásky pro nekonečnou smyčku ---------- */
+/* ---------- marquee: zdvojení pásky, JS pohon reagující na rychlost scrollu ---------- */
 const track = document.getElementById("marqueeTrack");
 track.innerHTML += track.innerHTML;
+let mqX = 0, mqHalf = 0;
+const mqMeasure = () => { mqHalf = track.scrollWidth / 2; };
+if (!reduceMotion) {
+  track.style.animation = "none";
+  mqMeasure();
+  addEventListener("resize", mqMeasure);
+}
+function marqueeRaf(dt) {
+  if (!mqHalf) return;
+  const r = track.getBoundingClientRect();
+  if (r.bottom < 0 || r.top > innerHeight) return;
+  const vel = lenis ? Math.abs(lenis.velocity) : 0;
+  const speed = 55 + Math.min(vel * 14, 260); // px/s, zrychlí při scrollu
+  mqX = (mqX + speed * dt) % mqHalf;
+  track.style.transform = `translate3d(${(-mqX).toFixed(2)}px,0,0)`;
+}
+
+/* ---------- word-split: maskované nadpisy (StackGrid styl) ---------- */
+function maskSplit(el) {
+  const words = el.textContent.trim().split(/\s+/);
+  el.textContent = "";
+  words.forEach((wd, i) => {
+    const w = document.createElement("span");
+    w.className = "w";
+    const wi = document.createElement("span");
+    wi.className = "wi";
+    wi.textContent = wd;
+    wi.style.setProperty("--wi", i);
+    w.appendChild(wi);
+    el.appendChild(w);
+    el.appendChild(document.createTextNode(" "));
+  });
+  el.classList.add("split");
+}
+const heroH1 = document.querySelector(".hero h1");
+if (!reduceMotion) {
+  document.querySelectorAll("main h3").forEach(maskSplit);
+  if (heroH1) {
+    maskSplit(heroH1);
+    // dvojitý rAF: nejdřív se vykreslí výchozí stav, pak přechod
+    requestAnimationFrame(() => requestAnimationFrame(() => heroH1.classList.add("in")));
+  }
+}
+
+/* ---------- stacking karty ceníku (StackGrid efekt) ---------- */
+const tierRows = [...document.querySelectorAll(".tier-row")];
+function stackRaf() {
+  if (!tierRows.length) return;
+  const stackRect = tierRows[0].parentElement.getBoundingClientRect();
+  if (stackRect.bottom < 0 || stackRect.top > innerHeight) return;
+  for (let i = 0; i < tierRows.length - 1; i++) {
+    const cur = tierRows[i].getBoundingClientRect();
+    const next = tierRows[i + 1].getBoundingClientRect();
+    // p: 0 = další karta dole mimo, 1 = další karta překryla aktuální
+    const p = clamp01((innerHeight - next.top) / Math.max(innerHeight - cur.top - 30, 1));
+    const row = tierRows[i];
+    if (p > 0.001) {
+      // vypnout reveal transition, jinak by scroll-driven transform "plaval"
+      row.style.transition = "none";
+      row.style.transform = `scale(${(1 - 0.06 * p).toFixed(4)})`;
+      row.style.filter = `blur(${(3 * p).toFixed(2)}px)`;
+      row.style.opacity = (1 - 0.35 * p).toFixed(3);
+    } else {
+      row.style.transition = row.style.transform = row.style.filter = row.style.opacity = "";
+    }
+  }
+}
+
+/* ---------- scroll-linked rozsvěcení citace ---------- */
+const bq = document.querySelector(".big-quote blockquote");
+let quoteWords = [];
+if (bq && !reduceMotion) {
+  const words = bq.textContent.trim().split(/\s+/);
+  bq.textContent = "";
+  words.forEach((wd) => {
+    const s = document.createElement("span");
+    s.className = "qw";
+    s.textContent = wd;
+    bq.appendChild(s);
+    bq.appendChild(document.createTextNode(" "));
+  });
+  quoteWords = [...bq.querySelectorAll(".qw")];
+}
+function quoteRaf() {
+  if (!quoteWords.length) return;
+  const r = bq.getBoundingClientRect();
+  if (r.bottom < 0 || r.top > innerHeight) return;
+  const p = clamp01((innerHeight * 0.9 - r.top) / (innerHeight * 0.55 + r.height));
+  const idx = p * (quoteWords.length + 3);
+  for (let i = 0; i < quoteWords.length; i++) {
+    quoteWords[i].style.opacity = (0.14 + 0.86 * clamp01(idx - i)).toFixed(3);
+  }
+}
+
+/* ---------- magnetická tlačítka ---------- */
+if (finePointer && !reduceMotion) {
+  document.querySelectorAll(".btn").forEach((btn) => {
+    btn.addEventListener("mousemove", (e) => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - r.left - r.width / 2;
+      const dy = e.clientY - r.top - r.height / 2;
+      btn.style.transform = `translate(${(dx * 0.22).toFixed(1)}px, ${(dy * 0.32).toFixed(1)}px)`;
+    });
+    btn.addEventListener("mouseleave", () => { btn.style.transform = ""; });
+  });
+}
 
 /* ---------- blur+fade reveal (se staggerem mezi sourozenci) ---------- */
 const reveals = document.querySelectorAll(".reveal");

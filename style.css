@@ -595,6 +595,45 @@ h4 { font-size: 16px; font-weight: 500; }
 }
 .reveal.in { opacity: 1; filter: blur(0); transform: none; }
 
+/* ===== WORD-MASK REVEAL (StackGrid styl) ===== */
+/* rozdělený element už neanimuje jako celek — animují se jednotlivá slova */
+.reveal.split, .load.split { opacity: 1; filter: none; transform: none; animation: none; }
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding: 0.1em 0 0.14em;
+  margin: -0.1em 0 -0.14em;
+}
+.wi {
+  display: inline-block;
+  transform: translateY(120%);
+  opacity: 0;
+  filter: blur(6px);
+  transition:
+    transform 0.85s var(--ease),
+    opacity 0.6s var(--ease),
+    filter 0.7s var(--ease);
+  transition-delay: calc(var(--wi, 0) * 60ms);
+  will-change: transform;
+}
+.split.in .wi { transform: none; opacity: 1; filter: none; }
+
+/* ===== STACKING KARTY (ceník) ===== */
+.tier-stack { --stack-top: clamp(76px, 13vh, 130px); }
+.tier-row {
+  position: sticky;
+  top: var(--stack-top);
+  transform-origin: top center;
+  will-change: transform, filter, opacity;
+}
+.tier-row:nth-child(1) { z-index: 1; }
+.tier-row:nth-child(2) { z-index: 2; }
+.tier-row:nth-child(3) { z-index: 3; }
+
+/* ===== SCROLL-LINKED CITACE ===== */
+.big-quote blockquote .qw { opacity: 0.14; }
+
 /* ===== LOAD-IN (hero sekvence při načtení) ===== */
 .load {
   opacity: 0;
@@ -717,6 +756,9 @@ html.lenis, html.lenis body { height: auto; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; filter: none; transform: none; transition: none; }
   .load { opacity: 1; filter: none; transform: none; animation: none; }
+  .wi { transform: none; opacity: 1; filter: none; transition: none; }
+  .tier-row { position: static; }
+  .big-quote blockquote .qw { opacity: 1; }
   .reveal .annot-line, .reveal .annot-vline, .reveal .annot-hline { transform: none; transition: none; }
   .reveal .annot-text, .reveal .annot .chip-black, .tier-annot .chip-black { opacity: 1; transition: none; }
   .marquee-track, .orbit-ring, .orbit-node, .orbit-center { animation: none; }
