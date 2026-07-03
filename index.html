@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Branzly — Zcela nová éra AI</title>
+  <meta name="description" content="Branzly staví vlastní AI agenty a bezpečné datové pipeline, které odstraní vaše manuální procesy." />
+  <meta property="og:title" content="Branzly — Zcela nová éra AI" />
+  <meta property="og:description" content="Vlastní AI agenti a bezpečné datové pipeline, které odstraní vaše manuální procesy." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,400;6..144,500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== NAV (logo uprostřed, odkazy v závorkách) ===== -->
+  <header class="nav-wrap" id="top">
+    <div class="nav frame">
+      <nav class="nav-side nav-left" aria-label="Navigace vlevo">
+        <a href="#o-nas"><span>[</span>O nás<span>]</span></a>
+        <a href="#cenik"><span>[</span>Ceník<span>]</span></a>
+      </nav>
+      <a href="#top" class="brand" aria-label="Branzly domů">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/>
+          <rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/>
+        </svg>
+      </a>
+      <nav class="nav-side nav-right" aria-label="Navigace vpravo">
+        <a href="#pripadove-studie"><span>[</span>Případové studie<span>]</span></a>
+        <a href="#kontakt"><span>[</span>Kontakt<span>]</span></a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Otevřít menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav-mobile" id="navMobile" aria-label="Mobilní navigace">
+      <a href="#o-nas">[ O nás ]</a>
+      <a href="#cenik">[ Ceník ]</a>
+      <a href="#pripadove-studie">[ Případové studie ]</a>
+      <a href="#kontakt">[ Kontakt ]</a>
+    </nav>
+  </header>
+
+  <main class="frame">
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <h1 class="load load-1">Zcela nová éra AI</h1>
+      <p class="hero-sub load load-2">Stavíme vlastní AI agenty a bezpečné datové<br />pipeline, které odstraní vaše manuální procesy.</p>
+      <div class="hero-cta load load-3">
+        <a href="#o-nas" class="btn btn-gray">Proč my?</a>
+        <a href="#kontakt" class="btn btn-black">Začít</a>
+      </div>
+
+      <!-- ASCII vizuál s ořezovými značkami -->
+      <div class="hero-visual load load-4" id="heroVisual" data-plx="-0.05">
+        <span class="crop tl"></span><span class="crop tr"></span>
+        <span class="crop bl"></span><span class="crop br"></span>
+        <canvas id="asciiHero" width="900" height="440" aria-label="Abstraktní ASCII vizualizace dvou rukou"></canvas>
+      </div>
+    </section>
+
+    <!-- ===== TRUSTED (marquee) ===== -->
+    <section class="trusted">
+      <p class="trusted-label reveal">Důvěřují nám lidé z</p>
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track" id="marqueeTrack">
+          <span class="logo-item"><i class="lg lg-1"></i>Openix AI</span>
+          <span class="logo-item"><i class="lg lg-2"></i>Strada</span>
+          <span class="logo-item"><i class="lg lg-3"></i>K Combinator</span>
+          <span class="logo-item"><i class="lg lg-4"></i>Radial</span>
+          <span class="logo-item"><i class="lg lg-5"></i>Vercex</span>
+          <span class="logo-item"><i class="lg lg-6"></i>Votion</span>
+          <span class="logo-item"><i class="lg lg-7"></i>XYZ</span>
+          <span class="logo-item"><i class="lg lg-8"></i>Search App</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRŮSEČÍK ČLOVĚKA A AI ===== -->
+    <section class="intersection" id="o-nas">
+      <h3 class="reveal">Průsečík člověka a AI.</h3>
+      <p class="section-sub reveal">Propojujeme lidské podnikání s autonomními datovými pipeline,<br />abychom okamžitě naškálovali průchodnost vaší firmy.</p>
+      <div class="intersection-visual reveal" data-plx="-0.04">
+        <!-- TODO: sem patří fotografie skutečné ruky (pravá polovina), ASCII ruka vlevo -->
+        <canvas id="asciiMeet" width="1180" height="420" aria-label="Digitální a lidská ruka se dotýkají"></canvas>
+        <span class="annot annot-ai"><i class="annot-dot"></i><i class="annot-line"></i><span class="annot-text">Ta AI</span></span>
+        <span class="annot annot-human"><i class="annot-dot"></i><i class="annot-line"></i><span class="annot-text">Člověk</span></span>
+      </div>
+    </section>
+
+    <!-- ===== FUNKCE ===== -->
+    <section class="features">
+      <div class="chip-wrap reveal">
+        <span class="chip-black chip-corners">Funkce<i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i></span>
+      </div>
+      <h3 class="reveal">Klíčové schopnosti na míru.</h3>
+      <p class="section-sub reveal">Od izolovaných agentů nad jazykovými modely po privátní, zabezpečená<br />databázová prostředí. Stavíme strukturální základ vaší automatizované firmy.</p>
+
+      <div class="feature-grid">
+        <article class="feature-cell reveal">
+          <div class="pixel-icon"><canvas data-icon="agent" width="160" height="160"></canvas></div>
+          <h4>Agenti zákaznické podpory</h4>
+          <p>Nasazujeme vlastní LLM agenty vytrénované přímo<br />na interní znalostní bázi vaší firmy.</p>
+        </article>
+        <article class="feature-cell reveal">
+          <div class="pixel-icon"><canvas data-icon="pipeline" width="160" height="160"></canvas></div>
+          <h4>Automatizované datové pipeline</h4>
+          <p>Propojíme nesourodá API a starší systémy tak,<br />aby ruční přepisování dat úplně zmizelo.</p>
+        </article>
+        <article class="feature-cell reveal">
+          <div class="pixel-icon"><canvas data-icon="database" width="160" height="160"></canvas></div>
+          <h4>Bezpečná firemní data</h4>
+          <p>Dotazování nad vlastními dokumenty přes privátní infrastrukturu bez retence dat, na architektuře RAG.</p>
+        </article>
+        <article class="feature-cell reveal">
+          <div class="pixel-icon"><canvas data-icon="audit" width="160" height="160"></canvas></div>
+          <h4>Strategické audity AI infrastruktury</h4>
+          <p>Posoudíme připravenost vašich dat dřív, než investujete do drahých enterprise modelů.</p>
+        </article>
+      </div>
+
+      <div class="tag-strip reveal" aria-hidden="true">
+        <span>Branzly</span><span>CRM</span><span>Automatizační middleware</span><span>Vektorové databáze</span><span>Velké jazykové modely</span>
+      </div>
+    </section>
+
+    <!-- ===== EKOSYSTÉM INTEGRACÍ ===== -->
+    <section class="ecosystem">
+      <h3 class="reveal">Ekosystém integrací</h3>
+      <p class="section-sub reveal">Propojujeme nejlepší API v oboru<br />do jedné plynulé pipeline.</p>
+      <div class="orbit reveal" data-plx="-0.03" aria-hidden="true">
+        <div class="orbit-ring r1"></div>
+        <div class="orbit-ring r2"></div>
+        <div class="orbit-center"><svg viewBox="0 0 24 24" width="22" height="22"><rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/><rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/></svg></div>
+        <span class="orbit-node on1">Slack</span>
+        <span class="orbit-node on2">Notion</span>
+        <span class="orbit-node on3">HubSpot</span>
+        <span class="orbit-node on4">Stripe</span>
+        <span class="orbit-node on5">PostgreSQL</span>
+        <span class="orbit-node on6">Zendesk</span>
+      </div>
+    </section>
+
+    <!-- ===== ÚROVNĚ SLUŽEB ===== -->
+    <section class="pricing" id="cenik">
+      <h3 class="reveal">Úrovně služeb</h3>
+      <p class="section-sub reveal">Naše služby dělíme do jasných fází: audit, stavba<br />a průběžná optimalizace vašich systémů na míru.</p>
+
+      <div class="tier-stack">
+        <!-- Fáze 1: karta vpravo, štítek vlevo s linkou -->
+        <div class="tier-row tier-row-right reveal">
+          <span class="tier-annot"><span class="chip-black">Fáze 1</span><i class="annot-hline"></i></span>
+          <article class="tier-card">
+            <div class="tier-left">
+              <span class="chip-gray">Fáze 1</span>
+              <h4>Placené zmapování</h4>
+              <p class="tier-desc">Přesně zmapujeme, kde vám AI ušetří<br />čas a peníze.</p>
+              <div class="tier-bottom">
+                <span class="tier-price">25 000 Kč</span>
+                <a href="#kontakt" class="btn btn-blue">Rezervovat</a>
+              </div>
+            </div>
+            <ul class="tier-list">
+              <li>Revize vašich současných manuálních úkolů</li>
+              <li>Identifikace AI příležitostí s nejvyšší návratností</li>
+              <li>Kompletní kontrola soukromí a bezpečnosti dat</li>
+              <li>Implementační plán na míru, krok za krokem</li>
+            </ul>
+          </article>
+        </div>
+
+        <!-- Fáze 2: karta vlevo, štítek vpravo -->
+        <div class="tier-row tier-row-left reveal">
+          <article class="tier-card">
+            <div class="tier-left">
+              <span class="chip-gray">Fáze 2</span>
+              <h4>Hlavní nasazení</h4>
+              <p class="tier-desc">Postavíme, propojíme a nasadíme automatizované systémy šité na váš provoz.</p>
+              <div class="tier-bottom">
+                <span class="tier-price">450 000 Kč</span>
+                <a href="#kontakt" class="btn btn-blue">Rezervovat</a>
+              </div>
+            </div>
+            <ul class="tier-list">
+              <li>Vývoj vlastního AI agenta a chatbota</li>
+              <li>Napojení na vaše stávající softwarové nástroje</li>
+              <li>Bezpečné nastavení nad vašimi privátními daty</li>
+              <li>Kompletní zaškolení týmu a předání systému</li>
+            </ul>
+          </article>
+          <span class="tier-annot tier-annot-right"><i class="annot-hline"></i><span class="chip-black">Fáze 2</span></span>
+        </div>
+
+        <!-- Fáze 3: karta uprostřed -->
+        <div class="tier-row tier-row-center reveal">
+          <span class="tier-annot"><span class="chip-black">Fáze 3</span><i class="annot-hline"></i></span>
+          <article class="tier-card">
+            <div class="tier-left">
+              <span class="chip-gray">Fáze 3</span>
+              <h4>Průběžná péče</h4>
+              <p class="tier-desc">Udržujeme vaše nové automatizované systémy aktuální a bez výpadků.</p>
+              <div class="tier-bottom">
+                <span class="tier-price">85 000 Kč <em>/měsíc</em></span>
+                <a href="#kontakt" class="btn btn-blue">Rezervovat</a>
+              </div>
+            </div>
+            <ul class="tier-list">
+              <li>Monitoring stability API a agentů</li>
+              <li>Průběžné aktualizace jazykových modelů</li>
+              <li>Přednostní podpora vedoucího inženýra</li>
+              <li>Pravidelný reporting dopadu na byznys</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PŘÍPADOVÉ STUDIE ===== -->
+    <section class="cases" id="pripadove-studie">
+      <h3 class="reveal">Ověřené výsledky nasazení</h3>
+      <p class="section-sub reveal">Níže je přesný provozní dopad a návratnost, které naše automatizační<br />pipeline doručily napříč firemní infrastrukturou.</p>
+
+      <div class="case-grid reveal">
+        <article class="case selected">
+          <i class="h h1"></i><i class="h h2"></i><i class="h h3"></i><i class="h h4"></i>
+          <header><i class="case-mark cm-1"></i><h4>Simplifio Digital</h4></header>
+          <p>Odstranili jsme ruční fakturaci u globální logistické firmy nasazením event-driven orchestrace přes middleware. Zpracování kleslo ze 48 hodin na 11 minut.</p>
+          <footer>
+            <div><span class="person">Kateřina Machová</span><span class="role">Provozní ředitelka</span></div>
+            <canvas class="avatar" data-seed="7" width="44" height="44"></canvas>
+          </footer>
+        </article>
+        <article class="case">
+          <header><i class="case-mark cm-2"></i><h4>Koruna Bank</h4></header>
+          <p>Postavili jsme stavového konverzačního agenta vytrénovaného výhradně na proprietárních bankovních datech, který samostatně řeší dotazy helpdesku bez porušení regulí.</p>
+          <footer>
+            <div><span class="person">Tomáš Zbořil</span><span class="role">VP pro engineering</span></div>
+            <canvas class="avatar" data-seed="13" width="44" height="44"></canvas>
+          </footer>
+        </article>
+        <article class="case">
+          <header><i class="case-mark cm-3"></i><h4>Velomo</h4></header>
+          <p>Prediktivní AI middleware analyzuje telemetrii produktu v reálném čase a samostatně spouští personalizované zásahy, které výrazně snižují odchod zákazníků.</p>
+          <footer>
+            <div><span class="person">Petra Dvořáková</span><span class="role">Ředitelka zákaznického úspěchu</span></div>
+            <canvas class="avatar" data-seed="29" width="44" height="44"></canvas>
+          </footer>
+        </article>
+      </div>
+
+      <figure class="big-quote reveal">
+        <!-- TODO: sem patří skutečný portrét (foto) -->
+        <canvas class="quote-photo" data-seed="42" width="240" height="240" aria-label="Portrét Kateřiny Machové"></canvas>
+        <div class="quote-person">
+          <span class="person">Kateřina Machová</span>
+          <span class="role">Provozní ředitelka</span>
+          <a href="#kontakt" class="btn btn-gray">Přečíst případovou studii</a>
+        </div>
+        <blockquote>„Ruční přepisování dat nám škrtilo marže a zdržovalo zásilky na mezinárodních celních kontrolách. Branzly přeskočilo obvyklé AI marketingové řeči a postavilo robustní řešení na úrovni infrastruktury. Autonomní pipeline kompletně proměnila naši jednotkovou ekonomiku, zkrátila zpracování z dnů na minuty a umožnila nám škálovat průchodnost bez navyšování provozního týmu."</blockquote>
+      </figure>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq" id="faq">
+      <div class="faq-grid">
+        <div class="faq-head reveal">
+          <h3>Časté dotazy</h3>
+          <p class="faq-lead">Jasné technické a provozní parametry toho, jak stavíme, nasazujeme a zabezpečujeme vaši architekturu. Bez omáčky.</p>
+          <span class="annot annot-mail">
+            <i class="annot-vline"></i>
+            <a class="chip-black" href="mailto:ahoj@branzly.cz">✉ ahoj@branzly.cz</a>
+          </span>
+        </div>
+        <div class="faq-list reveal">
+          <details class="faq-item">
+            <summary>Jsou naše firemní data v bezpečí před veřejnými AI modely?<span class="plus">+</span></summary>
+            <div class="faq-body"><p>Ano. Používáme API bez retence dat a nasazujeme výhradně ve vašem privátním cloudu. Vaše data jsou oplocená a nikdy netrénují veřejné modely.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Integruje se to s naším starším softwarem?<span class="plus">+</span></summary>
+            <div class="faq-body"><p>Ano. Pro každý systém s API stavíme vlastní middleware. U uzavřeného staršího softwaru nasazujeme bezpečnou RPA vrstvu, která mezeru překlene.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Jak rychlé je nasazení?<span class="plus">+</span></summary>
+            <div class="faq-body"><p>Audit trvá 7 dní. Interní automatizace nasazujeme za 3 až 4 týdny. Agenti pro komunikaci se zákazníky startují za 6 až 8 týdnů včetně testování.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Nahradí to naše zaměstnance?<span class="plus">+</span></summary>
+            <div class="faq-body"><p>Ne. Naše systémy samy vyřeší zhruba 80 % opakujících se úkolů první úrovně. Složité případy se okamžitě předávají vašim lidem.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Komu patří kód a duševní vlastnictví?<span class="plus">+</span></summary>
+            <div class="faq-body"><p>Po dokončení vlastníte 100 % IP. Nabízíme průběžné SLA na monitoring stability API a aktualizace podkladových jazykových modelů.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA + KALENDÁŘ ===== -->
+    <section class="cta" id="kontakt">
+      <div class="cta-grid">
+        <div class="cta-text reveal">
+          <h3>Naškálujte svou infrastrukturu.</h3>
+          <p class="faq-lead">Rezervujte si 30minutové technické posouzení. Zauditujeme vaše současné manuální procesy a řekneme vám přesně, které se vyplatí automatizovat.</p>
+          <ul class="cta-points">
+            <li>Žádné agresivní obchodní řeči.</li>
+            <li>Mluvíte přímo s vedoucím inženýrem.</li>
+            <li>Získáte jasný plán nasazení.</li>
+          </ul>
+        </div>
+        <div class="calendar reveal" id="calendar" aria-label="Kalendář rezervací">
+          <!-- generováno v script.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer-wrap">
+    <div class="footer frame">
+      <div class="footer-brand">
+        <a href="#top" class="brand-foot">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/>
+            <rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/>
+          </svg>
+          Branzly
+        </a>
+        <p>Vlastní AI agenti a bezpečné datové pipeline<br />pro firmy, které chtějí růst bez ručního přepisování dat.</p>
+        <div class="socials">
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.2 8h4.6v14H.2V8zm7.4 0h4.4v1.9h.1c.6-1.1 2.1-2.3 4.3-2.3 4.6 0 5.5 3 5.5 7V22h-4.6v-6.5c0-1.6 0-3.6-2.2-3.6s-2.6 1.7-2.6 3.5V22H7.6V8z"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M18.9 1.2h3.7l-8.1 9.3L24 22.8h-7.5l-5.9-7.7-6.7 7.7H.2l8.7-9.9L0 1.2h7.7l5.3 7 6-7zm-1.3 19.5h2L6.6 3.3H4.4l13.2 17.4z"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z"/></svg></a>
+        </div>
+        <p class="copyright">© Branzly <span id="year"></span>. Všechna práva vyhrazena.</p>
+      </div>
+      <div class="footer-visual" aria-hidden="true">
+        <canvas id="asciiFoot" width="360" height="520"></canvas>
+      </div>
+      <div class="footer-cols">
+        <nav class="footer-col" aria-label="Stránky">
+          <p class="footer-head">Stránky</p>
+          <a href="#top">[ Domů ]</a>
+          <a href="#o-nas">[ O nás ]</a>
+          <a href="#cenik">[ Ceník ]</a>
+          <a href="#pripadove-studie">[ Případové studie ]</a>
+          <a href="#faq">[ Časté dotazy ]</a>
+        </nav>
+        <nav class="footer-col" aria-label="Podpora">
+          <p class="footer-head">Podpora</p>
+          <a href="mailto:ahoj@branzly.cz">[ Kontakt ]</a>
+          <a href="#">[ Ochrana osobních údajů ]</a>
+          <a href="#">[ Obchodní podmínky ]</a>
+          <a href="#">[ Zásady použití ]</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lenis@1/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
