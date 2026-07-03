@@ -780,6 +780,49 @@ h4 { font-size: 16px; font-weight: 500; }
 .nav-wrap { transition: transform 0.4s var(--ease); }
 .nav-wrap.hidden { transform: translateY(-100%); }
 
+/* ===== PRÁVNÍ STRÁNKY ===== */
+.legal {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 80px) 32px clamp(64px, 9vw, 110px);
+}
+.legal h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 46px);
+  line-height: 1.1;
+}
+.legal-updated {
+  color: var(--gray-3);
+  font-size: 12.5px;
+  margin-top: 12px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+.legal h2 { font-size: 17px; font-weight: 500; margin: 36px 0 10px; }
+.legal p { color: var(--gray-2); font-size: 13.5px; margin-bottom: 10px; }
+.legal ul { margin: 0 0 12px 18px; display: grid; gap: 6px; }
+.legal li { color: var(--gray-2); font-size: 13.5px; }
+.legal a { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
+.legal a:hover { color: var(--blue-dark); }
+.legal strong { color: var(--gray-1); }
+.legal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 28px 40px;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+.legal-foot .copyright { margin: 0; }
+
+/* souhlas u formuláře */
+.form-consent { font-size: 11.5px; color: var(--gray-3); max-width: 380px; }
+.form-consent a { color: var(--gray-1); text-decoration: underline; text-underline-offset: 2px; }
+.form-consent a:hover { color: var(--ink); }
+
 /* ===== LENIS ===== */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
@@ -790,6 +833,12 @@ html.lenis, html.lenis body { height: auto; }
   .nav-side { display: none; }
   .brand { grid-column: 1; justify-self: start; }
   .nav-toggle { display: flex; grid-column: 2; }
+  /* zjednodušená nav právních stránek nemá mobilní menu — odkazy zůstávají */
+  .nav.nav-simple { grid-template-columns: 1fr auto 1fr; }
+  .nav-simple .nav-side { display: flex; }
+  .nav-simple .brand { grid-column: 2; justify-self: center; }
+  .nav-simple .nav-left { justify-content: flex-start; padding-right: 0; }
+  .nav-simple .nav-right { justify-content: flex-end; padding-left: 0; }
 
   .hero, .features, .ecosystem, .pricing, .cases, .faq, .cta { padding-left: 20px; padding-right: 20px; }
   .intersection h3, .intersection .section-sub { padding: 0 20px; }
