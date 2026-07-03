@@ -629,7 +629,7 @@ if (meetCanvas) {
   handImg.onerror = () => { handReady = false; };
   handImg.src = "assets/hand.png";
   const ASP = MW / MH; // souřadnice: X v [0, ASP], y v [0,1] — vzdálenosti izotropní
-  const mcell = 8, dcell = 4;
+  const mcell = 8, dcell = 3; // jemnější rastr pro lidskou ruku
   const mcols = Math.floor(MW / mcell), mrows = Math.floor(MH / (mcell * 1.15));
   const dcols = Math.floor(MW / dcell), drows = Math.floor(MH / dcell);
   const matlas = getGlyphAtlas(mcell);
@@ -663,15 +663,30 @@ if (meetCanvas) {
     v = Math.max(v, cap(X, y, 0.85, 0.50, 0.99, 0.42, 0.026));     // palec
     return v;
   }
+  /* lidská ruka: hřbet dlaně a prsty s klouby v póze podle předlohy —
+     ukazovák natažený, ostatní kaskádovitě pokrčené, palec kříží pod
+     dlaní. Vrací parabolickou "výšku" 0..1 pro objemové stínování. */
   function humanHand(X, y) {
-    X += 0.22 * meetP; // lidská ruka vychází vstříc
-    let v = cap(X, y, ASP + 0.25, 0.80, 2.48, 0.615, 0.105);        // předloktí
-    v = Math.max(v, cap(X, y, 2.48, 0.59, 2.24, 0.525, 0.10));      // dlaň
-    v = Math.max(v, cap(X, y, 2.18, 0.492, 1.86 - 0.06 * meetP, 0.512, 0.027)); // ukazovák
-    v = Math.max(v, cap(X, y, 2.20, 0.545, 1.97, 0.60, 0.025));     // prostředník
-    v = Math.max(v, cap(X, y, 2.22, 0.588, 2.02, 0.665, 0.023));    // prsteník
-    v = Math.max(v, cap(X, y, 2.25, 0.628, 2.10, 0.71, 0.018));     // malík
-    v = Math.max(v, cap(X, y, 2.30, 0.455, 2.13, 0.375, 0.025));    // palec
+    X += 0.22 * meetP; // celá ruka vychází vstříc
+    let v = cap(X, y, ASP + 0.25, 0.82, 2.45, 0.615, 0.10);          // předloktí
+    v = Math.max(v, cap(X, y, 2.50, 0.63, 2.40, 0.595, 0.095));      // zápěstí
+    v = Math.max(v, cap(X, y, 2.42, 0.60, 2.22, 0.52, 0.105));       // dlaň
+    v = Math.max(v, cap(X, y, 2.30, 0.56, 2.18, 0.50, 0.09));
+    // ukazovák — natažený, špička mírně vzhůru
+    v = Math.max(v, cap(X, y, 2.14, 0.475, 1.95, 0.468, 0.028));
+    v = Math.max(v, cap(X, y, 1.95, 0.468, 1.78 - 0.06 * meetP, 0.478, 0.024));
+    // prostředník — pokrčený
+    v = Math.max(v, cap(X, y, 2.16, 0.525, 1.96, 0.535, 0.027));
+    v = Math.max(v, cap(X, y, 1.96, 0.535, 1.87, 0.567, 0.023));
+    // prsteník — víc pokrčený
+    v = Math.max(v, cap(X, y, 2.18, 0.573, 2.02, 0.60, 0.025));
+    v = Math.max(v, cap(X, y, 2.02, 0.60, 1.96, 0.647, 0.021));
+    // malík — nejvíc pokrčený
+    v = Math.max(v, cap(X, y, 2.21, 0.617, 2.10, 0.65, 0.020));
+    v = Math.max(v, cap(X, y, 2.10, 0.65, 2.06, 0.70, 0.017));
+    // palec — kříží pod dlaní doleva dolů
+    v = Math.max(v, cap(X, y, 2.25, 0.545, 2.12, 0.60, 0.026));
+    v = Math.max(v, cap(X, y, 2.12, 0.60, 2.02, 0.628, 0.022));
     return v;
   }
 
@@ -709,15 +724,26 @@ if (meetCanvas) {
       mctx.drawImage(handImg, x, MH * HAND_TOP, w, h);
       mctx.restore();
     } else {
+      // procedurální halftone s objemovým stínováním: světlé hřbety prstů,
+      // tmavé kontury na okrajích, světlo shora — dojem jemného tisku
       for (let r = 0; r < drows; r++) {
+        const y = (r + 0.5) / drows;
+        if (y < 0.32 || y > 0.97) continue;
         for (let c = 0; c < dcols; c++) {
-          const X = ((c + 0.5) / dcols) * ASP, y = (r + 0.5) / drows;
+          const X = ((c + 0.5) / dcols) * ASP;
           if (X < 1.35) continue;
-          const v = humanHand(X, y);
-          if (v <= 0.03) continue;
-          const shade = 96 + Math.floor((1 - v) * 88);
-          mctx.fillStyle = `rgb(${shade},${shade},${shade})`;
-          const s = 0.8 + Math.pow(v, 0.6) * 2.3;
+          const h = humanHand(X, y);
+          if (h <= 0.02) continue;
+          // numerický sklon podle osy y = směr světla shora
+          const grad = humanHand(X, y - 0.012) - humanHand(X, y + 0.012);
+          const lambert = Math.min(1, Math.max(0.25, 0.66 + grad * 2.4));
+          const core = Math.sqrt(Math.min(1, h)); // 1 = střed prstu (válcový lesk)
+          const lum = Math.min(1, (0.28 + 0.58 * core) * lambert);
+          const dark = 1 - lum;
+          if (dark <= 0.10) continue;
+          const s = 0.7 + dark * 2.45;
+          const g = 68 + Math.floor(lum * 138);
+          mctx.fillStyle = `rgb(${g},${g},${g})`;
           mctx.fillRect(c * dcell + (dcell - s) / 2, r * dcell + (dcell - s) / 2, s, s);
         }
       }
