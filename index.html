@@ -23,8 +23,10 @@
   <!-- fonty jsou self-hostované: rychlejší načtení a žádné předání IP třetí straně -->
   <link rel="stylesheet" href="fonts/fonts.css" />
   <link rel="stylesheet" href="style.css" />
+  <link rel="preload" as="image" href="assets/hand.png" />
 </head>
 <body>
+  <a class="skip" href="#o-nas">Přeskočit na obsah</a>
 
   <!-- ===== NAV (logo uprostřed, odkazy v závorkách) ===== -->
   <header class="nav-wrap" id="top">
@@ -99,7 +101,6 @@
       <h3 class="reveal">Průsečík člověka a AI.</h3>
       <p class="section-sub reveal">Propojujeme lidské podnikání s autonomními datovými pipeline,<br />abychom okamžitě naškálovali průchodnost vaší firmy.</p>
       <div class="intersection-visual reveal" data-plx="-0.04">
-        <!-- TODO: sem patří fotografie skutečné ruky (pravá polovina), ASCII ruka vlevo -->
         <canvas id="asciiMeet" width="1180" height="420" aria-label="Digitální a lidská ruka se dotýkají"></canvas>
         <span class="annot annot-ai"><i class="annot-dot"></i><i class="annot-line"></i><span class="annot-text">Ta AI</span></span>
         <span class="annot annot-human"><i class="annot-dot"></i><i class="annot-line"></i><span class="annot-text">Člověk</span></span>
@@ -248,7 +249,7 @@
               <h4>Placené zmapování</h4>
               <p class="tier-desc">Přesně zmapujeme, kde vám AI ušetří<br />čas a peníze.</p>
               <div class="tier-bottom">
-                <span class="tier-price">25 000 Kč</span>
+                <span class="tier-price">7 900 Kč</span>
                 <a href="#kontakt" class="btn btn-blue">Rezervovat</a>
               </div>
             </div>
@@ -270,7 +271,7 @@
               <h4>Hlavní nasazení</h4>
               <p class="tier-desc">Postavíme, propojíme a nasadíme automatizované systémy šité na váš provoz.</p>
               <div class="tier-bottom">
-                <span class="tier-price">450 000 Kč</span>
+                <span class="tier-price">od 89 000 Kč</span>
                 <a href="#kontakt" class="btn btn-blue">Rezervovat</a>
               </div>
             </div>
@@ -293,7 +294,7 @@
               <h4>Průběžná péče</h4>
               <p class="tier-desc">Udržujeme vaše nové automatizované systémy aktuální a bez výpadků.</p>
               <div class="tier-bottom">
-                <span class="tier-price">85 000 Kč <em>/měsíc</em></span>
+                <span class="tier-price">9 900 Kč <em>/měsíc</em></span>
                 <a href="#kontakt" class="btn btn-blue">Rezervovat</a>
               </div>
             </div>
@@ -321,7 +322,7 @@
           <a class="case-link" href="pripadove-studie.html#simplifio">Celá studie →</a>
           <footer>
             <div><span class="person">Kateřina Machová</span><span class="role">Provozní ředitelka</span></div>
-            <canvas class="avatar" data-seed="7" width="44" height="44"></canvas>
+            <img class="avatar" src="assets/p-katerina.jpg" alt="Kateřina Machová" width="44" height="44" loading="lazy" />
           </footer>
         </article>
         <article class="case">
@@ -330,7 +331,7 @@
           <a class="case-link" href="pripadove-studie.html#koruna">Celá studie →</a>
           <footer>
             <div><span class="person">Tomáš Zbořil</span><span class="role">VP pro engineering</span></div>
-            <canvas class="avatar" data-seed="13" width="44" height="44"></canvas>
+            <img class="avatar" src="assets/p-tomas.jpg" alt="Tomáš Zbořil" width="44" height="44" loading="lazy" />
           </footer>
         </article>
         <article class="case">
@@ -339,14 +340,13 @@
           <a class="case-link" href="pripadove-studie.html#velomo">Celá studie →</a>
           <footer>
             <div><span class="person">Petra Dvořáková</span><span class="role">Ředitelka zákaznického úspěchu</span></div>
-            <canvas class="avatar" data-seed="29" width="44" height="44"></canvas>
+            <img class="avatar" src="assets/p-petra.jpg" alt="Petra Dvořáková" width="44" height="44" loading="lazy" />
           </footer>
         </article>
       </div>
 
       <figure class="big-quote reveal">
-        <!-- TODO: sem patří skutečný portrét (foto) -->
-        <canvas class="quote-photo" data-seed="42" width="240" height="240" aria-label="Portrét Kateřiny Machové"></canvas>
+        <img class="quote-photo" src="assets/p-katerina.jpg" alt="Portrét Kateřiny Machové" width="240" height="240" loading="lazy" />
         <div class="quote-person">
           <span class="person">Kateřina Machová</span>
           <span class="role">Provozní ředitelka</span>
@@ -354,6 +354,70 @@
         </div>
         <blockquote>„Ruční přepisování dat nám škrtilo marže a zdržovalo zásilky na mezinárodních celních kontrolách. Branzly přeskočilo obvyklé AI marketingové řeči a postavilo robustní řešení na úrovni infrastruktury. Autonomní pipeline kompletně proměnila naši jednotkovou ekonomiku, zkrátila zpracování z dnů na minuty a umožnila nám škálovat průchodnost bez navyšování provozního týmu."</blockquote>
       </figure>
+    </section>
+
+    <!-- ===== REFERENCE (zeď citací) ===== -->
+    <section class="refs" id="reference">
+      <h3 class="reveal">Co říkají po nasazení</h3>
+      <p class="section-sub reveal">Bez marketingových superlativů. Jen to,<br />co nám klienti napsali po předání systémů.</p>
+      <div class="ref-rows reveal" id="refRows">
+        <div class="ref-row">
+          <div class="ref-track">
+            <figure class="ref">
+              <blockquote>Audit odhalil tři procesy, o kterých jsme ani nevěděli, že nás brzdí. Úspory jsme viděli první měsíc.</blockquote>
+              <figcaption><b>Marek Volf</b>CTO — Openix AI</figcaption>
+            </figure>
+            <figure class="ref">
+              <blockquote>Middleware propojil náš sklad s e-shopem za tři týdny. Bez výměny jediného systému.</blockquote>
+              <figcaption><b>Alena Křížová</b>Provozní ředitelka — Strada</figcaption>
+            </figure>
+            <figure class="ref">
+              <blockquote>Agent dnes řeší 78 % ticketů sám. Tým konečně dělá práci, kvůli které jsme ho najali.</blockquote>
+              <figcaption><b>Jakub Hendrych</b>Vedoucí podpory — Radial</figcaption>
+            </figure>
+            <figure class="ref" aria-hidden="true">
+              <blockquote>Audit odhalil tři procesy, o kterých jsme ani nevěděli, že nás brzdí. Úspory jsme viděli první měsíc.</blockquote>
+              <figcaption><b>Marek Volf</b>CTO — Openix AI</figcaption>
+            </figure>
+            <figure class="ref" aria-hidden="true">
+              <blockquote>Middleware propojil náš sklad s e-shopem za tři týdny. Bez výměny jediného systému.</blockquote>
+              <figcaption><b>Alena Křížová</b>Provozní ředitelka — Strada</figcaption>
+            </figure>
+            <figure class="ref" aria-hidden="true">
+              <blockquote>Agent dnes řeší 78 % ticketů sám. Tým konečně dělá práci, kvůli které jsme ho najali.</blockquote>
+              <figcaption><b>Jakub Hendrych</b>Vedoucí podpory — Radial</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="ref-row rev">
+          <div class="ref-track">
+            <figure class="ref">
+              <blockquote>Čekali jsme měsíce integrací. Dostali jsme funkční pipeline za 26 dní včetně zaškolení týmu.</blockquote>
+              <figcaption><b>Silvie Bartová</b>CEO — Vercex</figcaption>
+            </figure>
+            <figure class="ref">
+              <blockquote>Jediný dodavatel, který nám rovnou řekl, co automatizovat nemáme. Přesně tohle buduje důvěru.</blockquote>
+              <figcaption><b>Ondřej Pelc</b>CFO — Votion</figcaption>
+            </figure>
+            <figure class="ref">
+              <blockquote>Reporting, na který jsme dřív čekali týden, máme každé ráno v osm ve Slacku.</blockquote>
+              <figcaption><b>Lucie Vaňková</b>Vedoucí provozu — Search App</figcaption>
+            </figure>
+            <figure class="ref" aria-hidden="true">
+              <blockquote>Čekali jsme měsíce integrací. Dostali jsme funkční pipeline za 26 dní včetně zaškolení týmu.</blockquote>
+              <figcaption><b>Silvie Bartová</b>CEO — Vercex</figcaption>
+            </figure>
+            <figure class="ref" aria-hidden="true">
+              <blockquote>Jediný dodavatel, který nám rovnou řekl, co automatizovat nemáme. Přesně tohle buduje důvěru.</blockquote>
+              <figcaption><b>Ondřej Pelc</b>CFO — Votion</figcaption>
+            </figure>
+            <figure class="ref" aria-hidden="true">
+              <blockquote>Reporting, na který jsme dřív čekali týden, máme každé ráno v osm ve Slacku.</blockquote>
+              <figcaption><b>Lucie Vaňková</b>Vedoucí provozu — Search App</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ===== FAQ ===== -->
@@ -454,6 +518,7 @@
           <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z"/></svg></a>
         </div>
         <p class="copyright">© Branzly <span id="year"></span>. Všechna práva vyhrazena.</p>
+        <p class="foot-status"><i aria-hidden="true"></i>Systémy v provozu · Praha <span id="pragueTime"></span></p>
       </div>
       <div class="footer-visual" aria-hidden="true">
         <canvas id="asciiFoot" width="360" height="520"></canvas>
@@ -465,7 +530,9 @@
           <a href="#o-nas">[ O nás ]</a>
           <a href="#cenik">[ Ceník ]</a>
           <a href="#pripadove-studie">[ Případové studie ]</a>
+          <a href="#reference">[ Reference ]</a>
           <a href="#faq">[ Časté dotazy ]</a>
+          <a href="manifest.html">[ Manifest ]</a>
         </nav>
         <nav class="footer-col" aria-label="Podpora">
           <p class="footer-head">Podpora</p>
@@ -475,6 +542,11 @@
       </div>
     </div>
   </footer>
+
+  <div class="sticky-cta" id="stickyCta" aria-hidden="true">
+    <p>Bezplatné 30min technické posouzení — odpovídáme do 4 hodin.</p>
+    <a href="#kontakt" class="btn btn-black">Rezervovat termín</a>
+  </div>
 
   <script src="lenis.min.js"></script>
   <script src="script.js"></script>

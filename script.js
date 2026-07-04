@@ -475,7 +475,7 @@ if (finePointer && !reduceMotion) {
    jejich slova zůstala navždy schovaná pod maskou */
 const reveals = document.querySelectorAll(".reveal, main h3.split:not(.reveal)");
 // stagger: pořadí v rámci rodiče -> --i
-document.querySelectorAll(".feature-grid, .case-grid, .faq-list, .tag-strip, .stats-grid, .study-stats").forEach((parent) => {
+document.querySelectorAll(".feature-grid, .case-grid, .faq-list, .tag-strip, .stats-grid, .study-stats, .ref-grid, .mf-list").forEach((parent) => {
   [...parent.children].forEach((child, i) => child.style.setProperty("--i", i));
 });
 if ("IntersectionObserver" in window && !reduceMotion) {
@@ -619,9 +619,9 @@ if (meetCanvas) {
   /* Fotorealistická ruka: nahrajte assets/hand.png (ruka zprava, prsty
      doleva, bílé/průhledné pozadí) a použije se místo halftone renderu.
      Konstanty níže slouží k doladění pozice fotky. */
-  const HAND_H = 0.94;      // výška fotky vůči výšce plátna
-  const HAND_RIGHT = 0.01;  // odsazení od pravého okraje (podíl šířky)
-  const HAND_TOP = 0.10;    // svislé usazení (podíl výšky)
+  const HAND_H = 1.12;      // výška fotky vůči výšce plátna (paže přetéká přes horní roh)
+  const HAND_RIGHT = -0.187; // odsazení od pravého okraje (záporné = paže bleedne z rohu)
+  const HAND_TOP = -0.483;  // svislé usazení (podíl výšky)
   const HAND_TRAVEL = 0.24; // o kolik (v jednotkách výšky) se fotka přisune při meetP=1
   const handImg = new Image();
   let handReady = false;
@@ -953,11 +953,11 @@ function updateTerm() {
 
 /* Cal.com rezervace: po vytvoření účtu vyplňte odkaz (např. "branzly/konzultace")
    a místo vlastního kalendáře se vloží živý rezervační widget se skutečnými sloty */
-const CAL_LINK = "";
+const CAL_LINK = "branzly/30min-konzultace";
 
 if (calEl && CAL_LINK) {
   calEl.classList.add("cal-embed");
-  calEl.innerHTML = `<iframe src="https://cal.com/${CAL_LINK}?embed=true&theme=dark" loading="lazy" title="Rezervace konzultace"></iframe>`;
+  calEl.innerHTML = `<iframe src="https://cal.com/${CAL_LINK}?embed=true&theme=light" loading="lazy" title="Rezervace konzultace"></iframe>`;
 } else if (calEl) {
   let view = new Date();
   view.setDate(1);
@@ -1078,3 +1078,38 @@ if (contactForm) {
 /* ---------- rok v patičce ---------- */
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+/* ---------- živý čas v patičce (Praha) ---------- */
+const pragueEl = document.getElementById("pragueTime");
+if (pragueEl) {
+  const fmt = new Intl.DateTimeFormat("cs-CZ", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Europe/Prague" });
+  const tick = () => { pragueEl.textContent = fmt.format(new Date()); };
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* ---------- sticky CTA: zobrazit po hero, skrýt u kontaktu ---------- */
+const stickyCta = document.getElementById("stickyCta");
+if (stickyCta) {
+  const heroEl = document.querySelector(".hero");
+  const kontaktEl = document.getElementById("kontakt");
+  const sync = () => {
+    const vh = window.innerHeight || 800;
+    const pastHero = heroEl.getBoundingClientRect().bottom < 0;
+    const nearContact = kontaktEl.getBoundingClientRect().top < vh;
+    const show = pastHero && !nearContact;
+    stickyCta.classList.toggle("show", show);
+    stickyCta.setAttribute("aria-hidden", String(!show));
+  };
+  window.addEventListener("scroll", sync, { passive: true });
+  sync();
+}
+
+/* ---------- reference: kurzorový spotlight na kartách ---------- */
+document.querySelectorAll(".ref").forEach((card) => {
+  card.addEventListener("pointermove", (e) => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+    card.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+  });
+});

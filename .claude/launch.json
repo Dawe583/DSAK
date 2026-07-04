@@ -3,9 +3,9 @@
   "configurations": [
     {
       "name": "branzly",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "4599"],
-      "port": 4599
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4601"],
+      "port": 4601
     }
   ]
 }
