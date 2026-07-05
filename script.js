@@ -335,7 +335,7 @@ if (heroSection && !reduceMotion) {
 
 /* ---------- spotlight karty (radiální světlo sledující kurzor) ---------- */
 if (finePointer) {
-  document.querySelectorAll(".feature-cell, .tier-card, .case, .tl-card, .team-card, .roi-card").forEach((card) => {
+  document.querySelectorAll(".feature-cell, .tier-card, .case, .tl-card, .team-card").forEach((card) => {
     card.classList.add("spot");
     card.addEventListener("pointermove", (e) => {
       const r = card.getBoundingClientRect();
@@ -917,9 +917,11 @@ function updateTerm() {
   termInput.value = parts.join(" ");
 }
 
-/* Cal.com rezervace: po vytvoření účtu vyplňte odkaz (např. "branzly/konzultace")
-   a místo vlastního kalendáře se vloží živý rezervační widget se skutečnými sloty */
-const CAL_LINK = "branzly/30min-konzultace";
+/* Cal.com rezervace: až budete mít založený účet, vyplňte sem reálný odkaz
+   (např. "branzly/konzultace") a místo vlastního kalendáře se vloží živý
+   rezervační widget se skutečnými sloty. Dokud je prázdný, renderuje se náš
+   vlastní interaktivní kalendář — placeholder odkaz by se načetl rozbitě. */
+const CAL_LINK = "";
 
 if (calEl && CAL_LINK) {
   calEl.classList.add("cal-embed");
@@ -1079,38 +1081,6 @@ if (magnetForm) {
       mStatus.className = "form-status err";
     }
   });
-}
-
-/* ---------- ROI kalkulačka ---------- */
-const roiHours = document.getElementById("roiHours");
-if (roiHours) {
-  const roiRate = document.getElementById("roiRate");
-  const out = {
-    hoursVal: document.getElementById("roiHoursVal"),
-    rateVal: document.getElementById("roiRateVal"),
-    monthly: document.getElementById("roiMonthly"),
-    yearly: document.getElementById("roiYearly"),
-    payback: document.getElementById("roiPayback"),
-  };
-  const kc = (n) => Math.round(n).toLocaleString("cs-CZ") + " Kč";
-  const AUTOMATED = 0.8; // podíl úkolů, který pipeline zvládne sama
-  const DEPLOY_COST = 7900 + 89000; // Fáze 1 + 2
-  const update = () => {
-    const h = +roiHours.value, r = +roiRate.value;
-    const monthly = h * 4.33 * r;
-    const saved = monthly * AUTOMATED;
-    out.hoursVal.textContent = h + " h";
-    out.rateVal.textContent = kc(r);
-    out.monthly.textContent = kc(monthly);
-    out.yearly.textContent = kc(saved * 12);
-    const pb = DEPLOY_COST / saved;
-    out.payback.textContent = pb < 1
-      ? "< 1 měsíc"
-      : pb.toLocaleString("cs-CZ", { maximumFractionDigits: 1 }) + (pb < 5 ? " měsíce" : " měsíců");
-  };
-  roiHours.addEventListener("input", update);
-  roiRate.addEventListener("input", update);
-  update();
 }
 
 /* ---------- rok v patičce ---------- */
