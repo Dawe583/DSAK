@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAG v praxi: jak dát jazykovému modelu firemní data bezpečně — Branzly</title>
+  <meta name="description" content="Architektura RAG srozumitelně: vektorová databáze, retrieval, citace zdrojů. Proč model na vašich dokumentech netrénuje a jak vyhovět compliance." />
+  <link rel="canonical" href="https://branzly.cz/blog-rag-v-praxi.html" />
+  <meta property="og:title" content="RAG v praxi: jak dát jazykovému modelu firemní data bezpečně" />
+  <meta property="og:description" content="Architektura RAG srozumitelně: co se kde ukládá, kudy tečou data a proč model netrénuje." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://branzly.cz/og.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='18' rx='4'/%3E%3Crect x='13' y='3' width='8' height='18' rx='4'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="stylesheet" href="fonts/fonts.css" />
+  <link rel="stylesheet" href="style.css" />
+  <noscript><style>.reveal, .load { opacity: 1 !important; transform: none !important; filter: none !important; }</style></noscript>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "RAG v praxi: jak dát jazykovému modelu firemní data, aniž by je viděl celý internet",
+    "datePublished": "2026-06-02",
+    "inLanguage": "cs",
+    "author": { "@type": "Person", "name": "David Sak" },
+    "publisher": { "@type": "Organization", "name": "Branzly", "url": "https://branzly.cz/" }
+  }
+  </script>
+</head>
+<body>
+
+  <header class="nav-wrap">
+    <div class="nav nav-simple frame">
+      <nav class="nav-side nav-left" aria-label="Navigace">
+        <a href="blog.html"><span>[</span>Zpět na blog<span>]</span></a>
+      </nav>
+      <a href="index.html" class="brand" aria-label="Branzly domů">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/>
+          <rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/>
+        </svg>
+      </a>
+      <nav class="nav-side nav-right" aria-label="Kontakt">
+        <a href="index.html#kontakt"><span>[</span>Kontakt<span>]</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="frame">
+    <article class="legal">
+      <h1>RAG v praxi: jak dát jazykovému modelu firemní data, aniž by je viděl celý internet</h1>
+      <p class="legal-updated">2. 6. 2026 · David Sak · 6 minut čtení</p>
+
+      <p>Nejčastější obava, kterou na konzultacích slyšíme: „Nechceme, aby se ChatGPT učil z našich smluv." Oprávněná — a přesně kvůli ní existuje architektura RAG, retrieval-augmented generation. Tenhle text vysvětluje, jak funguje, bez akademického balastu.</p>
+
+      <h2>Základní princip: model nic neví, model čte</h2>
+      <p>RAG odděluje dvě věci, které se v debatách o AI pletou dohromady: <strong>znalosti</strong> a <strong>schopnost formulovat</strong>. Jazykový model dodává to druhé. Znalosti zůstávají ve vašich dokumentech — a k modelu se dostanou až v momentě konkrétního dotazu, jako pár relevantních odstavců přiložených k otázce.</p>
+      <p>Analogie: nezaměstnáváte vševědoucího experta. Zaměstnáváte výborného asistenta, který umí bleskově najít správnou stránku ve vašem archivu a srozumitelně ji převyprávět. Archiv zůstává váš.</p>
+
+      <h2>Co se kde ukládá</h2>
+      <ul>
+        <li><strong>Vaše dokumenty</strong> se rozdělí na významové bloky (odstavce, články směrnic) a každý blok dostane číselný otisk — embedding. Bloky i otisky leží ve vektorové databázi <em>ve vaší infrastruktuře</em>.</li>
+        <li><strong>Dotaz uživatele</strong> se převede na stejný typ otisku a databáze najde nejpodobnější bloky — typicky jednotky odstavců, ne celé dokumenty.</li>
+        <li><strong>Jazykový model</strong> dostane dotaz plus nalezené bloky a složí odpověď. U API bez retence dat se po odpovědi nic neukládá; u open-source modelu ve vašem cloudu data neopustí firmu vůbec.</li>
+      </ul>
+
+      <h2>Proč model na vašich datech netrénuje</h2>
+      <p>Trénování znamená měnit váhy modelu podle dat — to se v RAG nasazení neděje. Dokumenty procházejí modelem jen jako vstup při konkrétním dotazu, stejně jako když text vložíte do překladače. Smluvně to jistí API režimy bez retence (zero data retention), technicky pak privátní nasazení, kde model běží na vašem železe.</p>
+
+      <h2>Citace: rozdíl mezi hračkou a nástrojem</h2>
+      <p>Dobře postavený RAG systém u každé odpovědi uvádí, ze kterého dokumentu a odstavce čerpal. To má dva důsledky. Zaprvé auditovatelnost — compliance oddělení vidí, odkud tvrzení pochází. Zadruhé pokoru systému: když retrieval nenajde oporu v dokumentech, systém odpoví „nevím, v podkladech to není" místo halucinace. Přesně tohle odlišuje nástroj, na který se dá spolehnout, od dema na poradě.</p>
+
+      <h2>Na co si dát pozor</h2>
+      <ul>
+        <li><strong>Přístupová práva.</strong> Vektorová databáze musí respektovat oprávnění — kdo nesmí číst dokument, nesmí dostat ani odpověď z něj složenou.</li>
+        <li><strong>Kvalita podkladů.</strong> RAG zrcadlí vaše dokumenty. Zastaralá směrnice znamená zastaralou odpověď — součástí nasazení má být proces aktualizace.</li>
+        <li><strong>Vyhodnocení.</strong> Před ostrým provozem chtějte vyhodnocovací sadu z reálných dotazů a měřenou přesnost, ne demo na pěti otázkách.</li>
+      </ul>
+
+      <p>RAG dnes považujeme za výchozí architekturu pro AI nad firemními znalostmi — bezpečnostně i ekonomicky. Trénovat vlastní model dává smysl až ve chvíli, kdy RAG prokazatelně nestačí, což je u interních znalostních systémů výjimka, ne pravidlo.</p>
+
+      <p><a href="sluzby-firemni-data.html">→ Jak stavíme privátní RAG infrastrukturu</a></p>
+    </article>
+  </main>
+
+  <footer class="footer-wrap">
+    <div class="legal-foot frame">
+      <a href="index.html" class="brand-foot">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/>
+          <rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/>
+        </svg>
+        Branzly
+      </a>
+      <p class="copyright">© Branzly <span id="year"></span>. Všechna práva vyhrazena.</p>
+    </div>
+  </footer>
+
+  <script src="lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

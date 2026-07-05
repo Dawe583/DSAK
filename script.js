@@ -1,6 +1,5 @@
 // ===== Branzly landing — vizuály a efekty =====
-// animace běží vždy — web nerespektuje systémové "omezit animace"
-const reduceMotion = false;
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------- Lenis smooth scroll (ScrollEase easing) ---------- */
 let lenis = null;
@@ -75,10 +74,8 @@ function mainRaf(time) {
       }
     }
     stackRaf();
-    quoteRaf();
     marqueeRaf(dt);
     particlesRaf(dt);
-    timelineRaf();
     cursorRaf();
     if (meetVisual) {
       const mr = meetVisual.getBoundingClientRect();
@@ -207,27 +204,6 @@ if (orbitCount && beamhub) {
   }, 900);
 }
 
-/* ---------- timeline: linka se kreslí podle scrollu, body se rozsvěcí ---------- */
-const tlEl = document.getElementById("timeline");
-const tlProgress = document.getElementById("tlProgress");
-let tlDots = [];
-function tlMeasure() {
-  if (!tlEl) return;
-  tlDots = [...tlEl.querySelectorAll(".tl-dot")].map((el) => ({
-    el, y: el.parentElement.offsetTop + el.offsetTop,
-  }));
-}
-if (tlEl) { tlMeasure(); addEventListener("resize", tlMeasure); addEventListener("load", tlMeasure); }
-function timelineRaf() {
-  if (!tlEl || !tlProgress) return;
-  const r = tlEl.getBoundingClientRect();
-  if (r.bottom < -60 || r.top > innerHeight + 60) return;
-  const p = clamp01((innerHeight * 0.72 - r.top) / r.height);
-  tlProgress.style.transform = `scaleY(${p.toFixed(4)})`;
-  const py = p * r.height;
-  for (const d of tlDots) d.el.classList.toggle("on", d.y <= py);
-}
-
 /* ---------- word-split: maskované nadpisy (StackGrid styl) ---------- */
 function maskSplit(el) {
   const words = el.textContent.trim().split(/\s+/);
@@ -294,16 +270,6 @@ if (bq && !reduceMotion) {
   });
   quoteWords = [...bq.querySelectorAll(".qw")];
 }
-function quoteRaf() {
-  if (!quoteWords.length) return;
-  const r = bq.getBoundingClientRect();
-  if (r.bottom < 0 || r.top > innerHeight) return;
-  const p = clamp01((innerHeight * 0.9 - r.top) / (innerHeight * 0.55 + r.height));
-  const idx = p * (quoteWords.length + 3);
-  for (let i = 0; i < quoteWords.length; i++) {
-    quoteWords[i].style.opacity = (0.14 + 0.86 * clamp01(idx - i)).toFixed(3);
-  }
-}
 
 /* ---------- hero: plovoucí particles + filmové zrno ---------- */
 const pCanvas = document.getElementById("heroParticles");
@@ -369,7 +335,7 @@ if (heroSection && !reduceMotion) {
 
 /* ---------- spotlight karty (radiální světlo sledující kurzor) ---------- */
 if (finePointer) {
-  document.querySelectorAll(".feature-cell, .tier-card, .case, .tl-card").forEach((card) => {
+  document.querySelectorAll(".feature-cell, .tier-card, .case, .tl-card, .team-card, .roi-card").forEach((card) => {
     card.classList.add("spot");
     card.addEventListener("pointermove", (e) => {
       const r = card.getBoundingClientRect();
@@ -1075,6 +1041,78 @@ if (contactForm) {
   });
 }
 
+/* ---------- lead magnet: checklist na e-mail ---------- */
+const magnetForm = document.getElementById("magnetForm");
+if (magnetForm) {
+  const mEmail = document.getElementById("magnetEmail");
+  const mStatus = document.getElementById("magnetStatus");
+  mEmail.addEventListener("input", () => mEmail.classList.remove("invalid"));
+  magnetForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = mEmail.value.trim();
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      mEmail.classList.add("invalid");
+      mStatus.textContent = "Zadejte prosím platný e-mail.";
+      mStatus.className = "form-status err";
+      return;
+    }
+    mStatus.textContent = "Odesílám…";
+    mStatus.className = "form-status";
+    try {
+      let sent = false;
+      for (const endpoint of FORM_ENDPOINTS) {
+        try {
+          const res = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({ name: "Checklist", email, message: "Žádost o checklist automatizace", _subject: `Checklist — ${email}` }),
+          });
+          if (res.ok) { sent = true; break; }
+        } catch { /* zkusí další endpoint */ }
+      }
+      if (!sent) throw new Error("no endpoint");
+      magnetForm.reset();
+      mStatus.textContent = "✓ Díky! Checklist vám dorazí do pár minut.";
+      mStatus.className = "form-status ok";
+    } catch {
+      mStatus.textContent = "Odeslání se nepodařilo — napište si o checklist na ahoj@branzly.cz.";
+      mStatus.className = "form-status err";
+    }
+  });
+}
+
+/* ---------- ROI kalkulačka ---------- */
+const roiHours = document.getElementById("roiHours");
+if (roiHours) {
+  const roiRate = document.getElementById("roiRate");
+  const out = {
+    hoursVal: document.getElementById("roiHoursVal"),
+    rateVal: document.getElementById("roiRateVal"),
+    monthly: document.getElementById("roiMonthly"),
+    yearly: document.getElementById("roiYearly"),
+    payback: document.getElementById("roiPayback"),
+  };
+  const kc = (n) => Math.round(n).toLocaleString("cs-CZ") + " Kč";
+  const AUTOMATED = 0.8; // podíl úkolů, který pipeline zvládne sama
+  const DEPLOY_COST = 7900 + 89000; // Fáze 1 + 2
+  const update = () => {
+    const h = +roiHours.value, r = +roiRate.value;
+    const monthly = h * 4.33 * r;
+    const saved = monthly * AUTOMATED;
+    out.hoursVal.textContent = h + " h";
+    out.rateVal.textContent = kc(r);
+    out.monthly.textContent = kc(monthly);
+    out.yearly.textContent = kc(saved * 12);
+    const pb = DEPLOY_COST / saved;
+    out.payback.textContent = pb < 1
+      ? "< 1 měsíc"
+      : pb.toLocaleString("cs-CZ", { maximumFractionDigits: 1 }) + (pb < 5 ? " měsíce" : " měsíců");
+  };
+  roiHours.addEventListener("input", update);
+  roiRate.addEventListener("input", update);
+  update();
+}
+
 /* ---------- rok v patičce ---------- */
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -1088,19 +1126,26 @@ if (pragueEl) {
   setInterval(tick, 1000);
 }
 
-/* ---------- sticky CTA: zobrazit po hero, skrýt u kontaktu ---------- */
+/* ---------- sticky CTA: zobrazit po hero, skrýt u kontaktu, křížkem zavřít ---------- */
 const stickyCta = document.getElementById("stickyCta");
 if (stickyCta) {
   const heroEl = document.querySelector(".hero");
   const kontaktEl = document.getElementById("kontakt");
+  let dismissed = sessionStorage.getItem("ctaDismissed") === "1";
   const sync = () => {
     const vh = window.innerHeight || 800;
     const pastHero = heroEl.getBoundingClientRect().bottom < 0;
     const nearContact = kontaktEl.getBoundingClientRect().top < vh;
-    const show = pastHero && !nearContact;
+    const show = !dismissed && pastHero && !nearContact;
     stickyCta.classList.toggle("show", show);
     stickyCta.setAttribute("aria-hidden", String(!show));
   };
+  const closeBtn = stickyCta.querySelector(".sticky-close");
+  if (closeBtn) closeBtn.addEventListener("click", () => {
+    dismissed = true;
+    sessionStorage.setItem("ctaDismissed", "1");
+    sync();
+  });
   window.addEventListener("scroll", sync, { passive: true });
   sync();
 }
@@ -1113,3 +1158,59 @@ document.querySelectorAll(".ref").forEach((card) => {
     card.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
   });
 });
+
+/* ---------- GSAP ScrollTrigger: scrub animace ----------
+   stackRaf (ceník) zůstává ruční — je propletený s .reveal transformacemi
+   a funguje; migrace by přinesla jen riziko regresí */
+const hasGsap = typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined";
+if (hasGsap && !reduceMotion) {
+  gsap.registerPlugin(ScrollTrigger);
+  if (lenis) lenis.on("scroll", ScrollTrigger.update);
+  addEventListener("load", () => ScrollTrigger.refresh());
+
+  // proces: linka se kreslí podle scrollu, body se rozsvěcí
+  const tl = document.getElementById("timeline");
+  if (tl) {
+    gsap.to("#tlProgress", {
+      scaleY: 1, ease: "none",
+      scrollTrigger: { trigger: tl, start: "top 72%", end: "bottom 72%", scrub: true },
+    });
+    tl.querySelectorAll(".tl-dot").forEach((d) => {
+      ScrollTrigger.create({
+        trigger: d, start: "top 72%",
+        onEnter: () => d.classList.add("on"),
+        onLeaveBack: () => d.classList.remove("on"),
+      });
+    });
+  }
+
+  // citace: slova se rozsvěcí postupně se scrollem
+  if (quoteWords.length) {
+    gsap.to(quoteWords, {
+      opacity: 1, ease: "none", stagger: 0.05,
+      scrollTrigger: { trigger: ".big-quote", start: "top 88%", end: "center 42%", scrub: true },
+    });
+  }
+
+  // vizuály: jemné scale-in při vjezdu do viewportu
+  const meetC = document.getElementById("asciiMeet");
+  if (meetC) {
+    gsap.fromTo(meetC, { scale: 0.93, opacity: 0.7 }, {
+      scale: 1, opacity: 1, ease: "none",
+      scrollTrigger: { trigger: meetC, start: "top 92%", end: "top 42%", scrub: true },
+    });
+  }
+  const qPhoto = document.querySelector(".quote-photo");
+  if (qPhoto) {
+    gsap.fromTo(qPhoto, { scale: 1.07 }, {
+      scale: 1, ease: "none",
+      scrollTrigger: { trigger: ".big-quote", start: "top 92%", end: "top 40%", scrub: true },
+    });
+  }
+} else {
+  // fallback bez GSAP nebo s omezeným pohybem: rovnou finální stavy
+  document.querySelectorAll(".big-quote .qw").forEach((w) => { w.style.opacity = 1; });
+  const tp = document.getElementById("tlProgress");
+  if (tp) tp.style.transform = "scaleY(1)";
+  document.querySelectorAll(".tl-dot").forEach((d) => d.classList.add("on"));
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatizované datové pipeline — Branzly</title>
+  <meta name="description" content="Propojíme vaše systémy vlastním middlewarem, aby ruční přepisování dat zmizelo. Event-driven orchestrace, nasazení za 3–4 týdny, bez výměny softwaru." />
+  <link rel="canonical" href="https://branzly.cz/sluzby-datove-pipeline.html" />
+  <meta property="og:title" content="Automatizované datové pipeline — Branzly" />
+  <meta property="og:description" content="Propojíme vaše systémy vlastním middlewarem. Nasazení za 3–4 týdny, bez výměny softwaru." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://branzly.cz/og.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='18' rx='4'/%3E%3Crect x='13' y='3' width='8' height='18' rx='4'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="stylesheet" href="fonts/fonts.css" />
+  <link rel="stylesheet" href="style.css" />
+  <noscript><style>.reveal, .load { opacity: 1 !important; transform: none !important; filter: none !important; }</style></noscript>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Automatizované datové pipeline",
+    "provider": { "@type": "Organization", "name": "Branzly", "url": "https://branzly.cz/" },
+    "description": "Event-driven orchestrace a middleware, který propojí stávající firemní systémy bez jejich výměny.",
+    "areaServed": "CZ"
+  }
+  </script>
+</head>
+<body>
+
+  <header class="nav-wrap">
+    <div class="nav nav-simple frame">
+      <nav class="nav-side nav-left" aria-label="Navigace">
+        <a href="index.html"><span>[</span>Zpět na web<span>]</span></a>
+      </nav>
+      <a href="index.html" class="brand" aria-label="Branzly domů">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/>
+          <rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/>
+        </svg>
+      </a>
+      <nav class="nav-side nav-right" aria-label="Kontakt">
+        <a href="index.html#kontakt"><span>[</span>Kontakt<span>]</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="frame">
+    <div class="svc">
+      <div class="svc-head">
+        <div class="svc-tags load load-1">
+          <span class="chip-gray">Služba</span>
+          <span class="chip-gray">Nasazení: 3–4 týdny</span>
+        </div>
+        <h1 class="load load-1">Automatizované datové pipeline</h1>
+        <p class="lead load load-2">Vlastní middleware, který propojí váš CRM, sklad, účetnictví i starší systémy. Data tečou sama — událost v jednom systému spustí akce ve všech ostatních. Lidé řeší jen výjimky.</p>
+      </div>
+
+      <h2>Pro koho to dává smysl</h2>
+      <ul class="reveal">
+        <li>Tým přepisuje data mezi dvěma a více systémy ručně</li>
+        <li>Chyby přepisu způsobují zdržení, reklamace nebo problémy na celnici</li>
+        <li>Růst objemu znamená nabírat další lidi jen na administrativu</li>
+      </ul>
+
+      <h2>Co dostanete</h2>
+      <ul class="reveal">
+        <li>Event-driven orchestraci: událost → validace → zápis do navazujících systémů</li>
+        <li>Napojení přes API; u uzavřeného softwaru bezpečnou RPA vrstvu</li>
+        <li>Dashboard výjimek — tým vidí jen případy vyžadující rozhodnutí</li>
+        <li>Monitoring a alerting; výpadek integrace se dozvíme dřív než vy</li>
+      </ul>
+
+      <h2>Takhle vypadá v provozu</h2>
+      <div class="mock reveal" data-mock="pipeline">
+        <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>pipeline-monitor — živý provoz</span><span class="mock-live">● běží</span></div>
+        <div class="mock-flow" aria-hidden="true">
+          <span class="mf-node">Objednávka</span><i class="mf-line"><i class="mf-dot"></i></i>
+          <span class="mf-node">Validace</span><i class="mf-line"><i class="mf-dot d2"></i></i>
+          <span class="mf-node">Sklad</span><i class="mf-line"><i class="mf-dot d3"></i></i>
+          <span class="mf-node">Fakturace</span>
+        </div>
+        <div class="mock-rows">
+          <div class="mock-row"><span class="mr-id">#OB-4471</span><span class="mr-route">E-shop → ERP</span><span class="mr-status ok">Zpracováno · 40 s</span></div>
+          <div class="mock-row"><span class="mr-id">#OB-4472</span><span class="mr-route">B2B portál → ERP</span><span class="mr-status ok">Zpracováno · 55 s</span></div>
+          <div class="mock-row"><span class="mr-id">#OB-4473</span><span class="mr-route">E-shop → ERP</span><span class="mr-status run">Probíhá · validace<i class="mr-prog"><i></i></i></span></div>
+          <div class="mock-row"><span class="mr-id">#OB-4474</span><span class="mr-route">Telefonická objednávka</span><span class="mr-status warn">Výjimka → ruční kontrola</span></div>
+        </div>
+        <div class="mock-foot"><span>Dnes: <b data-count="312">0</b> transakcí</span><span>⌀ zpracování: <b>48 s</b></span><span class="mf-ok">● pipeline v provozu</span></div>
+      </div>
+      <p class="mock-caption reveal">Náhled monitorovacího dashboardu (ilustrační data).</p>
+
+      <h2>Parametry</h2>
+      <div class="svc-stats">
+        <div class="svc-stat reveal"><b>3–4 týdny</b><span>od zadání k ostrému provozu</span></div>
+        <div class="svc-stat reveal"><b>od 89 000 Kč</b><span>v rámci Fáze 2 — hlavní nasazení</span></div>
+        <div class="svc-stat reveal"><b>0 výměn</b><span>vašich stávajících systémů</span></div>
+      </div>
+
+      <h2>Časté dotazy</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Náš systém nemá API. Je to problém?<span class="plus">+</span></summary>
+          <div class="faq-body"><p>Ne. U uzavřeného softwaru nasazujeme bezpečnou RPA vrstvu, která se systémem pracuje jako člověk — jen spolehlivě a nonstop. Jakmile API vznikne, vrstvu vyměníme.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Co se stane, když pipeline spadne?<span class="plus">+</span></summary>
+          <div class="faq-body"><p>Každá transakce je idempotentní a fronta se po výpadku dozpracuje sama. Monitoring nás upozorní okamžitě; SLA reakce je součástí průběžné péče.</p></div>
+        </details>
+      </div>
+
+      <div class="svc-cta reveal">
+        <p>Pošlete nám dva systémy, mezi kterými dnes přepisujete data ručně. Na konzultaci vám řekneme, jak je propojíme.</p>
+        <a href="index.html#kontakt" class="btn btn-black">Rezervovat konzultaci</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-wrap">
+    <div class="legal-foot frame">
+      <a href="index.html" class="brand-foot">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/>
+          <rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/>
+        </svg>
+        Branzly
+      </a>
+      <p class="copyright">© Branzly <span id="year"></span>. Všechna práva vyhrazena.</p>
+    </div>
+  </footer>
+
+  <script src="lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

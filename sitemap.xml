@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://branzly.cz/</loc><priority>1.0</priority></url>
+  <url><loc>https://branzly.cz/sluzby-ai-agenti.html</loc><priority>0.9</priority></url>
+  <url><loc>https://branzly.cz/sluzby-datove-pipeline.html</loc><priority>0.9</priority></url>
+  <url><loc>https://branzly.cz/sluzby-firemni-data.html</loc><priority>0.9</priority></url>
+  <url><loc>https://branzly.cz/sluzby-audit.html</loc><priority>0.9</priority></url>
+  <url><loc>https://branzly.cz/pripadove-studie.html</loc><priority>0.8</priority></url>
+  <url><loc>https://branzly.cz/o-nas.html</loc><priority>0.7</priority></url>
+  <url><loc>https://branzly.cz/blog.html</loc><priority>0.7</priority></url>
+  <url><loc>https://branzly.cz/blog-kdy-se-vyplati-ai-agent.html</loc><priority>0.6</priority></url>
+  <url><loc>https://branzly.cz/blog-rag-v-praxi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://branzly.cz/blog-automatizace-middleware.html</loc><priority>0.6</priority></url>
+  <url><loc>https://branzly.cz/ochrana-osobnich-udaju.html</loc><priority>0.3</priority></url>
+</urlset>

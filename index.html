@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Branzly — Zcela nová éra AI</title>
-  <meta name="description" content="Branzly staví vlastní AI agenty a bezpečné datové pipeline, které odstraní vaše manuální procesy." />
-  <meta property="og:title" content="Branzly — Zcela nová éra AI" />
-  <meta property="og:description" content="Vlastní AI agenti a bezpečné datové pipeline, které odstraní vaše manuální procesy." />
+  <title>Branzly — AI agenti a automatizace firemních procesů na míru</title>
+  <meta name="description" content="Stavíme vlastní AI agenty a bezpečné datové pipeline na míru vašemu provozu. Audit za 7 dní, nasazení bez výpadku, kód i data zůstávají vám." />
+  <link rel="canonical" href="https://branzly.cz/" />
+  <meta property="og:title" content="Branzly — AI agenti a automatizace firemních procesů na míru" />
+  <meta property="og:description" content="Vlastní AI agenti a bezpečné datové pipeline na míru. Audit za 7 dní, kód i data zůstávají vám." />
   <meta property="og:type" content="website" />
   <!-- og:image musí být absolutní URL — po nasazení upravte doménu, pokud nebude branzly.cz -->
   <meta property="og:image" content="https://branzly.cz/og.png" />
@@ -24,6 +25,60 @@
   <link rel="stylesheet" href="fonts/fonts.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="preload" as="image" href="assets/hand.png" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://branzly.cz/#org",
+        "name": "Branzly",
+        "url": "https://branzly.cz/",
+        "logo": "https://branzly.cz/favicon-512.png",
+        "email": "ahoj@branzly.cz",
+        "description": "Vlastní AI agenti a bezpečné datové pipeline na míru firemním procesům.",
+        "areaServed": "CZ"
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://branzly.cz/",
+        "name": "Branzly",
+        "publisher": { "@id": "https://branzly.cz/#org" },
+        "inLanguage": "cs"
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Jsou naše firemní data v bezpečí před veřejnými AI modely?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Ano. Používáme API bez retence dat a nasazujeme výhradně ve vašem privátním cloudu. Vaše data jsou oplocená a nikdy netrénují veřejné modely." }
+          },
+          {
+            "@type": "Question",
+            "name": "Integruje se to s naším starším softwarem?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Ano. Pro každý systém s API stavíme vlastní middleware. U uzavřeného staršího softwaru nasazujeme bezpečnou RPA vrstvu, která mezeru překlene." }
+          },
+          {
+            "@type": "Question",
+            "name": "Jak rychlé je nasazení?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Audit trvá 7 dní. Interní automatizace nasazujeme za 3 až 4 týdny. Agenti pro komunikaci se zákazníky startují za 6 až 8 týdnů včetně testování." }
+          },
+          {
+            "@type": "Question",
+            "name": "Nahradí to naše zaměstnance?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Ne. Naše systémy samy vyřeší zhruba 80 % opakujících se úkolů první úrovně. Složité případy se okamžitě předávají vašim lidem." }
+          },
+          {
+            "@type": "Question",
+            "name": "Komu patří kód a duševní vlastnictví?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Po dokončení vlastníte 100 % IP. Nabízíme průběžné SLA na monitoring stability API a aktualizace podkladových jazykových modelů." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a class="skip" href="#o-nas">Přeskočit na obsah</a>
@@ -62,8 +117,8 @@
     <!-- ===== HERO ===== -->
     <section class="hero">
       <canvas class="hero-particles" id="heroParticles" aria-hidden="true"></canvas>
-      <h1 class="load load-1">Zcela nová éra AI</h1>
-      <p class="hero-sub load load-2">Stavíme vlastní AI agenty a bezpečné datové<br />pipeline, které odstraní vaše manuální procesy.</p>
+      <h1 class="load load-1">AI agenti, kteří odbaví vaši rutinu</h1>
+      <p class="hero-sub load load-2">Stavíme vlastní AI agenty a bezpečné datové pipeline na míru vašemu provozu. Kód i data zůstávají vám.</p>
       <div class="hero-cta load load-3">
         <a href="#o-nas" class="btn btn-gray">Proč my?</a>
         <a href="#kontakt" class="btn btn-black">Začít</a>
@@ -86,7 +141,7 @@
         <div class="marquee-track" id="marqueeTrack">
           <span class="logo-item"><i class="lg lg-1"></i>Openix AI</span>
           <span class="logo-item"><i class="lg lg-2"></i>Strada</span>
-          <span class="logo-item"><i class="lg lg-3"></i>K Combinator</span>
+          <span class="logo-item"><i class="lg lg-3"></i>Kovanta</span>
           <span class="logo-item"><i class="lg lg-4"></i>Radial</span>
           <span class="logo-item"><i class="lg lg-5"></i>Vercex</span>
           <span class="logo-item"><i class="lg lg-6"></i>Votion</span>
@@ -99,7 +154,7 @@
     <!-- ===== PRŮSEČÍK ČLOVĚKA A AI ===== -->
     <section class="intersection" id="o-nas">
       <h3 class="reveal">Průsečík člověka a AI.</h3>
-      <p class="section-sub reveal">Propojujeme lidské podnikání s autonomními datovými pipeline,<br />abychom okamžitě naškálovali průchodnost vaší firmy.</p>
+      <p class="section-sub reveal">Propojujeme lidské podnikání s autonomními datovými pipeline, abychom okamžitě naškálovali průchodnost vaší firmy.</p>
       <div class="intersection-visual reveal" data-plx="-0.04">
         <canvas id="asciiMeet" width="1180" height="420" aria-label="Digitální a lidská ruka se dotýkají"></canvas>
         <span class="annot annot-ai"><i class="annot-dot"></i><i class="annot-line"></i><span class="annot-text">Ta AI</span></span>
@@ -135,28 +190,32 @@
         <span class="chip-black chip-corners">Funkce<i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i></span>
       </div>
       <h3 class="reveal">Klíčové schopnosti na míru.</h3>
-      <p class="section-sub reveal">Od izolovaných agentů nad jazykovými modely po privátní, zabezpečená<br />databázová prostředí. Stavíme strukturální základ vaší automatizované firmy.</p>
+      <p class="section-sub reveal">Od izolovaných agentů nad jazykovými modely po privátní, zabezpečená databázová prostředí. Stavíme strukturální základ vaší automatizované firmy.</p>
 
       <div class="feature-grid">
         <article class="feature-cell reveal">
           <div class="pixel-icon"><canvas data-icon="agent" width="160" height="160"></canvas></div>
           <h4>Agenti zákaznické podpory</h4>
-          <p>Nasazujeme vlastní LLM agenty vytrénované přímo<br />na interní znalostní bázi vaší firmy.</p>
+          <p>Nasazujeme vlastní LLM agenty vytrénované přímo na interní znalostní bázi vaší firmy.</p>
+          <a class="case-link" href="sluzby-ai-agenti.html">Více o službě →</a>
         </article>
         <article class="feature-cell reveal">
           <div class="pixel-icon"><canvas data-icon="pipeline" width="160" height="160"></canvas></div>
           <h4>Automatizované datové pipeline</h4>
-          <p>Propojíme nesourodá API a starší systémy tak,<br />aby ruční přepisování dat úplně zmizelo.</p>
+          <p>Propojíme nesourodá API a starší systémy tak, aby ruční přepisování dat úplně zmizelo.</p>
+          <a class="case-link" href="sluzby-datove-pipeline.html">Více o službě →</a>
         </article>
         <article class="feature-cell reveal">
           <div class="pixel-icon"><canvas data-icon="database" width="160" height="160"></canvas></div>
           <h4>Bezpečná firemní data</h4>
           <p>Dotazování nad vlastními dokumenty přes privátní infrastrukturu bez retence dat, na architektuře RAG.</p>
+          <a class="case-link" href="sluzby-firemni-data.html">Více o službě →</a>
         </article>
         <article class="feature-cell reveal">
           <div class="pixel-icon"><canvas data-icon="audit" width="160" height="160"></canvas></div>
           <h4>Strategické audity AI infrastruktury</h4>
           <p>Posoudíme připravenost vašich dat dřív, než investujete do drahých enterprise modelů.</p>
+          <a class="case-link" href="sluzby-audit.html">Více o službě →</a>
         </article>
       </div>
 
@@ -168,7 +227,7 @@
     <!-- ===== EKOSYSTÉM INTEGRACÍ (beam hub) ===== -->
     <section class="ecosystem">
       <h3 class="reveal">Ekosystém integrací</h3>
-      <p class="section-sub reveal">Propojujeme nejlepší API v oboru<br />do jedné plynulé pipeline.</p>
+      <p class="section-sub reveal">Propojujeme nejlepší API v oboru do jedné plynulé pipeline.</p>
       <div class="beamhub reveal" id="beamhub">
         <svg class="bh-svg" id="bhSvg" aria-hidden="true"></svg>
         <div class="bh-col bh-left">
@@ -192,10 +251,35 @@
       </div>
     </section>
 
+    <!-- ===== DEMO AGENTA ===== -->
+    <section class="demo" id="demo">
+      <h3 class="reveal">Takhle pracuje nasazený agent</h3>
+      <p class="section-sub reveal">Ukázková konverzace nad interními systémy. Každá odpověď s citací zdroje, nejistota se předává člověku.</p>
+      <div class="demo-wrap reveal">
+        <div class="mock mock-dark" data-mock="chat">
+          <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>provozní-asistent — privátní cloud</span><span class="mock-live">● online</span></div>
+          <div class="mock-chat">
+            <div class="chat-msg user">Kolik objednávek čeká na ruční schválení?</div>
+            <div class="chat-typing" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="chat-msg agent">Ve frontě je šest objednávek nad limit 50 000 Kč. Čtyři jsem ověřil proti CRM a označil k automatickému schválení, dvě čekají na vaši kontrolu kvůli nesouladu fakturační adresy.<span class="chat-cite">Zdroj: ERP · fronta schválení</span></div>
+            <div class="chat-msg user">Pošli mi je do Slacku a připomeň mi to zítra ráno.</div>
+            <div class="chat-typing" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="chat-msg agent">Hotovo. Shrnutí obou objednávek máte v kanálu #schvalovani a připomínku jsem nastavil na zítra 9:00.<span class="chat-cite">Akce: Slack API · kalendář</span></div>
+          </div>
+          <div class="mock-foot dark"><span>⌀ odpověď: <b>2,1 s</b></span><span><b>80 %</b> úkolů bez člověka</span><span class="mf-ok">● běží ve vašem cloudu</span></div>
+        </div>
+        <p class="mock-caption">Ukázková data — agenta nad vašimi systémy vám předvedeme naživo na konzultaci.</p>
+      </div>
+    </section>
+
     <!-- ===== PROCES ===== -->
     <section class="process" id="proces">
+      <div class="process-grid">
+      <div class="process-head">
       <h3 class="reveal">Jak spolupráce probíhá</h3>
-      <p class="section-sub reveal">Od prvního hovoru k běžící automatizaci<br />ve čtyřech předvídatelných krocích.</p>
+      <p class="section-sub reveal">Od prvního hovoru k běžící automatizaci ve čtyřech předvídatelných krocích.</p>
+      <a href="#kontakt" class="btn btn-black process-cta reveal">Rezervovat vstupní audit</a>
+      </div>
       <div class="timeline" id="timeline">
         <i class="tl-track" aria-hidden="true"></i>
         <i class="tl-progress" id="tlProgress" aria-hidden="true"></i>
@@ -232,12 +316,38 @@
           </div>
         </div>
       </div>
+      </div>
+    </section>
+
+    <!-- ===== ROI KALKULAČKA ===== -->
+    <section class="roi" id="kalkulacka">
+      <h3 class="reveal">Kolik vás stojí ruční procesy?</h3>
+      <p class="section-sub reveal">Posuňte jezdce podle svého provozu. Počítáme s tím, že automatizace zvládne zhruba 80 % opakujících se úkolů.</p>
+      <div class="roi-card reveal">
+        <div class="roi-inputs">
+          <label for="roiHours">Hodin ruční práce týdně <b id="roiHoursVal">40 h</b>
+            <input type="range" id="roiHours" min="5" max="200" step="5" value="40" />
+          </label>
+          <label for="roiRate">Průměrná cena hodiny práce <b id="roiRateVal">450 Kč</b>
+            <input type="range" id="roiRate" min="200" max="1200" step="50" value="450" />
+          </label>
+        </div>
+        <div class="roi-out">
+          <div class="roi-stat"><span class="roi-num" id="roiMonthly">—</span><p>měsíčně vás stojí ruční práce</p></div>
+          <div class="roi-stat"><span class="roi-num" id="roiYearly">—</span><p>roční úspora při 80% automatizaci</p></div>
+          <div class="roi-stat"><span class="roi-num" id="roiPayback">—</span><p>návratnost nasazení (Fáze 1 + 2)</p></div>
+        </div>
+        <div class="roi-foot">
+          <p class="roi-note">Orientační výpočet. Přesná čísla pro váš provoz dostanete ze vstupního auditu.</p>
+          <a href="#kontakt" class="btn btn-black">Ověřit na konzultaci</a>
+        </div>
+      </div>
     </section>
 
     <!-- ===== ÚROVNĚ SLUŽEB ===== -->
     <section class="pricing" id="cenik">
       <h3 class="reveal">Úrovně služeb</h3>
-      <p class="section-sub reveal">Naše služby dělíme do jasných fází: audit, stavba<br />a průběžná optimalizace vašich systémů na míru.</p>
+      <p class="section-sub reveal">Naše služby dělíme do jasných fází: audit, stavba a průběžná optimalizace vašich systémů na míru.</p>
 
       <div class="tier-stack">
         <!-- Fáze 1: karta vpravo, štítek vlevo s linkou -->
@@ -247,7 +357,7 @@
             <div class="tier-left">
               <span class="chip-gray">Fáze 1</span>
               <h4>Placené zmapování</h4>
-              <p class="tier-desc">Přesně zmapujeme, kde vám AI ušetří<br />čas a peníze.</p>
+              <p class="tier-desc">Přesně zmapujeme, kde vám AI ušetří čas a peníze.</p>
               <div class="tier-bottom">
                 <span class="tier-price">7 900 Kč</span>
                 <a href="#kontakt" class="btn btn-blue">Rezervovat</a>
@@ -309,10 +419,30 @@
       </div>
     </section>
 
+    <!-- ===== SROVNÁNÍ CEST ===== -->
+    <section class="compare">
+      <h3 class="reveal">Proč ne interní vývoj nebo no-code?</h3>
+      <p class="section-sub reveal">Poctivé srovnání tří cest k automatizaci. Když pro vás bude lepší jiná, řekneme vám to na auditu.</p>
+      <div class="compare-wrap reveal">
+        <table class="compare-table">
+          <thead>
+            <tr><th scope="col"></th><th scope="col" class="ct-hl">Branzly</th><th scope="col">Interní vývoj</th><th scope="col">No-code nástroje</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Čas do nasazení</th><td class="ct-hl">3–8 týdnů</td><td>6–12 měsíců</td><td>dny, ale jen jednoduché scénáře</td></tr>
+            <tr><th scope="row">Vlastnictví kódu a dat</th><td class="ct-hl">100 % vaše</td><td>vaše</td><td>závislé na platformě</td></tr>
+            <tr><th scope="row">Integrace starších systémů</th><td class="ct-hl">vlastní middleware i RPA</td><td>ano, stojí kapacitu týmu</td><td>jen hotové konektory</td></tr>
+            <tr><th scope="row">Průběžné náklady</th><td class="ct-hl">SLA od 9 900 Kč/měs.</td><td>plat seniorního týmu</td><td>licence rostou s objemem</td></tr>
+            <tr><th scope="row">Kdo to dlouhodobě udržuje</th><td class="ct-hl">my, s měsíčním reportem</td><td>váš tým</td><td>vy, bez záruk</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- ===== PŘÍPADOVÉ STUDIE ===== -->
     <section class="cases" id="pripadove-studie">
       <h3 class="reveal">Ověřené výsledky nasazení</h3>
-      <p class="section-sub reveal">Níže je přesný provozní dopad a návratnost, které naše automatizační<br />pipeline doručily napříč firemní infrastrukturou.</p>
+      <p class="section-sub reveal">Níže je přesný provozní dopad a návratnost, které naše automatizační pipeline doručily napříč firemní infrastrukturou.</p>
 
       <div class="case-grid reveal">
         <article class="case selected">
@@ -359,7 +489,7 @@
     <!-- ===== REFERENCE (zeď citací) ===== -->
     <section class="refs" id="reference">
       <h3 class="reveal">Co říkají po nasazení</h3>
-      <p class="section-sub reveal">Bez marketingových superlativů. Jen to,<br />co nám klienti napsali po předání systémů.</p>
+      <p class="section-sub reveal">Bez marketingových superlativů. Jen to, co nám klienti napsali po předání systémů.</p>
       <div class="ref-rows reveal" id="refRows">
         <div class="ref-row">
           <div class="ref-track">
@@ -420,6 +550,28 @@
       </div>
     </section>
 
+    <!-- ===== TÝM ===== -->
+    <section class="team" id="tym">
+      <h3 class="reveal">Kdo za tím stojí</h3>
+      <p class="section-sub reveal">Žádná anonymní agentura. Malý seniorní tým, který nese odpovědnost za každé nasazení jménem.</p>
+      <div class="team-grid reveal">
+        <article class="team-card">
+          <canvas class="avatar team-avatar" width="240" height="240" data-seed="7" aria-label="Portrét Davida Saka"></canvas>
+          <h4>David Sak</h4>
+          <p class="role">Zakladatel &amp; vedoucí inženýr</p>
+          <p class="team-bio">Navrhuje architekturu každého nasazení a vede vstupní audity. S ním mluvíte už na první konzultaci — žádný obchodník mezi vámi a řešením.</p>
+        </article>
+        <div class="team-side">
+          <p>Kolem jádra držíme síť prověřených specialistů na datové inženýrství, MLOps a bezpečnost. Kapacitu škálujeme podle projektu, odpovědnost zůstává u nás.</p>
+          <ul class="cta-points">
+            <li>Na projektu pracují nejvýš tři lidé — znáte je jménem.</li>
+            <li>Technická rozhodnutí vysvětlujeme, ne diktujeme.</li>
+            <li>Každý měsíc report, kterému rozumí i vaše CFO.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== FAQ ===== -->
     <section class="faq" id="faq">
       <div class="faq-grid">
@@ -453,6 +605,21 @@
             <div class="faq-body"><p>Po dokončení vlastníte 100 % IP. Nabízíme průběžné SLA na monitoring stability API a aktualizace podkladových jazykových modelů.</p></div>
           </details>
         </div>
+      </div>
+    </section>
+
+    <!-- ===== LEAD MAGNET ===== -->
+    <section class="magnet">
+      <div class="magnet-inner reveal">
+        <div class="magnet-text">
+          <h4>Checklist: 12 procesů, které se vyplatí automatizovat jako první</h4>
+          <p>Praktický přehled s odhadem úspor a náročnosti nasazení. Pošleme vám ho e-mailem, žádný spam.</p>
+        </div>
+        <form class="magnet-form" id="magnetForm" novalidate>
+          <input type="email" name="email" id="magnetEmail" placeholder="vas@email.cz" autocomplete="email" aria-label="Váš e-mail" />
+          <button type="submit" class="btn btn-black">Poslat checklist</button>
+          <p class="form-status" id="magnetStatus" role="status" aria-live="polite"></p>
+        </form>
       </div>
     </section>
 
@@ -512,11 +679,6 @@
           Branzly
         </a>
         <p>Vlastní AI agenti a bezpečné datové pipeline<br />pro firmy, které chtějí růst bez ručního přepisování dat.</p>
-        <div class="socials">
-          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.2 8h4.6v14H.2V8zm7.4 0h4.4v1.9h.1c.6-1.1 2.1-2.3 4.3-2.3 4.6 0 5.5 3 5.5 7V22h-4.6v-6.5c0-1.6 0-3.6-2.2-3.6s-2.6 1.7-2.6 3.5V22H7.6V8z"/></svg></a>
-          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M18.9 1.2h3.7l-8.1 9.3L24 22.8h-7.5l-5.9-7.7-6.7 7.7H.2l8.7-9.9L0 1.2h7.7l5.3 7 6-7zm-1.3 19.5h2L6.6 3.3H4.4l13.2 17.4z"/></svg></a>
-          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z"/></svg></a>
-        </div>
         <p class="copyright">© Branzly <span id="year"></span>. Všechna práva vyhrazena.</p>
         <p class="foot-status"><i aria-hidden="true"></i>Systémy v provozu · Praha <span id="pragueTime"></span></p>
       </div>
@@ -527,17 +689,24 @@
         <nav class="footer-col" aria-label="Stránky">
           <p class="footer-head">Stránky</p>
           <a href="#top">[ Domů ]</a>
-          <a href="#o-nas">[ O nás ]</a>
+          <a href="o-nas.html">[ O nás ]</a>
           <a href="#cenik">[ Ceník ]</a>
-          <a href="#pripadove-studie">[ Případové studie ]</a>
-          <a href="#reference">[ Reference ]</a>
+          <a href="pripadove-studie.html">[ Případové studie ]</a>
+          <a href="blog.html">[ Blog ]</a>
           <a href="#faq">[ Časté dotazy ]</a>
-          <a href="manifest.html">[ Manifest ]</a>
+        </nav>
+        <nav class="footer-col" aria-label="Služby">
+          <p class="footer-head">Služby</p>
+          <a href="sluzby-ai-agenti.html">[ AI agenti ]</a>
+          <a href="sluzby-datove-pipeline.html">[ Datové pipeline ]</a>
+          <a href="sluzby-firemni-data.html">[ Firemní data &amp; RAG ]</a>
+          <a href="sluzby-audit.html">[ Vstupní audit ]</a>
         </nav>
         <nav class="footer-col" aria-label="Podpora">
           <p class="footer-head">Podpora</p>
           <a href="mailto:ahoj@branzly.cz">[ Kontakt ]</a>
           <a href="ochrana-osobnich-udaju.html">[ Ochrana osobních údajů ]</a>
+          <a href="obchodni-podminky.html">[ Obchodní podmínky ]</a>
         </nav>
       </div>
     </div>
@@ -546,9 +715,12 @@
   <div class="sticky-cta" id="stickyCta" aria-hidden="true">
     <p>Bezplatné 30min technické posouzení — odpovídáme do 4 hodin.</p>
     <a href="#kontakt" class="btn btn-black">Rezervovat termín</a>
+    <button type="button" class="sticky-close" aria-label="Zavřít lištu">×</button>
   </div>
 
   <script src="lenis.min.js"></script>
+  <script src="gsap.min.js"></script>
+  <script src="ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

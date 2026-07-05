@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatizace bez výměny systémů: co všechno zvládne middleware — Branzly</title>
+  <meta name="description" content="Jak funguje integrační vrstva nad stávajícím ERP, CRM a účetnictvím. Event-driven orchestrace, RPA pro systémy bez API a proč je migrace poslední možnost." />
+  <link rel="canonical" href="https://branzly.cz/blog-automatizace-middleware.html" />
+  <meta property="og:title" content="Automatizace bez výměny systémů: co všechno zvládne middleware" />
+  <meta property="og:description" content="Integrační vrstva nad stávajícími systémy — jak funguje a kdy stačí místo migrace." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://branzly.cz/og.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='18' rx='4'/%3E%3Crect x='13' y='3' width='8' height='18' rx='4'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="stylesheet" href="fonts/fonts.css" />
+  <link rel="stylesheet" href="style.css" />
+  <noscript><style>.reveal, .load { opacity: 1 !important; transform: none !important; filter: none !important; }</style></noscript>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Automatizace bez výměny systémů: co všechno zvládne middleware",
+    "datePublished": "2026-05-14",
+    "inLanguage": "cs",
+    "author": { "@type": "Person", "name": "David Sak" },
+    "publisher": { "@type": "Organization", "name": "Branzly", "url": "https://branzly.cz/" }
+  }
+  </script>
+</head>
+<body>
+
+  <header class="nav-wrap">
+    <div class="nav nav-simple frame">
+      <nav class="nav-side nav-left" aria-label="Navigace">
+        <a href="blog.html"><span>[</span>Zpět na blog<span>]</span></a>
+      </nav>
+      <a href="index.html" class="brand" aria-label="Branzly domů">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/>
+          <rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/>
+        </svg>
+      </a>
+      <nav class="nav-side nav-right" aria-label="Kontakt">
+        <a href="index.html#kontakt"><span>[</span>Kontakt<span>]</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="frame">
+    <article class="legal">
+      <h1>Automatizace bez výměny systémů: co všechno zvládne middleware</h1>
+      <p class="legal-updated">14. 5. 2026 · David Sak · 5 minut čtení</p>
+
+      <p>„Nejdřív musíme vyměnit ERP, pak se můžeme bavit o automatizaci." Tuhle větu slyšíme často — a skoro vždycky je to omyl, který firmu stojí rok času a miliony navíc. Ve většině případů není problém v systémech, ale v tom, že mezi nimi přenášejí data lidé.</p>
+
+      <h2>Co je middleware</h2>
+      <p>Integrační vrstva, která sedí nad vašimi stávajícími systémy a přenáší mezi nimi data i události. ERP, CRM, sklad ani účetnictví se nemění — dostanou jen společný „nervový systém". Když v e-shopu vznikne objednávka, middleware ji zvaliduje, založí ve skladu, vytvoří fakturu a pošle notifikaci — bez jediného ručního přepisu.</p>
+
+      <h2>Event-driven: reakce na události, ne dávky přes noc</h2>
+      <p>Starší integrace fungovaly dávkově — jednou za noc se přenesl export. Moderní orchestrace reaguje na události v reálném čase: naložení zásilky, přijetí platby, změna stavu. Rozdíl je vidět na číslech; u logistického klienta jsme tímhle přístupem zkrátili zpracování zakázky ze 48 hodin na 11 minut, beze změny jediného z jeho tří systémů.</p>
+
+      <h2>„Ale náš systém nemá API"</h2>
+      <p>Nemá-li systém API, nasazuje se RPA vrstva — robot, který se systémem pracuje přes jeho rozhraní jako člověk: čte obrazovky, vyplňuje formuláře. Je to méně elegantní než API a upřímně to říkáme: RPA je most, ne cílový stav. Ale funguje spolehlivě, nasadí se za dny a odblokuje automatizaci tam, kde by se jinak čekalo na výměnu systému roky. Jakmile API vznikne, vrstva se vymění — zbytek pipeline zůstává.</p>
+
+      <h2>Kde jsou hranice</h2>
+      <ul>
+        <li><strong>Datový chaos middleware nevyřeší.</strong> Když tři systémy vedou tři různé číselníky zákazníků, integrace potřebuje nejdřív mapování a deduplikaci. Jde to, ale musí se na to myslet v návrhu.</li>
+        <li><strong>Extrémně nestabilní systém</strong> — padá-li ERP dvakrát týdně, automatizace nestabilitu jen zrychlí. Nejdřív stabilizace, pak orchestrace.</li>
+        <li><strong>Procesy, které nikdo nezná.</strong> Automatizovat lze jen proces, který umíte popsat. Proto každé naše nasazení začíná auditem, ne kódem.</li>
+      </ul>
+
+      <h2>Kdy má výměna systému přednost</h2>
+      <p>Poctivá odpověď: když systém přestává zvládat svou vlastní práci — ne integraci. Přerostli jste licenční limity, dodavatel končí s podporou, chybí funkce, které byznys potřebuje. Pak měňte. Ale měnit funkční ERP jen proto, „aby se to líp integrovalo", je nejdražší možná cesta k automatizaci.</p>
+
+      <p><a href="sluzby-datove-pipeline.html">→ Jak stavíme datové pipeline nad stávajícími systémy</a></p>
+    </article>
+  </main>
+
+  <footer class="footer-wrap">
+    <div class="legal-foot frame">
+      <a href="index.html" class="brand-foot">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="18" rx="4" fill="#000"/>
+          <rect x="13" y="3" width="8" height="18" rx="4" fill="#000"/>
+        </svg>
+        Branzly
+      </a>
+      <p class="copyright">© Branzly <span id="year"></span>. Všechna práva vyhrazena.</p>
+    </div>
+  </footer>
+
+  <script src="lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
