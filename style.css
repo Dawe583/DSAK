@@ -272,7 +272,6 @@ h4 { font-size: 17px; font-weight: 500; }
   width: max-content;
   animation: marquee 28s linear infinite;
   padding-right: 64px;
-  will-change: transform;
 }
 @keyframes marquee { to { transform: translateX(-50%); } }
 .logo-item {
@@ -424,7 +423,6 @@ h4 { font-size: 17px; font-weight: 500; }
   border-radius: 50%;
   animation: ringExpand 3.6s var(--ease) infinite;
   pointer-events: none;
-  will-change: transform, opacity;
 }
 .bh-ring.r2 { animation-delay: 1.8s; }
 @keyframes ringExpand {
@@ -774,8 +772,6 @@ h4 { font-size: 17px; font-weight: 500; }
   transition-delay: calc(var(--i, 0) * 90ms);
 }
 .reveal.in { opacity: 1; filter: blur(0); transform: none; }
-/* parallax prvky dostávají transform každý frame → kompozitní vrstva pro plynulost */
-[data-plx] { will-change: transform; }
 
 /* ===== WORD-MASK REVEAL (StackGrid styl) ===== */
 /* rozdělený element už neanimuje jako celek — animují se jednotlivá slova */

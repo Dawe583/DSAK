@@ -434,28 +434,9 @@ document.querySelectorAll(".feature-grid, .case-grid, .faq-list, .tag-strip, .st
   [...parent.children].forEach((child, i) => child.style.setProperty("--i", i));
 });
 if ("IntersectionObserver" in window && !reduceMotion) {
-  // JIT GPU-promotion: prvek se povýší na kompozitní vrstvu frame PŘED
-  // animací (plynulý blur reveal) a po dokončení se vrstva zase uvolní,
-  // aby na stránce nezůstávaly desítky trvalých vrstev (paměť/výkon).
-  const promote = (el) => {
-    el.style.willChange = "opacity, transform, filter";
-    let cleared = false;
-    const clear = () => {
-      if (cleared) return;
-      cleared = true;
-      el.style.willChange = "auto";
-      el.removeEventListener("transitionend", clear);
-    };
-    el.addEventListener("transitionend", clear);
-    setTimeout(clear, 1800); // fallback pro prvky bez transitionend (split nadpisy)
-  };
   const io = new IntersectionObserver((entries) => {
     for (const en of entries) {
-      if (!en.isIntersecting) continue;
-      const el = en.target;
-      promote(el);
-      requestAnimationFrame(() => el.classList.add("in"));
-      io.unobserve(el);
+      if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
     }
   }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
   reveals.forEach((el) => io.observe(el));
