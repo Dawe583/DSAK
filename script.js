@@ -1130,7 +1130,7 @@ if (magnetForm) {
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-/* ---------- živý čas v patičce (Praha) ---------- */
+/* ---------- živý čas v patičce (ČR, Europe/Prague) ---------- */
 const pragueEl = document.getElementById("pragueTime");
 if (pragueEl) {
   const fmt = new Intl.DateTimeFormat("cs-CZ", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Europe/Prague" });
