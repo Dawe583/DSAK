@@ -1225,3 +1225,168 @@ if (hasGsap && !reduceMotion) {
   if (tp) tp.style.transform = "scaleY(1)";
   document.querySelectorAll(".tl-dot").forEach((d) => d.classList.add("on"));
 }
+
+/* ===== David Sak — dodatečné animace & interakce ===== */
+(function () {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fine = matchMedia("(pointer: fine)").matches;
+
+  /* kurzorový spotlight */
+  const sp = document.getElementById("spotlight");
+  if (sp && fine && !reduce) {
+    let raf = 0, x = 0, y = 0;
+    addEventListener("pointermove", (e) => {
+      x = e.clientX; y = e.clientY; sp.classList.add("on");
+      if (!raf) raf = requestAnimationFrame(() => {
+        sp.style.setProperty("--mx", x + "px");
+        sp.style.setProperty("--my", y + "px");
+        raf = 0;
+      });
+    }, { passive: true });
+  }
+
+  /* hero — rotující slovo */
+  const rot = document.getElementById("heroRotator");
+  if (rot && !reduce) {
+    const words = ["AI agenty", "automatizace", "webové aplikace", "datové pipeline", "RAG systémy"];
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % words.length;
+      rot.classList.remove("swap"); void rot.offsetWidth;
+      rot.textContent = words[i];
+      rot.classList.add("swap");
+    }, 2300);
+  }
+
+  /* terminál — psaní kódu + zvýraznění syntaxe */
+  const codeEl = document.getElementById("termCode");
+  const curEl = document.getElementById("termCursor");
+  const titleEl = document.getElementById("termTitle");
+  const langEl = document.getElementById("termLang");
+  if (codeEl && titleEl && langEl) {
+    const snippets = [
+      { title: "agent.py", lang: "python", code:
+`from anthropic import Anthropic
+
+client = Anthropic()
+
+def agent(otazka, tools):
+    # LLM smyčka s nástroji a citací zdroje
+    msg = client.messages.create(
+        model="claude-sonnet-5",
+        tools=tools,
+        messages=[{"role": "user", "content": otazka}],
+    )
+    return handle(msg)  # nejistotu předá člověku` },
+      { title: "rag.ts", lang: "typescript", code:
+`export async function search(q: string) {
+  const vec = await embed(q)          // dotaz -> vektor
+  const { rows } = await db.query(SQL, [vec])
+  return rows.map((r) => ({
+    text: r.chunk,
+    source: r.source,                 // vždy s citací
+  }))
+}` },
+      { title: "pipeline.py", lang: "python", code:
+`@flow
+def sync_faktury():
+    for inv in erp.pull("pending"):
+        if crm.verify(inv):
+            approve(inv)              # ~80 % automaticky
+        else:
+            slack.notify("#schvalovani", inv)` },
+    ];
+
+    const KW = /\b(from|import|def|return|export|async|function|await|const|let|for|if|else|class|new|in)\b/g;
+    const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    function hl(code, lang) {
+      return esc(code).split("\n").map((line) => {
+        const ci = lang === "python" ? line.indexOf("#") : line.indexOf("//");
+        let head = line, tail = "";
+        if (ci >= 0) { head = line.slice(0, ci); tail = '<span class="tk-com">' + line.slice(ci) + "</span>"; }
+        head = head
+          .replace(/(&quot;[^&]*?&quot;|&#39;[^&]*?&#39;)/g, '<span class="tk-str">$1</span>')
+          .replace(KW, '<span class="tk-kw">$1</span>')
+          .replace(/\b(\d+)\b/g, '<span class="tk-num">$1</span>');
+        return head + tail;
+      }).join("\n");
+    }
+
+    let started = false;
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    async function run() {
+      if (started) return; started = true;
+      if (reduce) {
+        const s = snippets[0];
+        titleEl.textContent = s.title; langEl.textContent = s.lang;
+        codeEl.innerHTML = hl(s.code, s.lang);
+        if (curEl) curEl.style.display = "none";
+        return;
+      }
+      let si = 0;
+      while (true) {
+        const s = snippets[si];
+        titleEl.textContent = s.title; langEl.textContent = s.lang;
+        codeEl.textContent = "";
+        for (let k = 0; k < s.code.length; k++) {
+          codeEl.textContent += s.code[k];
+          await sleep(s.code[k] === "\n" ? 40 : 13 + Math.random() * 22);
+        }
+        codeEl.innerHTML = hl(s.code, s.lang);
+        await sleep(2600);
+        for (let k = s.code.length; k >= 0; k -= 3) { codeEl.textContent = s.code.slice(0, k); await sleep(6); }
+        await sleep(240);
+        si = (si + 1) % snippets.length;
+      }
+    }
+    const io = new IntersectionObserver((ents) => {
+      ents.forEach((e) => { if (e.isIntersecting) run(); });
+    }, { threshold: 0.25 });
+    io.observe(codeEl);
+  }
+
+  /* 3D tilt na repo kartách */
+  if (fine && !reduce) {
+    document.querySelectorAll("[data-tilt]").forEach((card) => {
+      card.addEventListener("pointermove", (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(720px) rotateX(${(-py * 5).toFixed(2)}deg) rotateY(${(px * 6).toFixed(2)}deg)`;
+      });
+      card.addEventListener("pointerleave", () => { card.style.transform = ""; });
+    });
+  }
+
+  /* brána na heslo (SebCaffe) — AES-GCM dešifrování URL klíčem odvozeným z hesla */
+  document.querySelectorAll(".repo-card.locked").forEach((card) => {
+    const btn = card.querySelector("[data-gate]");
+    const box = card.querySelector(".gate-box");
+    const input = card.querySelector(".gate-input");
+    const submit = card.querySelector(".gate-submit");
+    const msg = card.querySelector(".gate-msg");
+    if (!btn || !box || !input || !submit) return;
+    btn.addEventListener("click", () => { box.hidden = false; btn.hidden = true; input.focus(); });
+    const b64d = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+    async function unlock() {
+      const pass = (input.value || "").trim();
+      if (!pass) return;
+      msg.textContent = "Ověřuji…"; msg.className = "gate-msg";
+      try {
+        const salt = b64d(card.dataset.salt), iv = b64d(card.dataset.iv), ct = b64d(card.dataset.ct);
+        const baseKey = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
+        const key = await crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt, iterations: 120000, hash: "SHA-256" },
+          baseKey, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+        const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ct);
+        const url = new TextDecoder().decode(pt);
+        msg.textContent = "Odemčeno — otevírám demo…"; msg.className = "gate-msg ok";
+        window.open(url, "_blank", "noopener");
+      } catch (err) {
+        msg.textContent = "Špatné heslo. Zkuste to znovu."; msg.className = "gate-msg err";
+      }
+    }
+    submit.addEventListener("click", unlock);
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); unlock(); } });
+  });
+})();

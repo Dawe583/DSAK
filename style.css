@@ -1916,3 +1916,70 @@ img.team-avatar {
 .cta-direct { margin-top: 18px; font-size: 14px; color: var(--gray-2); }
 .cta-direct a { color: var(--ink); border-bottom: 1px solid var(--line-strong); transition: border-color 0.2s; white-space: nowrap; }
 .cta-direct a:hover { border-color: var(--blue); }
+
+/* ===== David Sak — animace, terminál & reálné projekty ===== */
+
+/* kurzorový spotlight */
+.spotlight {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(240px circle at var(--mx, -200px) var(--my, -200px), rgba(52, 85, 250, 0.07), transparent 62%);
+  opacity: 0; transition: opacity 0.5s ease;
+}
+.spotlight.on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .spotlight { display: none; } }
+
+/* hero „právě řeším" + rotující slovo */
+.hero-now { margin-top: 20px; font-size: 13px; color: var(--gray-3); display: inline-flex; align-items: center; gap: 8px; }
+.now-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); animation: nowPulse 2s infinite; }
+@keyframes nowPulse { 0% { box-shadow: 0 0 0 0 rgba(52,85,250,.45); } 70% { box-shadow: 0 0 0 8px rgba(52,85,250,0); } 100% { box-shadow: 0 0 0 0 rgba(52,85,250,0); } }
+.rotator { color: var(--ink); font-weight: 500; border-bottom: 1.5px solid var(--blue); padding-bottom: 1px; }
+.rotator.swap { animation: rotSwap 0.4s var(--ease); }
+@keyframes rotSwap { 0% { opacity: 0; transform: translateY(6px); } 100% { opacity: 1; transform: translateY(0); } }
+
+/* terminál se psaným kódem */
+.codeblock { padding: clamp(56px, 7vw, 88px) 32px; }
+.term { max-width: 760px; margin: 42px auto 0; border-radius: 10px; overflow: hidden; background: #0d0f14; border: 1px solid #1e2230; box-shadow: 0 30px 70px rgba(0,0,0,.28); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.term-bar { display: flex; align-items: center; gap: 7px; padding: 11px 14px; background: #14171f; border-bottom: 1px solid #1e2230; }
+.term-bar > i { width: 11px; height: 11px; border-radius: 50%; background: #2a2f3c; }
+.term-bar > i:nth-child(1) { background: #ff5f57; } .term-bar > i:nth-child(2) { background: #febc2e; } .term-bar > i:nth-child(3) { background: #28c840; }
+.term-title { margin-left: 8px; color: #8b93a7; font-size: 12px; }
+.term-run { margin-left: auto; color: #5b647a; font-size: 11px; letter-spacing: .05em; }
+.term-body { margin: 0; padding: 18px 20px; min-height: 232px; font-size: 13px; line-height: 1.75; color: #cdd3e1; white-space: pre-wrap; word-break: break-word; }
+.term-cursor { display: inline-block; color: #7aa2f7; animation: caret 1s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+.term-foot { display: flex; justify-content: space-between; padding: 9px 16px; background: #14171f; border-top: 1px solid #1e2230; font-size: 11px; color: #5b647a; }
+.term-ok { color: #4ec26b; }
+.tk-kw { color: #7aa2f7; } .tk-str { color: #9ece6a; } .tk-com { color: #5c6370; font-style: italic; } .tk-num { color: #d19a66; }
+
+/* pás nadpisu reálných projektů */
+.repos-band { text-align: center; margin: 56px 0 26px; }
+
+/* mřížka repo karet */
+.repo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.repo-card { position: relative; border: 1px dashed var(--line-strong); background: linear-gradient(180deg, #fff, var(--panel)); padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: border-color .3s var(--ease), box-shadow .3s var(--ease), transform .15s var(--ease); will-change: transform; }
+.repo-card:hover { border-color: var(--blue); box-shadow: 0 18px 42px rgba(52,85,250,.10); }
+.repo-top { display: flex; align-items: center; justify-content: space-between; }
+.repo-gh { color: var(--gray-3); }
+.repo-badge { font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--blue); border: 1px solid rgba(52,85,250,.3); padding: 3px 8px; border-radius: 20px; }
+.repo-badge.wip { color: var(--gray-2); border-color: var(--line-strong); }
+.repo-badge.lock { color: #b26a00; border-color: rgba(178,106,0,.35); background: rgba(178,106,0,.06); }
+.repo-card h4 { font-size: 16px; }
+.repo-card > p { color: var(--gray-2); font-size: 13px; flex: 1; margin: 0; }
+.repo-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.repo-tags span { font-size: 10.5px; color: var(--gray-3); border: 1px solid var(--line); padding: 2px 7px; border-radius: 4px; }
+.repo-links { display: flex; gap: 10px; align-items: center; margin-top: 2px; }
+.repo-link { font-size: 12.5px; font-weight: 500; color: var(--ink); border: 0; border-bottom: 1px solid var(--blue); padding: 0 0 1px; cursor: pointer; background: none; display: inline-flex; align-items: center; gap: 3px; font-family: var(--sans); transition: color .2s, border-color .2s; }
+.repo-link i { font-style: normal; }
+.repo-link:hover { color: var(--blue); }
+.repo-link.ghost { color: var(--gray-3); border-bottom-color: var(--line-strong); }
+.repo-link.ghost:hover { color: var(--ink); }
+.gate-btn { color: #b26a00; border-bottom-color: #b26a00; }
+.gate-box { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
+.gate-input { font-family: var(--sans); font-size: 13px; padding: 7px 10px; border: 1px solid var(--line-strong); background: #fff; outline: none; flex: 1; min-width: 110px; }
+.gate-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(52,85,250,.08); }
+.gate-submit { font-family: var(--sans); font-size: 12.5px; font-weight: 500; padding: 7px 15px; background: var(--ink); color: #fff; border: 0; border-radius: 20px; cursor: pointer; transition: background .2s; }
+.gate-submit:hover { background: #1a1a1a; }
+.gate-msg { flex-basis: 100%; font-size: 12px; margin: 2px 0 0; }
+.gate-msg.err { color: #c0392b; } .gate-msg.ok { color: #2e9e4f; }
+
+@media (max-width: 820px) { .repo-grid { grid-template-columns: 1fr; } }
