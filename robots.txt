@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://branzly.cz/sitemap.xml
+Sitemap: https://davidsak.cz/sitemap.xml

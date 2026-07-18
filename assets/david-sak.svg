@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 600" role="img" aria-label="Portrét — David Sak (placeholder)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2f2f2"/>
+      <stop offset="1" stop-color="#e7e7e7"/>
+    </linearGradient>
+    <linearGradient id="fig" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c9c9c9"/>
+      <stop offset="1" stop-color="#a9a9a9"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="600" fill="url(#bg)"/>
+  <!-- silhouette -->
+  <g fill="url(#fig)">
+    <circle cx="240" cy="230" r="96"/>
+    <path d="M84 600c0-92 70-166 156-166s156 74 156 166z"/>
+  </g>
+  <!-- thin editorial frame + crop marks -->
+  <g fill="none" stroke="#00000022" stroke-width="1">
+    <rect x="16.5" y="16.5" width="447" height="567"/>
+  </g>
+  <g stroke="#00000055" stroke-width="1.5">
+    <path d="M16 40V16h24M440 16h24v24M464 560v24h-24M40 584H16v-24"/>
+  </g>
+  <text x="240" y="556" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="14" letter-spacing="2" fill="#00000066">DAVID&#160;SAK</text>
+</svg>
