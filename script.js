@@ -1020,10 +1020,10 @@ if (calEl && CAL_LINK) {
    Kaskáda odeslání:
    1. /api/contact — vlastní backend (Vercel serverless + Resend, viz api/contact.js);
       funguje po nasazení na Vercel s env RESEND_API_KEY
-   2. FormSubmit — bez backendu; po první zprávě přijde na ahoj@davidsak.cz
+   2. FormSubmit — bez backendu; po první zprávě přijde na business@dsak.tech
       aktivační e-mail, stačí potvrdit
    3. mailto — otevře e-mailového klienta návštěvníka s předvyplněnou zprávou */
-const FORM_ENDPOINTS = ["/api/contact", "https://formsubmit.co/ajax/ahoj@davidsak.cz"];
+const FORM_ENDPOINTS = ["/api/contact", "https://formsubmit.co/ajax/business@dsak.tech"];
 const contactForm = document.getElementById("contactForm");
 if (contactForm) {
   const fName = document.getElementById("fName");
@@ -1077,7 +1077,7 @@ if (contactForm) {
     } catch {
       // záložní cesta: předvyplněný e-mail v klientovi návštěvníka
       const body = `Jméno: ${name}\nE-mail: ${email}\nTermín: ${term}\n\n${msg}`;
-      location.href = `mailto:ahoj@davidsak.cz?subject=${encodeURIComponent("Poptávka z webu — " + name)}&body=${encodeURIComponent(body)}`;
+      location.href = `mailto:business@dsak.tech?subject=${encodeURIComponent("Poptávka z webu — " + name)}&body=${encodeURIComponent(body)}`;
       statusEl.textContent = "Přímé odeslání se nepodařilo — otevřeli jsme váš e-mail s předvyplněnou zprávou.";
       statusEl.className = "form-status err";
     } finally {
@@ -1120,7 +1120,7 @@ if (magnetForm) {
       mStatus.textContent = "✓ Díky! Checklist vám dorazí do pár minut.";
       mStatus.className = "form-status ok";
     } catch {
-      mStatus.textContent = "Odeslání se nepodařilo — napište mi přímo na ahoj@davidsak.cz.";
+      mStatus.textContent = "Odeslání se nepodařilo — napište mi přímo na business@dsak.tech.";
       mStatus.className = "form-status err";
     }
   });

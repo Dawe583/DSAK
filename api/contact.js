@@ -1,7 +1,7 @@
 // Vercel serverless funkce pro kontaktní formulář.
 // Po nasazení na Vercel nastavte env proměnné:
 //   RESEND_API_KEY — API klíč z resend.com (zdarma do 100 e-mailů/den)
-//   CONTACT_TO     — cílová schránka (výchozí ahoj@davidsak.cz)
+//   CONTACT_TO     — cílová schránka (výchozí business@dsak.tech)
 //   CONTACT_FROM   — ověřený odesílatel (výchozí onboarding@resend.dev,
 //                    po ověření vlastní domény např. web@davidsak.cz)
 // Bez nakonfigurovaného klíče vrací 501 a web automaticky přejde na FormSubmit.
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   const key = process.env.RESEND_API_KEY;
   if (!key) return res.status(501).json({ error: "Backend není nakonfigurován." });
 
-  const to = process.env.CONTACT_TO || "ahoj@davidsak.cz";
+  const to = process.env.CONTACT_TO || "business@dsak.tech";
   const from = process.env.CONTACT_FROM || "David Sak Web <onboarding@resend.dev>";
 
   const r = await fetch("https://api.resend.com/emails", {

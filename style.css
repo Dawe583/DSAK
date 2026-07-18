@@ -1911,3 +1911,8 @@ img.team-avatar {
   .magnet-links { flex-direction: row; flex-wrap: wrap; }
   .magnet-links .btn { width: auto; flex: 1 1 auto; }
 }
+
+/* přímý kontakt pod kontaktním formulářem */
+.cta-direct { margin-top: 18px; font-size: 14px; color: var(--gray-2); }
+.cta-direct a { color: var(--ink); border-bottom: 1px solid var(--line-strong); transition: border-color 0.2s; white-space: nowrap; }
+.cta-direct a:hover { border-color: var(--blue); }
