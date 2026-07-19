@@ -1540,3 +1540,59 @@ def sync_faktury():
     prices.forEach(function (el) { io.observe(el); });
   }
 })();
+
+/* ===== beamhub: reakce nodů na pulzy, tooltipy, orbit ===== */
+(function () {
+  var hub = document.getElementById("beamhub");
+  if (!hub) return;
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var svg = document.getElementById("bhSvg");
+  var center = document.getElementById("bhHub");
+  var nodes = [].slice.call(hub.querySelectorAll(".bh-node"));
+
+  /* tooltipy s tím, co s nástrojem stavím */
+  var TIPS = {
+    slack: "Notifikace a schvalování rovnou do kanálů",
+    notion: "Znalostní báze jako zdroj pro RAG",
+    hubspot: "CRM — leady, kontakty, pipeline",
+    stripe: "Platby, faktury a vyúčtování",
+    postgresql: "Hlavní databáze + vektorové vyhledávání",
+    zendesk: "Tickety a zákaznická podpora",
+  };
+  nodes.forEach(function (n) { var t = TIPS[n.dataset.icon]; if (t) n.setAttribute("data-tip", t); });
+
+  /* orbitující tečky kolem hubu */
+  if (center && !reduce && !center.querySelector(".bh-orbit")) {
+    var orbit = document.createElement("i");
+    orbit.className = "bh-orbit";
+    orbit.setAttribute("aria-hidden", "true");
+    orbit.innerHTML = "<b></b><b></b>";
+    center.appendChild(orbit);
+  }
+
+  /* ping nodu/hubu při odletu a příletu pulzu (delegovaně — přežije rebuild drah) */
+  var ping = function (el) {
+    if (!el) return;
+    el.classList.remove("ping");
+    void el.offsetWidth;
+    el.classList.add("ping");
+  };
+  if (svg && !reduce) {
+    svg.addEventListener("animationiteration", function (e) {
+      var t = e.target;
+      if (!t || !t.classList || !t.classList.contains("bh-pulse")) return;
+      var pulses = [].slice.call(svg.querySelectorAll(".bh-pulse"));
+      var i = pulses.indexOf(t);
+      var node = nodes[i];
+      if (!node) return;
+      var DUR = 3400;
+      if (node.dataset.dir === "out") {
+        ping(center);
+        setTimeout(function () { ping(node); }, DUR * 0.8);
+      } else {
+        ping(node);
+        setTimeout(function () { ping(center); }, DUR * 0.8);
+      }
+    });
+  }
+})();

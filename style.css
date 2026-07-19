@@ -2063,3 +2063,44 @@ img.team-avatar {
 .term-out .ln-step { color: #cdd3e1; }
 .term-out .ln-ok { color: #4ec26b; }
 .term-meta { color: #5b647a; }
+
+/* ===== beamhub upgrade: komety, pingy, tooltipy, orbit ===== */
+.bh-pulse { stroke-width: 2.4; stroke-dasharray: 11 89; filter: drop-shadow(0 0 5px rgba(52, 85, 250, 0.75)); }
+.bh-node, .bh-hub { transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s; }
+.bh-node.ping { animation: bhPing 0.6s var(--ease); }
+.bh-hub.ping { animation: bhPingHub 0.6s var(--ease); }
+@keyframes bhPing { 0% { transform: none; } 35% { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 26px rgba(52, 85, 250, 0.22); } 100% { transform: none; } }
+@keyframes bhPingHub { 0% { transform: none; } 35% { transform: scale(1.07); box-shadow: 0 0 0 10px rgba(52, 85, 250, 0.10), 0 14px 34px rgba(52, 85, 250, 0.20); } 100% { transform: none; } }
+
+/* tooltip nad nodem */
+.bh-node[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute; left: 50%; bottom: calc(100% + 9px); transform: translateX(-50%) translateY(4px);
+  background: var(--ink); color: #fff; font-size: 11px; line-height: 1.35; white-space: nowrap;
+  padding: 6px 10px; border-radius: 6px; opacity: 0; pointer-events: none;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease); z-index: 5;
+}
+.bh-node[data-tip]::before {
+  content: ""; position: absolute; left: 50%; bottom: calc(100% + 4px); transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--ink); opacity: 0; transition: opacity 0.25s var(--ease); z-index: 5;
+}
+.bh-node[data-tip]:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+.bh-node[data-tip]:hover::before { opacity: 1; }
+
+/* orbitující tečky kolem hubu */
+.bh-hub { position: relative; }
+.bh-orbit { position: absolute; inset: -16px; border-radius: 50%; animation: bhOrbit 9s linear infinite; pointer-events: none; }
+.bh-orbit b { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 8px rgba(52, 85, 250, 0.7); }
+.bh-orbit b:nth-child(1) { top: -2px; left: 50%; }
+.bh-orbit b:nth-child(2) { bottom: -2px; left: 50%; opacity: 0.5; }
+@keyframes bhOrbit { to { transform: rotate(360deg); } }
+
+/* stagger nástup nodů */
+.beamhub.reveal .bh-left .bh-node { transform: translateX(-26px); }
+.beamhub.reveal .bh-right .bh-node { transform: translateX(26px); }
+.beamhub.reveal .bh-node { opacity: 0; transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.beamhub.reveal.in .bh-node { opacity: 1; transform: none; }
+.beamhub.reveal.in .bh-col .bh-node:nth-child(1) { transition-delay: 0.05s; }
+.beamhub.reveal.in .bh-col .bh-node:nth-child(2) { transition-delay: 0.18s; }
+.beamhub.reveal.in .bh-col .bh-node:nth-child(3) { transition-delay: 0.31s; }
+@media (prefers-reduced-motion: reduce) { .bh-orbit { display: none; } }
