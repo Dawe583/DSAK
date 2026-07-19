@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /prace/
 
 Sitemap: https://www.dsak.tech/sitemap.xml

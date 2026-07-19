@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fdfdfd" />
+  <title>Ippa Café · pitch — David Sak</title>
+  <meta name="description" content="Klientský pitch pro kavárnu Ippa Café. Přístup na heslo." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="stylesheet" href="fonts/fonts.css" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .pitch-wrap { max-width: var(--max); margin: 0 auto; padding: clamp(48px, 7vw, 80px) 32px clamp(56px, 8vw, 96px); }
+    .pitch-head { text-align: center; max-width: 640px; margin: 0 auto; }
+    .pitch-head h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(38px, 6vw, 60px); line-height: 1.06; }
+    .pitch-head p { color: var(--gray-2); font-size: 14.5px; margin-top: 16px; }
+    .gate-panel { max-width: 420px; margin: 34px auto 0; border: 1px dashed var(--line-strong); background: var(--panel); padding: 26px; text-align: center; }
+    .gate-panel .lock { font-size: 28px; }
+    .gate-panel h2 { font-size: 16px; font-weight: 500; margin: 8px 0 4px; }
+    .gate-panel p { color: var(--gray-3); font-size: 12.5px; margin-bottom: 16px; }
+    .gate-panel form { display: flex; gap: 8px; }
+    .gate-panel input { flex: 1; font-family: var(--sans); font-size: 14px; padding: 10px 12px; border: 1px solid var(--line-strong); background: #fff; outline: none; }
+    .gate-panel input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(52,85,250,.08); }
+    .gate-msg { font-size: 12px; margin-top: 12px; min-height: 1em; }
+    .gate-msg.err { color: #c0392b; } .gate-msg.ok { color: #2e9e4f; }
+    .pitch-stage { margin-top: 36px; opacity: 0; max-height: 0; overflow: hidden; transition: opacity .5s var(--ease); }
+    .pitch-stage.on { opacity: 1; max-height: none; }
+    .pitch-frame-bar { display: flex; align-items: center; gap: 8px; background: #14171f; padding: 10px 14px; border-radius: 8px 8px 0 0; }
+    .pitch-frame-bar i { width: 11px; height: 11px; border-radius: 50%; background: #2a2f3c; }
+    .pitch-frame-bar i:nth-child(1){background:#ff5f57}.pitch-frame-bar i:nth-child(2){background:#febc2e}.pitch-frame-bar i:nth-child(3){background:#28c840}
+    .pitch-frame-bar span { margin-left: 8px; color: #8b93a7; font-family: monospace; font-size: 12px; }
+    .pitch-frame-bar a { margin-left: auto; color: #cdd3e1; font-size: 12px; }
+    .ippa-frame { width: 100%; height: 78vh; border: 1px solid #1e2230; border-top: 0; border-radius: 0 0 8px 8px; display: block; background: #fff; }
+  </style>
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="nav nav-simple frame">
+      <nav class="nav-side nav-left" aria-label="Navigace">
+        <a href="pripadove-studie.html"><span>[</span>Zpět na projekty<span>]</span></a>
+      </nav>
+      <a href="index.html" class="brand" aria-label="David Sak — domů">
+        <img src="assets/logo.png" alt="David Sak" width="26" height="26" class="brand-logo" />
+      </a>
+      <nav class="nav-side nav-right" aria-label="Kontakt">
+        <a href="index.html#kontakt"><span>[</span>Kontakt<span>]</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="frame">
+    <div class="pitch-wrap">
+      <div class="pitch-head">
+        <h1>Ippa Café · pitch</h1>
+        <p>Prezentační web (pitch) pro kavárnu Ippa Café ve třech jazycích. Je to klientské demo, proto je přístupné jen na heslo.</p>
+      </div>
+
+      <div class="gate-panel" id="gate" data-salt="ArhlCKxdgdq0FaHU6X4EFA==" data-iv="lGq+9N8iDmQmTeMz" data-ct="xn4f2jZZdlYo61RGBYN5YFlQJfUyAIUrXjIU3Sc4sbfWVGSniQ==">
+        <div class="lock" aria-hidden="true">🔒</div>
+        <h2>Zadejte heslo</h2>
+        <p>Pro přístup k demu zadejte heslo, které jste dostali.</p>
+        <form id="gateForm" autocomplete="off">
+          <input type="password" id="gatePass" placeholder="Heslo" aria-label="Heslo k pitchi" />
+          <button type="submit" class="btn btn-black">Odemknout</button>
+        </form>
+        <p class="gate-msg" id="gateMsg" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="pitch-stage" id="stage" aria-hidden="true">
+        <div class="pitch-frame-bar" aria-hidden="true"><i></i><i></i><i></i><span>ippa café · pitch</span><a id="pitchOpen" href="#" target="_blank" rel="noopener">Otevřít v novém okně ↗</a></div>
+        <iframe class="ippa-frame" id="ippaFrame" title="Ippa Café pitch" loading="lazy"></iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-wrap">
+    <div class="legal-foot frame">
+      <a href="index.html" class="brand-foot">
+        <img src="assets/logo.png" alt="David Sak" width="20" height="20" class="brand-logo" />
+        David Sak
+      </a>
+      <p class="copyright">© David Sak <span id="year"></span>. Všechna práva vyhrazena.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var gate = document.getElementById("gate");
+      var form = document.getElementById("gateForm");
+      var pass = document.getElementById("gatePass");
+      var msg = document.getElementById("gateMsg");
+      var stage = document.getElementById("stage");
+      var frame = document.getElementById("ippaFrame");
+      var openLink = document.getElementById("pitchOpen");
+      document.getElementById("year").textContent = new Date().getFullYear();
+      var b64d = function (s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); };
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        var p = (pass.value || "").trim();
+        if (!p) return;
+        msg.textContent = "Ověřuji…"; msg.className = "gate-msg";
+        try {
+          var salt = b64d(gate.dataset.salt), iv = b64d(gate.dataset.iv), ct = b64d(gate.dataset.ct);
+          var bk = await crypto.subtle.importKey("raw", new TextEncoder().encode(p), "PBKDF2", false, ["deriveKey"]);
+          var k = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt, iterations: 120000, hash: "SHA-256" }, bk, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+          var pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, k, ct);
+          var url = new TextDecoder().decode(pt);
+          msg.textContent = "Odemčeno."; msg.className = "gate-msg ok";
+          frame.src = url; openLink.href = url;
+          gate.style.display = "none";
+          stage.classList.add("on"); stage.setAttribute("aria-hidden", "false");
+        } catch (err) {
+          msg.textContent = "Špatné heslo. Zkuste to znovu."; msg.className = "gate-msg err";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
