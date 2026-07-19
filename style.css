@@ -2415,3 +2415,91 @@ img.team-avatar {
 .contact-social.reveal.in .cs-btn:nth-child(4) { transition-delay: 0.24s; }
 
 @media (max-width: 720px) { .contact-quick { grid-template-columns: 1fr; max-width: 420px; } }
+
+/* ===== NEUMORPHISM — terminál (světlé téma) ===== */
+.term {
+  background: linear-gradient(145deg, #f7f8fb, #eceef4);
+  border: 1px solid #ffffff;
+  border-radius: 18px;
+  box-shadow:
+    -10px -10px 24px rgba(255, 255, 255, 0.95),
+    12px 14px 30px rgba(166, 175, 195, 0.48),
+    0 34px 70px rgba(166, 175, 195, 0.28);
+  overflow: hidden;
+}
+.term::after { background: radial-gradient(50% 100% at 50% 0%, rgba(52, 85, 250, 0.14), transparent 75%); }
+.term-bar { background: transparent; border-bottom: 1px solid #e4e7ee; }
+.term-tab { color: #7c8496; border-bottom: 0; border-radius: 9px; margin: 2px 0; }
+.term-tab:hover { color: #1d2433; }
+.term-tab.on {
+  color: #1d2433; background: linear-gradient(145deg, #ffffff, #eef0f5);
+  box-shadow: -3px -3px 8px rgba(255, 255, 255, 0.9), 4px 4px 9px rgba(166, 175, 195, 0.45), inset 0 -2px 0 var(--blue);
+}
+.term-run {
+  color: #5c6478; border: 0; border-radius: 10px;
+  background: linear-gradient(145deg, #f7f8fb, #e9ebf1);
+  box-shadow: -4px -4px 9px rgba(255, 255, 255, 0.95), 4px 5px 10px rgba(166, 175, 195, 0.5);
+}
+.term-run:hover { color: #1f9e63; border: 0; }
+.term-run:active, .term-run.busy {
+  color: #1f9e63;
+  box-shadow: inset 3px 3px 7px rgba(166, 175, 195, 0.5), inset -3px -3px 7px #ffffff;
+}
+/* zapuštěná "obrazovka" s kódem */
+.term-main {
+  margin: 12px 16px 0; border-radius: 12px; background: #fbfcff;
+  box-shadow: inset 5px 5px 12px rgba(166, 175, 195, 0.30), inset -5px -5px 12px #ffffff;
+}
+.term-gutter { color: #b3bac9; }
+.term-body { color: #1d2433; }
+.tk-kw { color: #2743e0; }
+.tk-str { color: #188748; }
+.tk-com { color: #9aa2b1; }
+.tk-num { color: #b25f00; }
+.term-cursor { color: var(--blue); }
+/* zapuštěný výstup */
+.term-out {
+  margin: 10px 16px 14px; border-radius: 12px; border-top: 0; background: #f2f4f9;
+  box-shadow: inset 5px 5px 12px rgba(166, 175, 195, 0.28), inset -5px -5px 12px #ffffff;
+}
+.term-out .ln-cmd { color: #7c8496; }
+.term-out .ln-step { color: #2a3040; }
+.term-out .ln-ok { color: #1f9e63; }
+.term-foot { background: transparent; border-top: 1px solid #e4e7ee; color: #7c8496; }
+.term-meta { color: #98a0b3; }
+
+/* ===== NEUMORPHISM — chat okno ===== */
+.mock[data-mock="chat"] {
+  border: 1px solid #ffffff;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #f7f8fb, #eef0f5);
+  box-shadow:
+    -10px -10px 24px rgba(255, 255, 255, 0.95),
+    12px 14px 30px rgba(166, 175, 195, 0.48),
+    0 34px 70px rgba(166, 175, 195, 0.28);
+  overflow: hidden;
+}
+.mock[data-mock="chat"] .mock-bar { background: transparent; border-bottom: 1px solid #e4e7ee; }
+.mock[data-mock="chat"] .mock-bar i:nth-child(1) { background: #ff5f57; }
+.mock[data-mock="chat"] .mock-bar i:nth-child(2) { background: #febc2e; }
+.mock[data-mock="chat"] .mock-bar i:nth-child(3) { background: #28c840; }
+.mock[data-mock="chat"] .mock-chat {
+  margin: 12px 16px 0; border-radius: 12px; background: #fbfcff;
+  box-shadow: inset 5px 5px 12px rgba(166, 175, 195, 0.30), inset -5px -5px 12px #ffffff;
+}
+.mock[data-mock="chat"] .mock-foot { border-top: 1px solid #e4e7ee; margin-top: 12px; }
+.chat-msg.user { box-shadow: 4px 5px 10px rgba(39, 67, 224, 0.28), -3px -3px 8px rgba(255, 255, 255, 0.8); }
+.chat-msg.agent {
+  background: linear-gradient(145deg, #f2f4f9, #e9ecf3); border: 0;
+  box-shadow: -3px -3px 8px rgba(255, 255, 255, 0.9), 4px 5px 10px rgba(166, 175, 195, 0.38);
+}
+.chat-typing {
+  background: linear-gradient(145deg, #f2f4f9, #e9ecf3); border: 0;
+  box-shadow: -3px -3px 8px rgba(255, 255, 255, 0.9), 4px 5px 10px rgba(166, 175, 195, 0.38);
+}
+.chat-typing i { background: var(--blue); width: 6px; height: 6px; }
+.chat-tool {
+  background: linear-gradient(145deg, #f4f6fb, #ebeef5); border: 0; color: var(--gray-2);
+  box-shadow: -2px -2px 6px rgba(255, 255, 255, 0.9), 3px 4px 8px rgba(166, 175, 195, 0.35);
+}
+.chat-msg.agent::before { box-shadow: -2px -2px 5px #fff, 3px 3px 7px rgba(166, 175, 195, 0.4); }
