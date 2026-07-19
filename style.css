@@ -2332,20 +2332,12 @@ img.team-avatar {
 
 /* ===== PROCES — nadopovaná timeline (stejný layout jako dřív) ===== */
 .tl-card { position: relative; overflow: hidden; padding-right: 186px; }
-.tl-num {
-  position: absolute; right: 96px; top: 50%; transform: translateY(-50%) scale(0.85);
-  font-family: var(--serif); font-weight: 400; font-style: italic; font-size: 74px; line-height: 1;
-  color: transparent; -webkit-text-stroke: 1px rgba(0, 0, 0, 0.14);
-  opacity: 0; transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), -webkit-text-stroke-color 0.6s;
-  pointer-events: none; user-select: none;
-}
 .tl-scene { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 150px; height: 90px; opacity: 0.9; pointer-events: none; }
 /* neaktivní kroky ztlumené, aktivní se rozsvítí (stejný jazyk jako ceník) */
 .timeline .tl-step { opacity: 0.45; filter: saturate(0.4); transition: opacity 0.5s var(--ease), filter 0.5s var(--ease); }
 .timeline .tl-step.active { opacity: 1; filter: none; }
 .tl-step.active .tl-card { border-color: rgba(52, 85, 250, 0.5); border-style: solid; box-shadow: 0 16px 40px rgba(52, 85, 250, 0.08); }
-.tl-step.active .tl-num { opacity: 1; transform: translateY(-50%) scale(1); -webkit-text-stroke-color: rgba(52, 85, 250, 0.4); }
-.tl-step.active .chip-gray { background: var(--ink); color: #fff; }
+.tl-step.active .tl-step.active .chip-gray { background: var(--ink); color: #fff; }
 .chip-gray { transition: background 0.4s var(--ease), color 0.4s var(--ease); }
 /* dokovací ripple na tečce */
 .tl-dot.ripple::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; border: 2px solid var(--blue); animation: tlRipple 0.7s var(--ease) forwards; }
@@ -2356,9 +2348,7 @@ img.team-avatar {
 @media (max-width: 640px) {
   .tl-card { padding-right: 24px; }
   .tl-scene { right: 8px; opacity: 0.16; }
-  .tl-num { right: 62px; opacity: 0; }
-  .tl-step.active .tl-num { opacity: 0.55; }
-}
+    .tl-step.active }
 
 /* ===== chat demo ve světlém tématu ===== */
 .chat-msg.agent { background: #f1f2f6; color: var(--gray-1); border: 1px solid var(--line); }
