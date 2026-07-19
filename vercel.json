@@ -1,0 +1,15 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/o-nas", "destination": "/o-mne", "permanent": true },
+    { "source": "/pripadove-studie", "destination": "/projekty", "permanent": true },
+    { "source": "/sluzby-ai-agenti", "destination": "/ai-agenti", "permanent": true },
+    { "source": "/sluzby-datove-pipeline", "destination": "/automatizace", "permanent": true },
+    { "source": "/sluzby-firemni-data", "destination": "/data-rag", "permanent": true },
+    { "source": "/sluzby-audit", "destination": "/web-a-konzultace", "permanent": true },
+    { "source": "/blog-kdy-se-vyplati-ai-agent", "destination": "/blog/kdy-se-vyplati-ai-agent", "permanent": true },
+    { "source": "/blog-rag-v-praxi", "destination": "/blog/rag-v-praxi", "permanent": true },
+    { "source": "/blog-automatizace-middleware", "destination": "/blog/automatizace-middleware", "permanent": true }
+  ]
+}
