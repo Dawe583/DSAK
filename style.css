@@ -1998,3 +1998,12 @@ img.team-avatar {
 
 .eyebrow-link { color: var(--ink); border-bottom: 1px solid var(--blue); transition: color .2s; }
 .eyebrow-link:hover { color: var(--blue); }
+
+/* scroll progress bar */
+.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--blue), #7aa2f7); z-index: 1000; transition: width .12s linear; pointer-events: none; }
+/* ikony u sociálních tlačítek */
+.btn .social-ico { width: 15px; height: 15px; margin-right: 7px; flex: none; }
+/* ceník: pulz „nejčastější volba" + tabulární čísla */
+.tier-badge { animation: badgePulse 2.6s ease-in-out infinite; }
+@keyframes badgePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(52,85,250,0); } 50% { box-shadow: 0 0 0 6px rgba(52,85,250,.12); } }
+.cprice { font-variant-numeric: tabular-nums; }

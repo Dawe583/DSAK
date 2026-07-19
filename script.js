@@ -1390,3 +1390,20 @@ def sync_faktury():
     input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); unlock(); } });
   });
 })();
+
+/* ===== scroll progress bar + animace ceníku ===== */
+(function () {
+  if (!document.querySelector(".scroll-progress")) {
+    var bar = document.createElement("div"); bar.className = "scroll-progress"; document.body.appendChild(bar);
+    var upd = function () { var h = document.documentElement; var sc = h.scrollTop || document.body.scrollTop; var mx = (h.scrollHeight - h.clientHeight) || 1; bar.style.width = (sc / mx * 100) + "%"; };
+    addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+  }
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var prices = [].slice.call(document.querySelectorAll(".cprice"));
+  if (prices.length) {
+    var fmt = function (n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); };
+    var run = function (el) { var to = +el.dataset.to; if (reduce) { el.textContent = fmt(to); return; } var t0 = null, D = 1100; var step = function (ts) { if (!t0) t0 = ts; var p = Math.min((ts - t0) / D, 1); el.textContent = fmt(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); };
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { run(e.target); io.unobserve(e.target); } }); }, { threshold: 0.6 });
+    prices.forEach(function (el) { io.observe(el); });
+  }
+})();
