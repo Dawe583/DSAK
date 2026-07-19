@@ -2126,3 +2126,47 @@ img.team-avatar {
 .chat-tool b { font-weight: 600; color: #febc2e; }
 .chat-tool.done { border-color: #2f5a3d; }
 .chat-tool.done b { color: #4ec26b; }
+
+/* ===== globální doladění (E) ===== */
+/* kicker: linky se vykreslí, tečka pípne */
+.kicker-row.reveal .kicker::before, .kicker-row.reveal .kicker::after { transform: scaleX(0); transition: transform 0.7s var(--ease) 0.15s; }
+.kicker-row.reveal .kicker::before { transform-origin: right; }
+.kicker-row.reveal .kicker::after { transform-origin: left; }
+.kicker-row.reveal .kicker b { transform: scale(0); transition: transform 0.45s var(--ease); }
+.kicker-row.reveal.in .kicker::before, .kicker-row.reveal.in .kicker::after { transform: scaleX(1); }
+.kicker-row.reveal.in .kicker b { transform: scale(1); animation: nowPulse 2.4s 0.6s infinite; }
+
+/* marquee: zpomalí na hover, položky se rozsvítí */
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.logo-item { transition: color 0.25s, opacity 0.25s; }
+.marquee:hover .logo-item { opacity: 0.45; }
+.marquee .logo-item:hover { opacity: 1; color: var(--ink); }
+
+/* FAQ: plus se otočí na křížek */
+.faq-item .plus { transition: transform 0.35s var(--ease), color 0.25s; }
+.faq-item[open] .plus { transform: rotate(45deg); color: var(--blue); }
+.faq-item summary { transition: color 0.2s; }
+.faq-item[open] summary { color: var(--ink); }
+
+/* srovnávací tabulka: zvýraznění řádku */
+.compare-table tbody tr { transition: background 0.25s; }
+.compare-table tbody tr:hover { background: rgba(52, 85, 250, 0.035); }
+
+/* patička: podtržení odkazů dojede zleva */
+.footer-col a { position: relative; transition: color 0.22s; }
+.footer-col a::after { content: ""; position: absolute; left: 0; bottom: -2px; height: 1px; width: 100%; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease); }
+.footer-col a:hover { color: var(--blue); }
+.footer-col a:hover::after { transform: scaleX(1); }
+
+/* jemné barevné mlhy v rozích sekcí (ať web není sterilně bílý) */
+.features, .cta, .pricing { position: relative; }
+.features::before, .cta::before, .pricing::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(42% 34% at 4% 0%, rgba(52, 85, 250, 0.05), transparent 70%),
+    radial-gradient(38% 30% at 98% 100%, rgba(122, 162, 247, 0.05), transparent 70%);
+}
+.features > *, .cta > *, .pricing > * { position: relative; z-index: 1; }
+
+/* stat čísla: jemný gradient */
+.stat-num { background: linear-gradient(135deg, var(--ink) 55%, var(--blue)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
