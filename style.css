@@ -1986,3 +1986,6 @@ img.team-avatar {
 .brand-logo { display: block; object-fit: contain; }
 .brand .brand-logo { width: 26px; height: 26px; }
 .brand-foot .brand-logo { width: 20px; height: 20px; }
+
+.eyebrow-link { color: var(--ink); border-bottom: 1px solid var(--blue); transition: color .2s; }
+.eyebrow-link:hover { color: var(--blue); }
