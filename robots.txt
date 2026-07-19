@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://davidsak.cz/sitemap.xml
+Sitemap: https://www.dsak.tech/sitemap.xml

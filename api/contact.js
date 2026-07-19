@@ -3,7 +3,7 @@
 //   RESEND_API_KEY — API klíč z resend.com (zdarma do 100 e-mailů/den)
 //   CONTACT_TO     — cílová schránka (výchozí business@dsak.tech)
 //   CONTACT_FROM   — ověřený odesílatel (výchozí onboarding@resend.dev,
-//                    po ověření vlastní domény např. web@davidsak.cz)
+//                    po ověření vlastní domény např. web@dsak.tech)
 // Bez nakonfigurovaného klíče vrací 501 a web automaticky přejde na FormSubmit.
 
 export default async function handler(req, res) {

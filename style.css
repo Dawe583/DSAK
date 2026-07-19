@@ -1955,7 +1955,7 @@ img.team-avatar {
 .repos-band { text-align: center; margin: 56px 0 26px; }
 
 /* mřížka repo karet */
-.repo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 16px; }
 .repo-card { position: relative; border: 1px dashed var(--line-strong); background: linear-gradient(180deg, #fff, var(--panel)); padding: 20px; display: flex; flex-direction: column; gap: 10px; transition: border-color .3s var(--ease), box-shadow .3s var(--ease), transform .15s var(--ease); will-change: transform; }
 .repo-card:hover { border-color: var(--blue); box-shadow: 0 18px 42px rgba(52,85,250,.10); }
 .repo-top { display: flex; align-items: center; justify-content: space-between; }
@@ -1982,4 +1982,4 @@ img.team-avatar {
 .gate-msg { flex-basis: 100%; font-size: 12px; margin: 2px 0 0; }
 .gate-msg.err { color: #c0392b; } .gate-msg.ok { color: #2e9e4f; }
 
-@media (max-width: 820px) { .repo-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .repo-grid { grid-template-columns: 1fr; } }
