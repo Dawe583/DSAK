@@ -244,15 +244,26 @@ if (tierStack) {
   const svg = document.createElementNS(NS, "svg");
   svg.setAttribute("class", "tier-link");
   svg.setAttribute("aria-hidden", "true");
+  /* podkladová (tečkovaná) trasa + kreslená čára s gradientem + puls na špičce */
+  const defs = document.createElementNS(NS, "defs");
+  defs.innerHTML = '<linearGradient id="tierGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="100"><stop offset="0" stop-color="#3455fa"/><stop offset="1" stop-color="#7aa2f7"/></linearGradient>';
+  svg.appendChild(defs);
+  const track = document.createElementNS(NS, "path");
+  track.setAttribute("class", "tier-link-track");
   const linkPath = document.createElementNS(NS, "path");
   linkPath.setAttribute("class", "tier-link-path");
+  linkPath.setAttribute("stroke", "url(#tierGrad)");
+  const pulse = document.createElementNS(NS, "circle");
+  pulse.setAttribute("class", "tier-pulse");
+  pulse.setAttribute("r", "5");
+  svg.appendChild(track);
   svg.appendChild(linkPath);
+  svg.appendChild(pulse);
   const dots = [];
   for (let i = 0; i < 4; i++) {
     const c = document.createElementNS(NS, "circle");
     c.setAttribute("class", "tier-link-dot");
     c.setAttribute("r", "3.5");
-    c.style.transitionDelay = (0.85 + i * 0.14) + "s";
     svg.appendChild(c);
     dots.push(c);
   }
@@ -260,12 +271,18 @@ if (tierStack) {
   // vrstvení řeší z-index (spojnice pod kartami)
   tierStack.appendChild(svg);
 
+  const rows = [...tierStack.querySelectorAll(".tier-row")];
+  let L = 0;                 // celková délka čáry
+  let joins = [1, 0, 0];     // délky, při kterých se "připojí" jednotlivé karty
+  let dotLens = [];          // délky, při kterých se rozsvítí koncové tečky
+
   const buildLink = () => {
     const cards = [...tierStack.querySelectorAll(".tier-card")];
     if (cards.length < 3) return;
     const sr = tierStack.getBoundingClientRect();
     svg.setAttribute("width", sr.width);
     svg.setAttribute("height", sr.height);
+    defs.querySelector("linearGradient").setAttribute("y2", sr.height);
     const P = cards.map((c) => {
       const r = c.getBoundingClientRect();
       return { x: r.left + r.width / 2 - sr.left, top: r.top - sr.top, bot: r.bottom - sr.top };
@@ -274,32 +291,67 @@ if (tierStack) {
       const dy = (b.top - a.bot) * 0.55;
       return `M ${a.x} ${a.bot} C ${a.x} ${a.bot + dy} ${b.x} ${b.top - dy} ${b.x} ${b.top}`;
     };
-    linkPath.setAttribute("d", `${seg(P[0], P[1])} ${seg(P[1], P[2])}`);
+    const d = `${seg(P[0], P[1])} ${seg(P[1], P[2])}`;
+    linkPath.setAttribute("d", d);
+    track.setAttribute("d", d);
+    const tmp = document.createElementNS(NS, "path");
+    tmp.setAttribute("d", seg(P[0], P[1]));
+    const l1 = tmp.getTotalLength();
+    L = linkPath.getTotalLength();
+    joins = [1, l1, L - 2];
     const ends = [[P[0].x, P[0].bot], [P[1].x, P[1].top], [P[1].x, P[1].bot], [P[2].x, P[2].top]];
-    dots.forEach((d, i) => { d.setAttribute("cx", ends[i][0]); d.setAttribute("cy", ends[i][1]); });
-    const len = linkPath.getTotalLength();
-    linkPath.style.strokeDasharray = len;
-    linkPath.style.strokeDashoffset = tierStack.classList.contains("in") ? "0" : len;
+    dotLens = [0, l1, l1, L];
+    dots.forEach((dt, i) => { dt.setAttribute("cx", ends[i][0]); dt.setAttribute("cy", ends[i][1]); });
+    linkPath.style.strokeDasharray = L;
+    setProgress(lastP);
   };
 
-  const revealTier = () => {
-    buildLink();
-    tierStack.classList.add("in");
-    requestAnimationFrame(() => { linkPath.style.strokeDashoffset = "0"; });
+  let lastP = 0;
+  const setProgress = (p) => {
+    if (!L) return;
+    lastP = p;
+    const drawn = L * p;
+    linkPath.style.strokeDashoffset = Math.max(L - drawn, 0);
+    if (p > 0.004 && p < 0.996) {
+      const pt = linkPath.getPointAtLength(drawn);
+      pulse.setAttribute("cx", pt.x);
+      pulse.setAttribute("cy", pt.y);
+      pulse.style.opacity = "1";
+    } else {
+      pulse.style.opacity = "0";
+    }
+    rows.forEach((row, i) => row.classList.toggle("connected", drawn >= joins[i]));
+    dots.forEach((dt, i) => dt.classList.toggle("on", drawn >= dotLens[i] - 0.5));
   };
 
   buildLink();
   addEventListener("load", buildLink);
   addEventListener("resize", buildLink);
 
+  const gsapOK = typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined";
   if (reduceMotion) {
     tierStack.classList.add("in");
-    linkPath.style.strokeDashoffset = "0";
+    setProgress(1);
+  } else if (gsapOK) {
+    /* kreslení spojnice řízené scrollem — karty se připojují postupně */
+    gsap.registerPlugin(ScrollTrigger);
+    tierStack.classList.add("js-scroll", "in");
+    linkPath.style.transition = "none";
+    ScrollTrigger.create({
+      trigger: tierStack,
+      start: "top 74%",
+      end: "bottom 58%",
+      scrub: 0.45,
+      onUpdate: (self) => setProgress(self.progress),
+      onRefresh: () => buildLink(),
+    });
   } else {
     new IntersectionObserver(([en], io) => {
       if (!en.isIntersecting) return;
       io.disconnect();
-      revealTier();
+      tierStack.classList.add("in");
+      linkPath.style.transition = "stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s";
+      requestAnimationFrame(() => setProgress(1));
     }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }).observe(tierStack);
   }
 }

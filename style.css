@@ -2007,3 +2007,38 @@ img.team-avatar {
 .tier-badge { animation: badgePulse 2.6s ease-in-out infinite; }
 @keyframes badgePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(52,85,250,0); } 50% { box-shadow: 0 0 0 6px rgba(52,85,250,.12); } }
 .cprice { font-variant-numeric: tabular-nums; }
+
+/* ===== CENÍK — scroll-driven serpentina ===== */
+.tier-link-track { fill: none; stroke: var(--line-strong); stroke-width: 1.5; stroke-dasharray: 3 8; stroke-linecap: round; opacity: 0.6; }
+.tier-link-path { opacity: 0.9; stroke-width: 2.5; filter: drop-shadow(0 0 6px rgba(52, 85, 250, 0.45)); }
+.tier-pulse { fill: #fff; stroke: var(--blue); stroke-width: 3; opacity: 0; filter: drop-shadow(0 0 9px rgba(52, 85, 250, 0.8)); transition: opacity 0.25s ease; }
+.tier-link-dot { transition: opacity 0.4s var(--ease), transform 0.4s var(--ease); transform-box: fill-box; transform-origin: center; transform: scale(0.3); }
+.tier-link-dot.on { opacity: 0.95; transform: scale(1); }
+
+/* stavy řízené scrollem (js-scroll) — každá karta nastupuje, až k ní dorazí čára */
+.tier-stack.js-scroll .tier-row { opacity: 0.18; filter: saturate(0.2); transition: opacity 0.65s var(--ease), transform 0.65s var(--ease), filter 0.65s var(--ease); }
+.tier-stack.js-scroll .tier-row-right { transform: translateX(46px) scale(0.98); }
+.tier-stack.js-scroll .tier-row-left { transform: translateX(-46px) scale(0.98); }
+.tier-stack.js-scroll .tier-row-center { transform: translateY(34px) scale(0.98); }
+.tier-stack.js-scroll .tier-row.connected { opacity: 1; transform: none; filter: none; transition-delay: 0s; }
+.tier-stack.js-scroll .tier-row .annot-hline { transform: scaleX(0); transition-delay: 0s; }
+.tier-stack.js-scroll .tier-row.connected .annot-hline { transform: scaleX(1); transition-delay: 0.15s; }
+.tier-stack.js-scroll .tier-row .tier-annot .chip-black { opacity: 0; transition-delay: 0s; }
+.tier-stack.js-scroll .tier-row.connected .tier-annot .chip-black { opacity: 1; transition-delay: 0.3s; }
+
+/* karta se po připojení "rozsvítí" */
+.tier-card { transition: border-color 0.55s var(--ease), box-shadow 0.55s var(--ease), background 0.55s var(--ease); }
+.tier-row.connected .tier-card { border-color: rgba(52, 85, 250, 0.5); box-shadow: 0 20px 48px rgba(52, 85, 250, 0.09); }
+
+/* položky seznamu: fajfka + postupné odškrtání po připojení */
+.tier-list li { position: relative; padding-left: 36px; }
+.tier-list li::before { content: "✓"; position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--blue); font-weight: 700; font-size: 12px; }
+.tier-stack.js-scroll .tier-list li { opacity: 0; transform: translateY(10px); transition: opacity 0.45s var(--ease), transform 0.45s var(--ease); }
+.tier-stack.js-scroll .tier-list li::before { opacity: 0; transform: translateY(-50%) scale(0.3); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); }
+.tier-stack.js-scroll .tier-row.connected .tier-list li { opacity: 1; transform: none; }
+.tier-stack.js-scroll .tier-row.connected .tier-list li::before { opacity: 1; transform: translateY(-50%) scale(1); }
+.tier-stack.js-scroll .tier-row.connected .tier-list li:nth-child(1) { transition-delay: 0.2s; }
+.tier-stack.js-scroll .tier-row.connected .tier-list li:nth-child(2) { transition-delay: 0.32s; }
+.tier-stack.js-scroll .tier-row.connected .tier-list li:nth-child(3) { transition-delay: 0.44s; }
+.tier-stack.js-scroll .tier-row.connected .tier-list li:nth-child(4) { transition-delay: 0.56s; }
+.tier-stack.js-scroll .tier-row.connected .tier-list li::before { transition-delay: inherit; }
