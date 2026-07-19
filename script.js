@@ -32,7 +32,7 @@ if (!reduceMotion && typeof Lenis !== "undefined") {
 /* ---------- parallax + tilt (jeden rAF pro vše) ---------- */
 const plxEls = [...document.querySelectorAll("[data-plx]")];
 const heroVis = document.getElementById("heroVisual");
-const finePointer = matchMedia("(pointer: fine)").matches;
+const finePointer = true; /* efekty i na dotykových zařízeních */
 let tiltX = 0, tiltY = 0, tiltTX = 0, tiltTY = 0;
 /* pozice kurzoru nad hero plátnem (normalizovaná) — znaky se rozestupují */
 let heroMxN = -9, heroMyN = -9;
@@ -513,7 +513,7 @@ document.querySelectorAll('[data-mock="chat"]').forEach((mock) => {
     const text = el.textContent.replace(citeText, "").trim();
     return { el, user: el.classList.contains("user"), text, citeEl, citeText };
   });
-  const reduce2 = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduce2 = false; /* animace běží všude, bez výjimek */
   if (reduce2) { msgs.forEach((m) => m.classList.add("show")); typings.forEach((t) => t.remove()); return; }
   const zzz = (ms) => new Promise((r) => setTimeout(r, ms));
   /* skroluj jen po spodek právě zobrazeného prvku (skryté zprávy dál zabírají místo) */
@@ -1333,8 +1333,8 @@ if (hasGsap && !reduceMotion) {
 
 /* ===== David Sak — dodatečné animace & interakce ===== */
 (function () {
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const fine = matchMedia("(pointer: fine)").matches;
+  const reduce = false; /* animace běží všude, bez výjimek */
+  const fine = true; /* efekty i na dotykových zařízeních */
 
   /* kurzorový spotlight */
   const sp = document.getElementById("spotlight");
@@ -1584,7 +1584,7 @@ def sync_faktury():
     var upd = function () { var h = document.documentElement; var sc = h.scrollTop || document.body.scrollTop; var mx = (h.scrollHeight - h.clientHeight) || 1; bar.style.width = (sc / mx * 100) + "%"; };
     addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
   }
-  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduce = false; /* animace běží všude, bez výjimek */
   var prices = [].slice.call(document.querySelectorAll(".cprice"));
   if (prices.length) {
     var fmt = function (n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " "); };
@@ -1598,7 +1598,7 @@ def sync_faktury():
 (function () {
   var hub = document.getElementById("beamhub");
   if (!hub) return;
-  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reduce = false; /* animace běží všude, bez výjimek */
   var svg = document.getElementById("bhSvg");
   var center = document.getElementById("bhHub");
   var nodes = [].slice.call(hub.querySelectorAll(".bh-node"));
