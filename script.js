@@ -1310,14 +1310,19 @@ if (hasGsap && !reduceMotion) {
     }, 2300);
   }
 
-  /* terminál — psaní kódu + zvýraznění syntaxe */
+  /* terminál — editor se záložkami, psaním kódu a spuštěním */
   const codeEl = document.getElementById("termCode");
   const curEl = document.getElementById("termCursor");
-  const titleEl = document.getElementById("termTitle");
+  const tabsEl = document.getElementById("termTabs");
+  const gutterEl = document.getElementById("termGutter");
+  const outEl = document.getElementById("termOut");
+  const outCodeEl = document.getElementById("termOutCode");
+  const runBtn = document.getElementById("termRun");
   const langEl = document.getElementById("termLang");
-  if (codeEl && titleEl && langEl) {
+  const metaEl = document.getElementById("termMeta");
+  if (codeEl && tabsEl && langEl) {
     const snippets = [
-      { title: "agent.py", lang: "python", code:
+      { title: "agent.py", lang: "python", meta: "⎇ main ✓ · 3.12", code:
 `from anthropic import Anthropic
 
 client = Anthropic()
@@ -1329,8 +1334,14 @@ def agent(otazka, tools):
         tools=tools,
         messages=[{"role": "user", "content": otazka}],
     )
-    return handle(msg)  # nejistotu předá člověku` },
-      { title: "rag.ts", lang: "typescript", code:
+    return handle(msg)  # nejistotu předá člověku`,
+        out: [
+          "$ python agent.py",
+          '→ dotaz: "Kolik objednávek čeká na schválení?"',
+          "→ tool: erp.fronta_schvaleni() … ✓",
+          "✓ odpověď s citací doručena · 2,1 s · exit 0",
+        ] },
+      { title: "rag.ts", lang: "typescript", meta: "⎇ main ✓ · node 22", code:
 `export async function search(q: string) {
   const vec = await embed(q)          // dotaz -> vektor
   const { rows } = await db.query(SQL, [vec])
@@ -1338,19 +1349,47 @@ def agent(otazka, tools):
     text: r.chunk,
     source: r.source,                 // vždy s citací
   }))
-}` },
-      { title: "pipeline.py", lang: "python", code:
+}`,
+        out: [
+          '$ tsx rag.ts "výpovědní lhůta"',
+          "→ embedding … ✓ (768 dim)",
+          "→ nalezeno 5 pasáží · zdroj: smlouva.pdf",
+          "✓ hotovo · 180 ms · exit 0",
+        ] },
+      { title: "pipeline.py", lang: "python", meta: "⎇ main ✓ · 3.12", code:
 `@flow
 def sync_faktury():
     for inv in erp.pull("pending"):
         if crm.verify(inv):
             approve(inv)              # ~80 % automaticky
         else:
-            slack.notify("#schvalovani", inv)` },
+            slack.notify("#schvalovani", inv)`,
+        out: [
+          "$ python pipeline.py --run",
+          "→ 6 objednávek ve frontě",
+          "→ 4× schváleno automaticky · 2× → #schvalovani",
+          "✓ pipeline dokončena · 11 min ušetřeno · exit 0",
+        ] },
     ];
 
+    /* záložky souborů */
+    const tabs = snippets.map((s0, i) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.tabIndex = -1;
+      b.className = "term-tab";
+      b.textContent = s0.title;
+      b.addEventListener("click", () => { if (!reduce) jumpTo(i); });
+      tabsEl.appendChild(b);
+      return b;
+    });
+    const setTab = (i) => {
+      tabs.forEach((t, j) => t.classList.toggle("on", j === i));
+      langEl.textContent = snippets[i].lang;
+      if (metaEl) metaEl.textContent = snippets[i].meta;
+    };
+
     const KW = /\b(from|import|def|return|export|async|function|await|const|let|for|if|else|class|new|in)\b/g;
-    const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const esc = (s0) => s0.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     function hl(code, lang) {
       return esc(code).split("\n").map((line) => {
         const ci = lang === "python" ? line.indexOf("#") : line.indexOf("//");
@@ -1363,36 +1402,78 @@ def sync_faktury():
         return head + tail;
       }).join("\n");
     }
+    const gut = (n) => { gutterEl.textContent = Array.from({ length: Math.max(n, 1) }, (_, i) => i + 1).join("\n"); };
 
-    let started = false;
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-    async function run() {
-      if (started) return; started = true;
-      if (reduce) {
-        const s = snippets[0];
-        titleEl.textContent = s.title; langEl.textContent = s.lang;
-        codeEl.innerHTML = hl(s.code, s.lang);
-        if (curEl) curEl.style.display = "none";
-        return;
-      }
-      let si = 0;
-      while (true) {
-        const s = snippets[si];
-        titleEl.textContent = s.title; langEl.textContent = s.lang;
-        codeEl.textContent = "";
-        for (let k = 0; k < s.code.length; k++) {
-          codeEl.textContent += s.code[k];
-          await sleep(s.code[k] === "\n" ? 40 : 13 + Math.random() * 22);
+    let epoch = 0;       // zneplatní běžící smyčku při ručním přepnutí tabu
+    let started = false;
+
+    async function typeOut(lines, ep) {
+      outEl.classList.add("on");
+      outCodeEl.innerHTML = "";
+      for (const ln of lines) {
+        if (ep !== epoch) return;
+        const div = document.createElement("div");
+        div.className = ln.startsWith("✓") ? "ln-ok" : ln.startsWith("$") ? "ln-cmd" : "ln-step";
+        outCodeEl.appendChild(div);
+        for (let k = 0; k < ln.length; k++) {
+          if (ep !== epoch) return;
+          div.textContent += ln[k];
+          await sleep(7);
         }
-        codeEl.innerHTML = hl(s.code, s.lang);
-        await sleep(2600);
-        for (let k = s.code.length; k >= 0; k -= 3) { codeEl.textContent = s.code.slice(0, k); await sleep(6); }
-        await sleep(240);
+        await sleep(260);
+      }
+    }
+
+    async function playFrom(startIdx) {
+      const ep = ++epoch;
+      let si = startIdx;
+      while (true) {
+        if (ep !== epoch) return;
+        const s0 = snippets[si];
+        setTab(si);
+        outEl.classList.remove("on");
+        outCodeEl.innerHTML = "";
+        codeEl.textContent = "";
+        gut(1);
+        if (curEl) curEl.style.display = "";
+        let lines = 1;
+        for (let k = 0; k < s0.code.length; k++) {
+          if (ep !== epoch) return;
+          codeEl.textContent += s0.code[k];
+          if (s0.code[k] === "\n") { lines++; gut(lines); }
+          await sleep(s0.code[k] === "\n" ? 34 : 11 + Math.random() * 20);
+        }
+        codeEl.innerHTML = hl(s0.code, s0.lang);
+        if (curEl) curEl.style.display = "none";
+        await sleep(350);
+        runBtn.classList.add("busy");
+        await typeOut(s0.out, ep);
+        runBtn.classList.remove("busy");
+        if (ep !== epoch) return;
+        await sleep(2100);
         si = (si + 1) % snippets.length;
       }
     }
+    const jumpTo = (i) => playFrom(i);
+    if (runBtn) runBtn.addEventListener("click", () => { if (!reduce) playFrom(tabs.findIndex((t) => t.classList.contains("on"))); });
+
+    function boot() {
+      if (started) return; started = true;
+      if (reduce) {
+        const s0 = snippets[0];
+        setTab(0);
+        codeEl.innerHTML = hl(s0.code, s0.lang);
+        gut(s0.code.split("\n").length);
+        if (curEl) curEl.style.display = "none";
+        outEl.classList.add("on");
+        outCodeEl.innerHTML = s0.out.map((l) => `<div class="${l.startsWith("✓") ? "ln-ok" : l.startsWith("$") ? "ln-cmd" : "ln-step"}">${l}</div>`).join("");
+        return;
+      }
+      playFrom(0);
+    }
     const io = new IntersectionObserver((ents) => {
-      ents.forEach((e) => { if (e.isIntersecting) run(); });
+      ents.forEach((e) => { if (e.isIntersecting) boot(); });
     }, { threshold: 0.25 });
     io.observe(codeEl);
   }

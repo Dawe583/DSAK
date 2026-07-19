@@ -2042,3 +2042,24 @@ img.team-avatar {
 .tier-stack.js-scroll .tier-row.connected .tier-list li:nth-child(3) { transition-delay: 0.44s; }
 .tier-stack.js-scroll .tier-row.connected .tier-list li:nth-child(4) { transition-delay: 0.56s; }
 .tier-stack.js-scroll .tier-row.connected .tier-list li::before { transition-delay: inherit; }
+
+/* ===== TERMINÁL — editor upgrade ===== */
+.term { position: relative; }
+.term::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: -26px; height: 40px; background: radial-gradient(50% 100% at 50% 0%, rgba(52, 85, 250, 0.22), transparent 75%); filter: blur(10px); pointer-events: none; }
+.term-tabs { display: flex; gap: 2px; margin-left: 10px; }
+.term-tab { font-family: inherit; font-size: 12px; color: #7d8598; background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 6px 10px 7px; cursor: pointer; transition: color 0.25s, border-color 0.25s, background 0.25s; }
+.term-tab:hover { color: #cdd3e1; }
+.term-tab.on { color: #e6e9f2; border-bottom-color: var(--blue); background: rgba(52, 85, 250, 0.08); }
+.term-run { margin-left: auto; font-family: inherit; color: #5b647a; font-size: 11px; letter-spacing: 0.05em; background: transparent; border: 1px solid #262b3a; border-radius: 6px; padding: 4px 10px; cursor: pointer; transition: color 0.25s, border-color 0.25s, box-shadow 0.25s; }
+.term-run:hover { color: #4ec26b; border-color: #2f5a3d; }
+.term-run.busy { color: #4ec26b; border-color: #2f5a3d; box-shadow: 0 0 12px rgba(78, 194, 107, 0.25); }
+.term-main { display: flex; }
+.term-gutter { margin: 0; padding: 18px 0 18px 16px; min-width: 34px; text-align: right; font-size: 13px; line-height: 1.75; color: #3b4358; user-select: none; }
+.term-main .term-body { flex: 1; }
+.term-out { max-height: 0; overflow: hidden; transition: max-height 0.5s var(--ease); border-top: 0 solid #1e2230; background: #0a0c10; }
+.term-out.on { max-height: 190px; border-top-width: 1px; }
+.term-out pre { margin: 0; padding: 14px 20px; font-size: 12.5px; line-height: 1.8; }
+.term-out .ln-cmd { color: #8b93a7; }
+.term-out .ln-step { color: #cdd3e1; }
+.term-out .ln-ok { color: #4ec26b; }
+.term-meta { color: #5b647a; }

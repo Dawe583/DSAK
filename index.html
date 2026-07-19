@@ -235,9 +235,17 @@
       <h3 class="reveal">Radši ukážu, než slíbím</h3>
       <p class="section-sub reveal">Kus reálného kódu z mých projektů — od AI agentů přes RAG po automatizace. Píše se sám, jen se dívejte.</p>
       <div class="term reveal" id="term" aria-hidden="true">
-        <div class="term-bar"><i></i><i></i><i></i><span class="term-title" id="termTitle">agent.py</span><span class="term-run">▶ run</span></div>
-        <pre class="term-body"><code id="termCode"></code><span class="term-cursor" id="termCursor">▋</span></pre>
-        <div class="term-foot"><span id="termLang">python</span><span class="term-ok">● build passing</span></div>
+        <div class="term-bar">
+          <i></i><i></i><i></i>
+          <div class="term-tabs" id="termTabs"></div>
+          <button class="term-run" id="termRun" type="button" tabindex="-1">▶ run</button>
+        </div>
+        <div class="term-main">
+          <pre class="term-gutter" id="termGutter"></pre>
+          <pre class="term-body"><code id="termCode"></code><span class="term-cursor" id="termCursor">▋</span></pre>
+        </div>
+        <div class="term-out" id="termOut"><pre><code id="termOutCode"></code></pre></div>
+        <div class="term-foot"><span id="termLang">python</span><span class="term-meta" id="termMeta">⎇ main ✓ · UTF-8</span><span class="term-ok">● build passing</span></div>
       </div>
     </section>
 
