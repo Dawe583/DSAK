@@ -1310,7 +1310,7 @@ body.grid-on::after {
 .mock-dark { background: #111; border-color: #2a2a2a; color: #ddd; }
 .mock-dark .mock-bar { background: #181818; border-color: #2a2a2a; }
 .mock-dark .mock-bar i { background: #333; }
-.mock-chat { padding: 18px; display: grid; gap: 10px; min-height: 250px; align-content: start; }
+.mock-chat { padding: 18px; display: grid; gap: 10px; height: 340px; align-content: start; }
 .chat-msg {
   max-width: 80%;
   padding: 10px 13px;
@@ -1940,7 +1940,7 @@ img.team-avatar {
 .term-bar > i:nth-child(1) { background: #ff5f57; } .term-bar > i:nth-child(2) { background: #febc2e; } .term-bar > i:nth-child(3) { background: #28c840; }
 .term-title { margin-left: 8px; color: #8b93a7; font-size: 12px; }
 .term-run { margin-left: auto; color: #5b647a; font-size: 11px; letter-spacing: .05em; }
-.term-body { margin: 0; padding: 18px 20px; min-height: 232px; font-size: 13px; line-height: 1.75; color: #cdd3e1; white-space: pre-wrap; word-break: break-word; }
+.term-body { margin: 0; padding: 18px 20px; font-size: 13px; line-height: 1.75; color: #cdd3e1; white-space: pre-wrap; word-break: break-word; overflow: hidden; }
 .term-cursor { display: inline-block; color: #7aa2f7; animation: caret 1s steps(1) infinite; }
 @keyframes caret { 50% { opacity: 0; } }
 .term-foot { display: flex; justify-content: space-between; padding: 9px 16px; background: #14171f; border-top: 1px solid #1e2230; font-size: 11px; color: #5b647a; }
@@ -2053,11 +2053,11 @@ img.team-avatar {
 .term-run { margin-left: auto; font-family: inherit; color: #5b647a; font-size: 11px; letter-spacing: 0.05em; background: transparent; border: 1px solid #262b3a; border-radius: 6px; padding: 4px 10px; cursor: pointer; transition: color 0.25s, border-color 0.25s, box-shadow 0.25s; }
 .term-run:hover { color: #4ec26b; border-color: #2f5a3d; }
 .term-run.busy { color: #4ec26b; border-color: #2f5a3d; box-shadow: 0 0 12px rgba(78, 194, 107, 0.25); }
-.term-main { display: flex; }
+.term-main { display: flex; height: 314px; overflow: hidden; }
 .term-gutter { margin: 0; padding: 18px 0 18px 16px; min-width: 34px; text-align: right; font-size: 13px; line-height: 1.75; color: #3b4358; user-select: none; }
 .term-main .term-body { flex: 1; }
-.term-out { max-height: 0; overflow: hidden; transition: max-height 0.5s var(--ease); border-top: 0 solid #1e2230; background: #0a0c10; }
-.term-out.on { max-height: 190px; border-top-width: 1px; }
+.term-out { height: 128px; overflow: hidden; opacity: 0; transition: opacity 0.45s var(--ease); border-top: 1px solid #1e2230; background: #0a0c10; }
+.term-out.on { opacity: 1; }
 .term-out pre { margin: 0; padding: 14px 20px; font-size: 12.5px; line-height: 1.8; }
 .term-out .ln-cmd { color: #8b93a7; }
 .term-out .ln-step { color: #cdd3e1; }
@@ -2108,7 +2108,7 @@ img.team-avatar {
 /* ===== chat demo: streaming, tool-chipy, avatar, reset ===== */
 .mock[data-mock="chat"] { transition: opacity 0.4s var(--ease); }
 .mock.chat-reset .mock-chat { opacity: 0; transition: opacity 0.35s var(--ease); }
-.mock-chat { transition: opacity 0.35s var(--ease); max-height: 340px; overflow-y: auto; scrollbar-width: none; }
+.mock-chat { transition: opacity 0.35s var(--ease); overflow-y: auto; scrollbar-width: none; }
 .mock-chat::-webkit-scrollbar { display: none; }
 .chat-msg.streaming::after { content: "▍"; color: #7aa2f7; animation: caret 0.9s steps(1) infinite; margin-left: 2px; }
 .chat-msg.agent { position: relative; margin-left: 30px; }
