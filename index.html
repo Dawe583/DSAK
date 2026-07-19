@@ -283,7 +283,7 @@
       <h3 class="reveal">Takhle mluví agent, kterého postavím</h3>
       <p class="section-sub reveal">Ukázková konverzace nad interní znalostní bází. Každá odpověď dokládá zdroj, u nejistoty se předává člověku.</p>
       <div class="demo-wrap reveal">
-        <div class="mock mock-dark" data-mock="chat">
+        <div class="mock" data-mock="chat">
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i><span>asistent — privátní cloud</span><span class="mock-live">● online</span></div>
           <div class="mock-chat">
             <div class="chat-msg user">Kolik objednávek čeká na ruční schválení?</div>
@@ -293,7 +293,7 @@
             <div class="chat-typing" aria-hidden="true"><i></i><i></i><i></i></div>
             <div class="chat-msg agent">Hotovo. Shrnutí obou objednávek máte v kanálu #schvalovani a připomínku jsem nastavil na zítra 9:00.<span class="chat-cite">Akce: Slack API · kalendář</span></div>
           </div>
-          <div class="mock-foot dark"><span>⌀ odpověď: <b>2,1 s</b></span><span><b>80 %</b> úkolů bez člověka</span><span class="mf-ok">● běží ve vašem cloudu</span></div>
+          <div class="mock-foot"><span>⌀ odpověď: <b>2,1 s</b></span><span><b>80 %</b> úkolů bez člověka</span><span class="mf-ok">● běží ve vašem cloudu</span></div>
         </div>
         <p class="mock-caption">Ukázková data — agenta nad vašimi systémy vám předvedu naživo.</p>
       </div>
@@ -610,39 +610,48 @@
       </div>
     </section>
 
-    <!-- ===== ODKAZY ===== -->
-    <section class="magnet">
-      <div class="magnet-inner reveal">
-        <div class="magnet-text">
-          <span class="magnet-tag">Odkazy</span>
-          <h4>Najdete mě i jinde</h4>
-          <p>Kód na GitHubu, profesně na LinkedInu, fotky na Instagramu, nebo mi rovnou napište či zavolejte. Odpovídám rychle.</p>
-        </div>
-        <div class="magnet-links">
-          <a class="btn btn-gray" href="https://github.com/Dawe583" target="_blank" rel="noopener"><svg class="social-ico" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
-          <a class="btn btn-gray" href="https://www.linkedin.com/in/sak-david" target="_blank" rel="noopener"><svg class="social-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8h4V24h-4zM8 8h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-6.9c0-1.64-.03-3.75-2.28-3.75-2.28 0-2.63 1.78-2.63 3.63V24H8z"/></svg>LinkedIn</a>
-          <a class="btn btn-gray" href="https://instagram.com/dejvyq" target="_blank" rel="noopener"><svg class="social-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>Instagram</a>
-          <a class="btn btn-gray" href="https://sitespot.cz" target="_blank" rel="noopener"><svg class="social-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg>SiteSpot ↗</a>
-          <a class="btn btn-gray" href="tel:+420606123573">☎ +420 606 123 573</a>
-          <a class="btn btn-black" href="mailto:business@dsak.tech">✉ business@dsak.tech</a>
-        </div>
-      </div>
-    </section>
 
-    <!-- ===== KONTAKT + KALENDÁŘ ===== -->
+    <!-- ===== KONTAKT ===== -->
     <section class="cta" id="kontakt">
+      <div class="kicker-row reveal"><span class="kicker"><b></b>Kontakt</span></div>
+      <h3 class="reveal">Pojďme na tom zapracovat.</h3>
+      <p class="section-sub reveal">Napište mi, co řešíte. Ozvu se do pár hodin — bez závazků a obchodních řečí, rovnou k věci.</p>
+
+      <!-- rychlé kanály -->
+      <div class="contact-quick reveal">
+        <button type="button" class="cq-card" id="copyMail" data-mail="business@dsak.tech">
+          <span class="cq-ico" aria-hidden="true">✉</span>
+          <span class="cq-label">E-mail</span>
+          <span class="cq-value">business@dsak.tech</span>
+          <span class="cq-hint" id="copyMailHint">kliknutím zkopírujete</span>
+        </button>
+        <a class="cq-card" href="tel:+420606123573">
+          <span class="cq-ico" aria-hidden="true">☎</span>
+          <span class="cq-label">Telefon</span>
+          <span class="cq-value">+420 606 123 573</span>
+          <span class="cq-hint">radši voláte? klidně</span>
+        </a>
+        <a class="cq-card" href="#calendar">
+          <span class="cq-ico" aria-hidden="true">📅</span>
+          <span class="cq-label">Termín hovoru</span>
+          <span class="cq-value">vyberte v kalendáři</span>
+          <span class="cq-hint">⌀ odpovídám do 4 hodin</span>
+        </a>
+      </div>
+      <div class="contact-social reveal" aria-label="Sociální sítě">
+        <a class="cs-btn" href="https://github.com/Dawe583" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+        <a class="cs-btn" href="https://www.linkedin.com/in/sak-david" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8h4V24h-4zM8 8h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-6.9c0-1.64-.03-3.75-2.28-3.75-2.28 0-2.63 1.78-2.63 3.63V24H8z"/></svg></a>
+        <a class="cs-btn" href="https://instagram.com/dejvyq" target="_blank" rel="noopener" title="Instagram @dejvyq" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+        <a class="cs-btn" href="https://sitespot.cz" target="_blank" rel="noopener" title="SiteSpot — spoluzakladatel" aria-label="SiteSpot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg></a>
+      </div>
+
       <div class="cta-grid">
         <div class="cta-text reveal">
-          <div class="kicker-row left"><span class="kicker"><b></b>Kontakt</span></div>
-          <h3>Pojďme na tom zapracovat.</h3>
-          <p class="faq-lead">Napište mi, co řešíte. Ozvu se do pár hodin a domluvíme si nezávazný hovor, na kterém probereme, jestli a jak vám můžu pomoct.</p>
+          <h4 class="cta-form-head">Napište mi zprávu</h4>
           <ul class="cta-points">
-            <li>Bez závazků a obchodních řečí.</li>
             <li>Komunikujete přímo se mnou.</li>
             <li>Odejdete s jasnou nabídkou a termínem.</li>
           </ul>
-
-          <p class="cta-direct">Nebo rovnou: <a href="mailto:business@dsak.tech">business@dsak.tech</a> <span aria-hidden="true">·</span> <a href="tel:+420606123573">+420 606 123 573</a></p>
 
           <form class="cta-form reveal" id="contactForm" novalidate>
             <div class="form-row">

@@ -2359,3 +2359,59 @@ img.team-avatar {
   .tl-num { right: 62px; opacity: 0; }
   .tl-step.active .tl-num { opacity: 0.55; }
 }
+
+/* ===== chat demo ve světlém tématu ===== */
+.chat-msg.agent { background: #f1f2f6; color: var(--gray-1); border: 1px solid var(--line); }
+.chat-typing { background: #f1f2f6; border: 1px solid var(--line); }
+.chat-typing i { background: var(--gray-4); }
+.chat-cite { background: #eef2ff; border-color: #c9d6ff; color: #2743e0; }
+.chat-msg.agent::before { box-shadow: 0 0 0 1px var(--line-strong); }
+.chat-msg.streaming::after { color: var(--blue); }
+.chat-tool { background: #f4f6ff; border: 1px solid #d9e0ff; color: var(--gray-2); }
+.chat-tool b { color: #b26a00; }
+.chat-tool.done { border-color: #bfe3cc; }
+.chat-tool.done b { color: #1f9e63; }
+
+/* ===== KONTAKT — restrukturováno ===== */
+.cta .cta-grid { margin-top: 44px; }
+.cta-form-head { font-size: 17px; font-weight: 500; margin-bottom: 10px; }
+.contact-quick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 860px; margin: 40px auto 0; }
+.cq-card {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 22px 16px 18px; text-align: center; cursor: pointer;
+  border: 1px dashed var(--line-strong); background: linear-gradient(180deg, #fff, var(--panel));
+  font-family: var(--sans); transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s var(--ease);
+}
+.cq-card:hover { transform: translateY(-4px); border-color: var(--blue); box-shadow: 0 16px 38px rgba(52, 85, 250, 0.10); }
+.cq-ico {
+  display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(52, 85, 250, 0.08); border: 1px solid rgba(52, 85, 250, 0.25); font-size: 19px; margin-bottom: 6px;
+  transition: transform 0.35s var(--ease), background 0.3s;
+}
+.cq-card:hover .cq-ico { transform: translateY(-2px) rotate(-8deg) scale(1.08); background: rgba(52, 85, 250, 0.14); }
+.cq-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-3); }
+.cq-value { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+.cq-hint { font-size: 11.5px; color: var(--gray-4); }
+.cq-card.copied { border-color: #1f9e63; }
+.cq-card.copied .cq-ico { background: rgba(31, 158, 99, 0.12); border-color: rgba(31, 158, 99, 0.4); }
+/* stagger nástup karet */
+.contact-quick.reveal .cq-card { opacity: 0; transform: translateY(16px); transition: opacity 0.55s var(--ease), transform 0.55s var(--ease), border-color 0.3s, box-shadow 0.3s var(--ease); }
+.contact-quick.reveal.in .cq-card { opacity: 1; transform: none; }
+.contact-quick.reveal.in .cq-card:nth-child(2) { transition-delay: 0.12s; }
+.contact-quick.reveal.in .cq-card:nth-child(3) { transition-delay: 0.24s; }
+
+.contact-social { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
+.cs-btn {
+  display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px dashed var(--line-strong); color: var(--gray-2); background: #fff;
+  transition: transform 0.3s var(--ease), background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.3s var(--ease);
+}
+.cs-btn svg { width: 16px; height: 16px; }
+.cs-btn:hover { transform: translateY(-3px) scale(1.06); background: var(--ink); color: #fff; border-color: var(--ink); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18); }
+.contact-social.reveal .cs-btn { opacity: 0; transform: scale(0.5); transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), background 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.3s var(--ease); }
+.contact-social.reveal.in .cs-btn { opacity: 1; transform: none; }
+.contact-social.reveal.in .cs-btn:nth-child(2) { transition-delay: 0.08s; }
+.contact-social.reveal.in .cs-btn:nth-child(3) { transition-delay: 0.16s; }
+.contact-social.reveal.in .cs-btn:nth-child(4) { transition-delay: 0.24s; }
+
+@media (max-width: 720px) { .contact-quick { grid-template-columns: 1fr; max-width: 420px; } }

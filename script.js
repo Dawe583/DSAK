@@ -1772,3 +1772,24 @@ def sync_faktury():
   }
   requestAnimationFrame(frame);
 })();
+
+/* ===== kontakt: kopírování e-mailu ===== */
+(function () {
+  var btn = document.getElementById("copyMail");
+  if (!btn) return;
+  var hint = document.getElementById("copyMailHint");
+  var orig = hint ? hint.textContent : "";
+  btn.addEventListener("click", function () {
+    var mail = btn.dataset.mail || "business@dsak.tech";
+    var done = function () {
+      btn.classList.add("copied");
+      if (hint) hint.textContent = "✓ zkopírováno do schránky";
+      setTimeout(function () { btn.classList.remove("copied"); if (hint) hint.textContent = orig; }, 2200);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(mail).then(done, function () { location.href = "mailto:" + mail; });
+    } else {
+      location.href = "mailto:" + mail;
+    }
+  });
+})();
