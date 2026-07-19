@@ -503,24 +503,77 @@ document.querySelectorAll("[data-count]").forEach((el) => {
 
 /* ---------- mock chat: přehrání konverzace při najetí do viewportu ---------- */
 document.querySelectorAll('[data-mock="chat"]').forEach((mock) => {
-  const items = [...mock.querySelectorAll(".chat-msg, .chat-typing")];
-  if (!items.length) return;
+  const chat = mock.querySelector(".mock-chat");
+  const msgs = [...mock.querySelectorAll(".chat-msg")];
+  if (!chat || !msgs.length) return;
+  const typings = [...mock.querySelectorAll(".chat-typing")];
+  const plan = msgs.map((el) => {
+    const citeEl = el.querySelector(".chat-cite");
+    const citeText = citeEl ? citeEl.textContent : "";
+    const text = el.textContent.replace(citeText, "").trim();
+    return { el, user: el.classList.contains("user"), text, citeEl, citeText };
+  });
+  const reduce2 = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce2) { msgs.forEach((m) => m.classList.add("show")); typings.forEach((t) => t.remove()); return; }
+  const zzz = (ms) => new Promise((r) => setTimeout(r, ms));
+  /* skroluj jen po spodek právě zobrazeného prvku (skryté zprávy dál zabírají místo) */
+  const follow = (el) => { chat.scrollTop = Math.max(0, el.offsetTop + el.offsetHeight + 14 - chat.clientHeight); };
+  let running = false;
+  async function play() {
+    if (running) return; running = true;
+    while (true) {
+      /* reset kola */
+      mock.classList.add("chat-reset");
+      await zzz(420);
+      msgs.forEach((m) => m.classList.remove("show"));
+      typings.forEach((t) => t.classList.remove("show"));
+      chat.querySelectorAll(".chat-tool").forEach((t) => t.remove());
+      mock.classList.remove("chat-reset");
+      await zzz(380);
+      for (const st of plan) {
+        if (st.user) {
+          st.el.classList.add("show");
+          follow(st.el);
+          await zzz(950);
+        } else {
+          const prev = st.el.previousElementSibling;
+          const ty = prev && prev.classList.contains("chat-typing") ? prev : null;
+          if (ty) { ty.classList.add("show"); await zzz(820); ty.classList.remove("show"); }
+          /* chip s "voláním nástroje" odvozený z citace zdroje */
+          if (st.citeText) {
+            const chip = document.createElement("div");
+            chip.className = "chat-tool";
+            const label = st.citeText.replace(/^Zdroj:\s*/i, "čtu ").replace(/^Akce:\s*/i, "spouštím ");
+            chip.innerHTML = "→ " + label + " <b>…</b>";
+            chat.insertBefore(chip, st.el);
+            requestAnimationFrame(() => { chip.classList.add("show"); follow(chip); });
+            await zzz(900);
+            chip.querySelector("b").textContent = "✓";
+            chip.classList.add("done");
+            await zzz(320);
+          }
+          /* streamování odpovědi po slovech */
+          st.el.textContent = "";
+          st.el.classList.add("show", "streaming");
+          const words = st.text.split(/\s+/);
+          for (const w of words) {
+            st.el.textContent += (st.el.textContent ? " " : "") + w;
+            follow(st.el);
+            await zzz(44);
+          }
+          st.el.classList.remove("streaming");
+          if (st.citeEl) st.el.appendChild(st.citeEl);
+          await zzz(650);
+        }
+        follow(st.el);
+      }
+      await zzz(4200);
+    }
+  }
   new IntersectionObserver(([en], io) => {
     if (!en.isIntersecting) return;
     io.disconnect();
-    let t = 500;
-    for (const el of items) {
-      if (el.classList.contains("chat-typing")) {
-        const at = t;
-        setTimeout(() => el.classList.add("show"), at);
-        setTimeout(() => el.classList.remove("show"), at + 1000);
-        t += 1000;
-      } else {
-        const at = t;
-        setTimeout(() => el.classList.add("show"), at);
-        t += el.classList.contains("user") ? 800 : 1300;
-      }
-    }
+    play();
   }, { threshold: 0.35 }).observe(mock);
 });
 

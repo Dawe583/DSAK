@@ -2104,3 +2104,25 @@ img.team-avatar {
 .beamhub.reveal.in .bh-col .bh-node:nth-child(2) { transition-delay: 0.18s; }
 .beamhub.reveal.in .bh-col .bh-node:nth-child(3) { transition-delay: 0.31s; }
 @media (prefers-reduced-motion: reduce) { .bh-orbit { display: none; } }
+
+/* ===== chat demo: streaming, tool-chipy, avatar, reset ===== */
+.mock[data-mock="chat"] { transition: opacity 0.4s var(--ease); }
+.mock.chat-reset .mock-chat { opacity: 0; transition: opacity 0.35s var(--ease); }
+.mock-chat { transition: opacity 0.35s var(--ease); max-height: 340px; overflow-y: auto; scrollbar-width: none; }
+.mock-chat::-webkit-scrollbar { display: none; }
+.chat-msg.streaming::after { content: "▍"; color: #7aa2f7; animation: caret 0.9s steps(1) infinite; margin-left: 2px; }
+.chat-msg.agent { position: relative; margin-left: 30px; }
+.chat-msg.agent::before {
+  content: ""; position: absolute; left: -30px; top: 2px; width: 21px; height: 21px; border-radius: 50%;
+  background: #fff url("/assets/logo.png") center / 62% no-repeat; box-shadow: 0 0 0 1px #262b3a;
+}
+.chat-tool {
+  justify-self: start; display: inline-flex; align-items: center; gap: 6px; margin-left: 30px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; color: #8b93a7;
+  background: rgba(122, 162, 247, 0.08); border: 1px solid #262b3a; border-radius: 6px; padding: 5px 10px;
+  opacity: 0; transform: translateY(6px); transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), border-color 0.3s;
+}
+.chat-tool.show { opacity: 1; transform: none; }
+.chat-tool b { font-weight: 600; color: #febc2e; }
+.chat-tool.done { border-color: #2f5a3d; }
+.chat-tool.done b { color: #4ec26b; }
