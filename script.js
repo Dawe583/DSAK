@@ -1291,11 +1291,31 @@ if (hasGsap && !reduceMotion) {
       scaleY: 1, ease: "none",
       scrollTrigger: { trigger: tl, start: "top 72%", end: "bottom 72%", scrub: true },
     });
-    tl.querySelectorAll(".tl-dot").forEach((d) => {
+    /* světelný paket jedoucí po dráze se scrollem */
+    const packet = document.createElement("i");
+    packet.className = "tl-packet";
+    packet.setAttribute("aria-hidden", "true");
+    tl.appendChild(packet);
+    const trackEl = tl.querySelector(".tl-track");
+    ScrollTrigger.create({
+      trigger: tl, start: "top 72%", end: "bottom 72%", scrub: true,
+      onUpdate: (self) => {
+        const h = trackEl ? trackEl.offsetHeight : tl.offsetHeight - 12;
+        packet.style.top = (6 + h * self.progress) + "px";
+        packet.style.opacity = self.progress > 0.002 && self.progress < 0.995 ? "1" : "0";
+      },
+    });
+    /* aktivace kroku: karta se rozsvítí, tečka udělá dokovací ripple */
+    tl.querySelectorAll(".tl-step").forEach((stp) => {
+      const d = stp.querySelector(".tl-dot");
       ScrollTrigger.create({
         trigger: d, start: "top 72%",
-        onEnter: () => d.classList.add("on"),
-        onLeaveBack: () => d.classList.remove("on"),
+        onEnter: () => {
+          d.classList.add("on");
+          stp.classList.add("active");
+          d.classList.remove("ripple"); void d.offsetWidth; d.classList.add("ripple");
+        },
+        onLeaveBack: () => { d.classList.remove("on"); stp.classList.remove("active"); },
       });
     });
   }
@@ -1648,4 +1668,107 @@ def sync_faktury():
       }
     });
   }
+})();
+
+/* ===== proces: ručně animované mikro-scény v kartách ===== */
+(function () {
+  var canvases = [].slice.call(document.querySelectorAll(".tl-scene"));
+  if (!canvases.length) return;
+  var BLUE = "#3455fa";
+  var items = canvases.map(function (cv) {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = 150, H = 90;
+    cv.width = W * dpr; cv.height = H * dpr;
+    var ctx = cv.getContext("2d");
+    ctx.scale(dpr, dpr);
+    return { ctx: ctx, W: W, H: H, type: cv.dataset.scene };
+  });
+
+  function call(ctx, W, H, t) {
+    var cx = 44, cy = H / 2;
+    ctx.fillStyle = "#111";
+    ctx.beginPath(); ctx.arc(cx, cy, 5, 0, 7); ctx.fill();
+    for (var i = 0; i < 3; i++) {
+      var r = ((t * 26) + i * 16) % 46;
+      ctx.strokeStyle = "rgba(52,85,250," + Math.max(0, 0.85 - r / 46) + ")";
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(cx, cy, 8 + r, -0.9, 0.9); ctx.stroke();
+      ctx.beginPath(); ctx.arc(cx, cy, 8 + r, Math.PI - 0.9, Math.PI + 0.9); ctx.stroke();
+    }
+    for (var b = 0; b < 5; b++) {
+      var hh = 8 + Math.abs(Math.sin(t * 3.1 + b * 1.1)) * 22;
+      ctx.fillStyle = b % 2 ? "rgba(17,17,17,0.75)" : BLUE;
+      ctx.fillRect(104 + b * 8, cy - hh / 2, 4, hh);
+    }
+  }
+  function plan(ctx, W, H, t) {
+    ctx.strokeStyle = "rgba(52,85,250,0.12)"; ctx.lineWidth = 1;
+    for (var gx = 10; gx < W; gx += 14) { ctx.beginPath(); ctx.moveTo(gx, 8); ctx.lineTo(gx, H - 8); ctx.stroke(); }
+    for (var gy = 8; gy < H; gy += 14) { ctx.beginPath(); ctx.moveTo(10, gy); ctx.lineTo(W - 10, gy); ctx.stroke(); }
+    var p = (t % 4.2) / 4.2;
+    var segs = [[16, 16, 86, 16], [86, 16, 86, 52], [86, 52, 16, 52], [16, 52, 16, 16], [24, 26, 62, 26], [24, 34, 74, 34], [24, 42, 54, 42]];
+    var total = segs.length;
+    ctx.strokeStyle = "#111"; ctx.lineWidth = 1.6;
+    for (var i2 = 0; i2 < total; i2++) {
+      var segP = Math.max(0, Math.min(1, p * total - i2));
+      if (segP <= 0) break;
+      var sg = segs[i2];
+      ctx.beginPath(); ctx.moveTo(sg[0], sg[1]);
+      ctx.lineTo(sg[0] + (sg[2] - sg[0]) * segP, sg[1] + (sg[3] - sg[1]) * segP);
+      ctx.stroke();
+    }
+    ctx.fillStyle = BLUE; ctx.font = "600 11px monospace";
+    ctx.fillText(Math.round(Math.min(1, p * 1.15) * 25) + "k Kč", 100, 78);
+    ctx.strokeStyle = "rgba(52,85,250,0.6)";
+    ctx.strokeRect(96, 66, 44, 17);
+  }
+  function build(ctx, W, H, t) {
+    var p = (t % 5) / 5;
+    var n = Math.floor(p * 12);
+    for (var i3 = 0; i3 < 12; i3++) {
+      var col = i3 % 3, row = Math.floor(i3 / 3);
+      var x = 22 + col * 22, y = 62 - row * 13;
+      if (i3 < n) {
+        ctx.fillStyle = i3 % 4 === 0 ? BLUE : "rgba(17,17,17,0.8)";
+        ctx.fillRect(x, y, 18, 10);
+      } else {
+        ctx.strokeStyle = "rgba(17,17,17,0.18)"; ctx.lineWidth = 1;
+        ctx.strokeRect(x, y, 18, 10);
+      }
+    }
+    ctx.fillStyle = "rgba(17,17,17,0.12)"; ctx.fillRect(100, 24, 34, 5);
+    ctx.fillStyle = BLUE; ctx.fillRect(100, 24, 34 * p, 5);
+    ctx.font = "600 10px monospace";
+    ctx.fillStyle = p > 0.96 ? "#1f9e63" : "rgba(17,17,17,0.55)";
+    ctx.fillText(p > 0.96 ? "build ✓" : "build…", 100, 44);
+  }
+  function run(ctx, W, H, t) {
+    var base = H / 2 + 6;
+    ctx.strokeStyle = BLUE; ctx.lineWidth = 1.7; ctx.beginPath();
+    for (var x2 = 10; x2 < W - 10; x2++) {
+      var ph = (x2 + t * 46) % 74;
+      var y2 = base + Math.sin((x2 + t * 30) / 9) * 2.2;
+      if (ph > 30 && ph < 44) {
+        var k = (ph - 30) / 14;
+        y2 -= Math.sin(k * Math.PI) * 26 * (k < 0.5 ? 1 : 0.55);
+      }
+      x2 === 10 ? ctx.moveTo(x2, y2) : ctx.lineTo(x2, y2);
+    }
+    ctx.stroke();
+    var blink = Math.sin(t * 4) > -0.2;
+    if (blink) { ctx.fillStyle = "#1f9e63"; ctx.beginPath(); ctx.arc(102, 16, 3, 0, 7); ctx.fill(); }
+    ctx.fillStyle = "rgba(17,17,17,0.55)"; ctx.font = "600 9px monospace";
+    ctx.fillText("online", 110, 19);
+  }
+  var draw = { call: call, plan: plan, build: build, run: run };
+
+  function frame(ts) {
+    var t = ts / 1000;
+    items.forEach(function (it) {
+      it.ctx.clearRect(0, 0, it.W, it.H);
+      (draw[it.type] || call)(it.ctx, it.W, it.H, t);
+    });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 })();
